@@ -28,11 +28,16 @@ $message = "\u{1F4BF} #lastfm: " . implode( ', ', $top5 ) . '.';
 
 $connection = new TwitterOAuth( getenv( 'CONSUMER_KEY' ), getenv( 'CONSUMER_SECRET' ), getenv( 'ACCESS_TOKEN' ), getenv( 'ACCESS_SECRET' ) );
 $tweet_on   = ( getenv('GENERAL_TWEET_ENABLED') === '1' ) ? true : false;
-if ($tweet_on) {
-	$connection->post( 'statuses/update', [ 'status' => $message ] );
-} else {
-	echo 'Tweeting is off.' . PHP_EOL;
+if (!$tweet_on) {
+	echo 'Tweeting is off.' . PHP_EOL . $message . PHP_EOL;
+	exit(0);
 }
 
-echo $message . PHP_EOL;
-exit(0);
+$connection->post( 'statuses/update', [ 'status' => $message ] );
+if ($connection->getLastHttpCode() == 200) {
+    echo 'Tweet posted successfully.' . PHP_EOL;
+	exit(0);
+} else {
+	echo 'An error occurred during tweeting: ' . $connection->getLastBody()->errors[0]->message . PHP_EOL;
+	exit(1);
+}
