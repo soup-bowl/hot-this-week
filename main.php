@@ -24,7 +24,7 @@ foreach ( $lfm_tops->toptracks->track as $track ) {
 	$top5[] = "{$track->artist->name} - {$track->name} ({$track->playcount})";
 }
 
-$message = "\u{1F4BF} #lastfm: " . implode( ', ', $top5 ) . '.';
+$message = "\u{1F4BF} #lastfm: " . implode( "\n", $top5 ) . '.';
 
 // Twitter - Posting stuff.
 
