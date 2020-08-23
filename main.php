@@ -26,8 +26,14 @@ $message = "\u{1F4BF} #lastfm: " . implode( ', ', $top5 ) . '.';
 
 // Twitter - Posting stuff.
 
-$connection = new TwitterOAuth( getenv( 'CONSUMER_KEY' ), getenv( 'CONSUMER_SECRET' ), getenv( 'ACCESS_TOKEN' ), getenv( 'ACCESS_SECRET' ) );
-$tweet_on   = ( getenv('GENERAL_TWEET_ENABLED') === '1' ) ? true : false;
+$connection = new TwitterOAuth(
+	getenv( 'TWITTER_CONSUMER_KEY' ),
+	getenv( 'TWITTER_CONSUMER_SECRET' ),
+	getenv( 'TWITTER_ACCESS_TOKEN' ),
+	getenv( 'TWITTER_ACCESS_SECRET' )
+);
+
+$tweet_on = ( getenv('GENERAL_TWEET_ENABLED') === '1' ) ? true : false;
 if (!$tweet_on) {
 	echo 'Tweeting is off.' . PHP_EOL . $message . PHP_EOL;
 	exit(0);
@@ -38,6 +44,6 @@ if ($connection->getLastHttpCode() == 200) {
     echo 'Tweet posted successfully.' . PHP_EOL;
 	exit(0);
 } else {
-	echo 'An error occurred during tweeting: ' . $connection->getLastBody()->errors[0]->message . PHP_EOL;
+	echo "An error occurred during tweeting: ({$connection->getLastBody()->errors[0]->code}) {$connection->getLastBody()->errors[0]->message}" . PHP_EOL;
 	exit(1);
 }
