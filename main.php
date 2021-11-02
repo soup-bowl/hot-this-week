@@ -23,22 +23,9 @@ $lfm_tops = $lfm->user_getTopTracks([
 
 $top5 = [];
 foreach ( $lfm_tops->toptracks->track as $track ) {
-	$artist_url  = $track->artist->url;
-	$artist_html = file_get_contents( $artist_url );
-
-	$dom = new DOMDocument();
-    $dom->loadHTML( $artist_html );
-    $xpath = new DOMXPath( $dom );
-
-    $img_src = "";
-	foreach ( $xpath->query( '//div[contains(@class,"header-new-background-image")]' ) as $item ) {
-        $img_src = $item->getAttribute('content');
-        continue;
-	}
-
 	$top5[] = [
 		'artist'  => $track->artist->name,
-		'picture' => $img_src,
+		'picture' => get_artist_picture( $track->artist->url ),
 		'track'   => $track->name,
 		'count'   => $track->playcount
 	];
@@ -71,4 +58,26 @@ if ($connection->getLastHttpCode() == 200) {
 } else {
 	echo "An error occurred during tweeting: ({$connection->getLastBody()->errors[0]->code}) {$connection->getLastBody()->errors[0]->message}" . PHP_EOL;
 	exit(1);
+}
+
+/**
+ * Scrapes the last.fm site for the artist image.
+ *
+ * @param string $url The artist page URL.
+ * @return string Image URL, or blank if none was found.
+ */
+function get_artist_picture( $url ) {
+	$artist_html = file_get_contents( $url );
+
+	$dom = new DOMDocument();
+    $dom->loadHTML( $artist_html );
+    $xpath = new DOMXPath( $dom );
+
+    $img_src = "";
+	foreach ( $xpath->query( '//div[contains(@class,"header-new-background-image")]' ) as $item ) {
+        $img_src = $item->getAttribute('content');
+        continue;
+	}
+
+	return $img_src;
 }
