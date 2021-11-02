@@ -10,6 +10,8 @@ if ( file_exists( __DIR__ . '/vendor/symfony/dotenv/composer.json' ) ) {
 	( new Symfony\Component\Dotenv\Dotenv( true ) )->load(__DIR__ . '/.env');
 }
 
+libxml_use_internal_errors( true );
+
 // last.fm - Scrape stuff.
 
 $lfm      = new LastFm( getenv( 'LASTFM_KEY' ), getenv( 'LASTFM_SECRET' ) );
@@ -21,10 +23,31 @@ $lfm_tops = $lfm->user_getTopTracks([
 
 $top5 = [];
 foreach ( $lfm_tops->toptracks->track as $track ) {
-	$top5[] = "{$track->artist->name} - {$track->name} ({$track->playcount})";
+	$artist_url  = $track->artist->url;
+	$artist_html = file_get_contents( $artist_url );
+
+	$dom = new DOMDocument();
+    $dom->loadHTML( $artist_html );
+    $xpath = new DOMXPath( $dom );
+
+    $img_src = "";
+	foreach ( $xpath->query( '//div[contains(@class,"header-new-background-image")]' ) as $item ) {
+        $img_src = $item->getAttribute('content');
+        continue;
+	}
+
+	$top5[] = [
+		'artist'  => $track->artist->name,
+		'picture' => $img_src,
+		'track'   => $track->name,
+		'count'   => $track->playcount
+	];
 }
 
-$message = "\u{1F4BF} #lastfm: " . implode( "\n", $top5 ) . '.';
+$message = "\u{1F4BF} #lastfm:\n";
+foreach( $top5 as $item ) {
+	$message .= "{$item['artist']} - {$item['track']} ({$item['count']})\n";
+}
 
 // Twitter - Posting stuff.
 
