@@ -7,10 +7,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 WORKDIR /opt/tbot
 
-COPY main.php       main.php
 COPY composer.json composer.json
 COPY composer.lock composer.lock
 
 RUN php /usr/local/bin/composer install --no-dev
+
+COPY main.php main.php
 
 ENTRYPOINT [ "php", "main.php" ]
