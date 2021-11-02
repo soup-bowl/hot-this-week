@@ -15,7 +15,7 @@ if ( file_exists( __DIR__ . '/vendor/symfony/dotenv/composer.json' ) ) {
 $lfm      = new LastFm( getenv( 'LASTFM_KEY' ), getenv( 'LASTFM_SECRET' ) );
 $lfm_tops = $lfm->user_getTopTracks([
 	'user'   => getenv( 'LASTFM_SCAN_USER_NAME' ),
-	'period' => '7days',
+	'period' => '7day',
 	'limit'  => getenv( 'LASTFM_DISPLAY_AMOUNT' ),
 ]);
 
