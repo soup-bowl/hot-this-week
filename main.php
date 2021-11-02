@@ -4,7 +4,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Dandelionmood\LastFm\LastFm;
 use Abraham\TwitterOAuth\TwitterOAuth;
-
+use Tzsk\Collage\MakeCollage;
 
 if ( file_exists( __DIR__ . '/vendor/symfony/dotenv/composer.json' ) ) {
 	( new Symfony\Component\Dotenv\Dotenv( true ) )->load(__DIR__ . '/.env');
@@ -21,15 +21,32 @@ $lfm_tops = $lfm->user_getTopTracks([
 	'limit'  => getenv( 'LASTFM_DISPLAY_AMOUNT' ),
 ]);
 
-$top5 = [];
+$top5    = [];
+$top5img = [];
 foreach ( $lfm_tops->toptracks->track as $track ) {
+	$artist_pic = get_artist_picture( $track->artist->url );
+
 	$top5[] = [
 		'artist'  => $track->artist->name,
-		'picture' => get_artist_picture( $track->artist->url ),
+		'picture' => $artist_pic,
 		'track'   => $track->name,
 		'count'   => $track->playcount
 	];
+
+	$top5img[] = $artist_pic;
 }
+
+$forcol = $top5img;
+array_shift( $forcol );
+
+$collage     = new MakeCollage();
+$first_image = $collage->make( 400, 400 )->from( $forcol );
+$first_image->save( '/tmp/first-img.png' );
+
+$main_image = $collage->make( 800, 400 )->from( [ $top5img[0], '/tmp/first-img.png' ], function( $a ) { $a->vertical(); } );
+$main_image->save('/tmp/collage.png');
+
+unlink( '/tmp/first-img.png' );
 
 $message = "\u{1F4BF} #lastfm:\n";
 foreach( $top5 as $item ) {
@@ -51,7 +68,19 @@ if (!$tweet_on) {
 	exit(0);
 }
 
-$connection->post( 'statuses/update', [ 'status' => $message ] );
+$c_img   = '/tmp/collage.png';
+$collage = $connection->upload( 'media/upload', [ 'media' => $c_img ] );
+
+$connection->post(
+	'statuses/update',
+	[
+		'status'    => $message,
+		'media_ids' => implode( ',', [ $collage->media_id_string ] )
+	]
+);
+
+unlink( '/tmp/collage.png' );
+
 if ($connection->getLastHttpCode() == 200) {
     echo 'Tweet posted successfully.' . PHP_EOL;
 	exit(0);

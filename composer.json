@@ -1,7 +1,8 @@
 {
     "require": {
         "dandelionmood/lastfm": "^0.8.0",
-        "abraham/twitteroauth": "^1.1"
+        "abraham/twitteroauth": "^1.1",
+        "tzsk/collage": "^5.1"
     },
     "require-dev": {
         "symfony/dotenv": "^5.1"
