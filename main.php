@@ -131,7 +131,7 @@ function generate_collage( $top5, $export_location = '' ) {
 	$imgarr = [];
 	foreach ( $top5 as &$item ) {
 		$imgarr[]       = $item['picture'];
-		$item['artist'] = ( strlen( $item['artist'] ) > 15 ) ? substr( $item['artist'], 0, 15 )."..." : $item['artist'];	
+		$item['artist'] = ( strlen( $item['artist'] ) > 10 ) ? substr( $item['artist'], 0, 10 )."..." : $item['artist'];	
 	}
 
 
@@ -145,8 +145,8 @@ function generate_collage( $top5, $export_location = '' ) {
 
 	$collage->make( 1200, 675 )
 		->from( [ $imgarr[0], $first_image ], function( $a ) { $a->vertical(); } )
-		->text( $top5[0]['artist'], 22, 662, function( $font )  { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 48 ); })
-		->text( $top5[0]['artist'], 20, 660, function( $font )  { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 48 )->color('#FFF'); })
+		->text( $top5[0]['artist'], 22, 662, function( $font )  { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 52 ); })
+		->text( $top5[0]['artist'], 20, 660, function( $font )  { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 52 )->color('#FFF'); })
 		->text( $top5[1]['artist'], 621, 321, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 28 ); })
 		->text( $top5[1]['artist'], 620, 320, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 28 )->color('#FFF'); })
 		->text( $top5[2]['artist'], 921, 321, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 28 ); })
