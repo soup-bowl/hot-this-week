@@ -27,7 +27,7 @@ function main() {
 	$message = "\u{1F4BF} #lastfm:\n";
 	foreach( $top5 as $item ) {
 		$message .= "{$item['artist']} - {$item['track']} ({$item['count']})\n";
-	}die();
+	}
 
 	// Twitter - Posting stuff.
 	echo '- Posting to Twitter...' . PHP_EOL;
