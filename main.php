@@ -140,14 +140,13 @@ function generate_collage( $top5, $export_location = '' ) {
 	$forcol = $imgarr;
 	array_shift( $forcol );
 
-	unlink( 'collage.png' );
+	if ( file_exists( 'collage.png' ) ) { unlink( 'collage.png' ); }
 
 	$collage     = new MakeCollage();
-	$first_image = $collage->make( 400, 400 )->from( $forcol );
-	$first_image->save( 'first-img.png' );
+	$first_image = $collage->make( 400, 400 )->from( $forcol )->encode( 'png' );
 
-	$main_image = $collage->make( 800, 400 )
-		->from( [ $imgarr[0], 'first-img.png' ], function( $a ) { $a->vertical(); } )
+	$collage->make( 800, 400 )
+		->from( [ $imgarr[0], $first_image ], function( $a ) { $a->vertical(); } )
 		->text( $top5[0]['artist'], 21, 381, function( $font )  { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 24 ); })
 		->text( $top5[0]['artist'], 20, 380, function( $font )  { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 24 )->color('#FFF'); })
 		->text( $top5[1]['artist'], 421, 181, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 18 ); })
@@ -157,10 +156,8 @@ function generate_collage( $top5, $export_location = '' ) {
 		->text( $top5[3]['artist'], 421, 381, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 18 ); })
 		->text( $top5[3]['artist'], 420, 380, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 18 )->color('#FFF'); })
 		->text( $top5[4]['artist'], 621, 381, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 18 ); })
-		->text( $top5[4]['artist'], 620, 380, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 18 )->color('#FFF'); });
-	$main_image->save('collage.png');
-
-	unlink( 'first-img.png' );
+		->text( $top5[4]['artist'], 620, 380, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 18 )->color('#FFF'); })
+		->save('collage.png');
 
 	return realpath( 'collage.png' );
 }
