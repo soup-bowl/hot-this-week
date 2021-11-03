@@ -44,7 +44,7 @@ function get_top_from_lastfm() {
 	$lfm_tops = $lfm->user_getTopTracks([
 		'user'   => getenv( 'LASTFM_SCAN_USER_NAME' ),
 		'period' => '7day',
-		'limit'  => getenv( 'LASTFM_DISPLAY_AMOUNT' ),
+		'limit'  => 5,
 	]);
 
 	$top = [];
@@ -74,14 +74,6 @@ function post_to_twitter( $message, $image_location = null ) {
 		getenv( 'TWITTER_ACCESS_TOKEN' ),
 		getenv( 'TWITTER_ACCESS_SECRET' )
 	);
-	
-	$tweet_on = ( getenv('GENERAL_TWEET_ENABLED') === '1' ) ? true : false;
-	if (!$tweet_on) {
-		return (object) [
-			'success' => false,
-			'message' => 'Tweeting is off.' . PHP_EOL . $message,
-		];
-	}
 	
 	$collage = $connection->upload( 'media/upload', [ 'media' => $image_location ] );
 	
