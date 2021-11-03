@@ -16,15 +16,10 @@ libxml_use_internal_errors( true );
  * Main interaction function.
  */
 function main() {
+	$cwd = dirname( __FILE__ );
 	// last.fm - Scrape stuff.
 	$top5 = get_top_from_lastfm();
-
-	$imgarr = [];
-	foreach ( $top5 as $item ) {
-		$imgarr[] = $item['picture'];
-	}
-
-	$img = generate_collage( $imgarr );
+	$img  = generate_collage( $top5 );die();
 
 	$message = "\u{1F4BF} #lastfm:\n";
 	foreach( $top5 as $item ) {
@@ -132,11 +127,16 @@ function get_artist_picture( $url ) {
 /**
  * Generates a 1 left, 4 right collage image based on given image sources.
  *
- * @param string[] $imgarr          Either local filesystem or remote image sources (5 needed).
+ * @param string[] $top5            last.fm response.
  * @param string   $export_location Location to store photo, default is current directory.
  * @return string Location of generated image on filesystem.
  */
-function generate_collage( $imgarr, $export_location = '' ) {
+function generate_collage( $top5, $export_location = '' ) {
+	$imgarr = [];
+	foreach ( $top5 as $item ) {
+		$imgarr[] = $item['picture'];
+	}
+
 	$forcol = $imgarr;
 	array_shift( $forcol );
 
@@ -146,7 +146,18 @@ function generate_collage( $imgarr, $export_location = '' ) {
 	$first_image = $collage->make( 400, 400 )->from( $forcol );
 	$first_image->save( 'first-img.png' );
 
-	$main_image = $collage->make( 800, 400 )->from( [ $imgarr[0], 'first-img.png' ], function( $a ) { $a->vertical(); } );
+	$main_image = $collage->make( 800, 400 )
+		->from( [ $imgarr[0], 'first-img.png' ], function( $a ) { $a->vertical(); } )
+		->text( $top5[0]['artist'], 21, 381, function( $font )  { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 24 ); })
+		->text( $top5[0]['artist'], 20, 380, function( $font )  { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 24 )->color('#FFF'); })
+		->text( $top5[1]['artist'], 421, 181, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 18 ); })
+		->text( $top5[1]['artist'], 420, 180, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 18 )->color('#FFF'); })
+		->text( $top5[2]['artist'], 621, 181, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 18 ); })
+		->text( $top5[2]['artist'], 620, 180, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 18 )->color('#FFF'); })
+		->text( $top5[3]['artist'], 421, 381, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 18 ); })
+		->text( $top5[3]['artist'], 420, 380, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 18 )->color('#FFF'); })
+		->text( $top5[4]['artist'], 621, 381, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 18 ); })
+		->text( $top5[4]['artist'], 620, 380, function( $font ) { $font->file( dirname( __FILE__ ) . '/ubuntu.ttf' )->size( 18 )->color('#FFF'); });
 	$main_image->save('collage.png');
 
 	unlink( 'first-img.png' );
