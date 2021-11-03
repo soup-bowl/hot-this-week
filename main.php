@@ -14,39 +14,24 @@ libxml_use_internal_errors( true );
 
 // last.fm - Scrape stuff.
 
-$lfm      = new LastFm( getenv( 'LASTFM_KEY' ), getenv( 'LASTFM_SECRET' ) );
-$lfm_tops = $lfm->user_getTopTracks([
-	'user'   => getenv( 'LASTFM_SCAN_USER_NAME' ),
-	'period' => '7day',
-	'limit'  => getenv( 'LASTFM_DISPLAY_AMOUNT' ),
-]);
+$top5 = get_top_from_lastfm();
 
-$top5    = [];
-$top5img = [];
-foreach ( $lfm_tops->toptracks->track as $track ) {
-	$artist_pic = get_artist_picture( $track->artist->url );
-
-	$top5[] = [
-		'artist'  => $track->artist->name,
-		'picture' => $artist_pic,
-		'track'   => $track->name,
-		'count'   => $track->playcount
-	];
-
-	$top5img[] = $artist_pic;
+$imgarr = [];
+foreach ( $top5 as $item ) {
+	$imgarr[] = $item['picture'];
 }
 
-$forcol = $top5img;
+$forcol = $imgarr;
 array_shift( $forcol );
 
 $collage     = new MakeCollage();
 $first_image = $collage->make( 400, 400 )->from( $forcol );
-$first_image->save( '/tmp/first-img.png' );
+$first_image->save( 'first-img.png' );
 
-$main_image = $collage->make( 800, 400 )->from( [ $top5img[0], '/tmp/first-img.png' ], function( $a ) { $a->vertical(); } );
-$main_image->save('/tmp/collage.png');
+$main_image = $collage->make( 800, 400 )->from( [ $imgarr[0], 'first-img.png' ], function( $a ) { $a->vertical(); } );
+$main_image->save('collage.png');
 
-unlink( '/tmp/first-img.png' );
+unlink( 'first-img.png' );
 
 $message = "\u{1F4BF} #lastfm:\n";
 foreach( $top5 as $item ) {
@@ -54,7 +39,7 @@ foreach( $top5 as $item ) {
 }
 
 // Twitter - Posting stuff.
-
+die();
 $connection = new TwitterOAuth(
 	getenv( 'TWITTER_CONSUMER_KEY' ),
 	getenv( 'TWITTER_CONSUMER_SECRET' ),
@@ -68,7 +53,7 @@ if (!$tweet_on) {
 	exit(0);
 }
 
-$c_img   = '/tmp/collage.png';
+$c_img   = 'collage.png';
 $collage = $connection->upload( 'media/upload', [ 'media' => $c_img ] );
 
 $connection->post(
@@ -79,7 +64,7 @@ $connection->post(
 	]
 );
 
-unlink( '/tmp/collage.png' );
+unlink( 'collage.png' );
 
 if ($connection->getLastHttpCode() == 200) {
     echo 'Tweet posted successfully.' . PHP_EOL;
@@ -87,6 +72,30 @@ if ($connection->getLastHttpCode() == 200) {
 } else {
 	echo "An error occurred during tweeting: ({$connection->getLastBody()->errors[0]->code}) {$connection->getLastBody()->errors[0]->message}" . PHP_EOL;
 	exit(1);
+}
+
+/**
+ * Grabs the top tracks from the last.fm API.
+ */
+function get_top_from_lastfm() {
+	$lfm      = new LastFm( getenv( 'LASTFM_KEY' ), getenv( 'LASTFM_SECRET' ) );
+	$lfm_tops = $lfm->user_getTopTracks([
+		'user'   => getenv( 'LASTFM_SCAN_USER_NAME' ),
+		'period' => '7day',
+		'limit'  => getenv( 'LASTFM_DISPLAY_AMOUNT' ),
+	]);
+
+	$top = [];
+	foreach ( $lfm_tops->toptracks->track as $track ) {
+		$top[] = [
+			'artist'  => $track->artist->name,
+			'picture' => get_artist_picture( $track->artist->url ),
+			'track'   => $track->name,
+			'count'   => $track->playcount
+		];
+	}
+
+	return $top;
 }
 
 /**
