@@ -24,6 +24,8 @@ foreach ( $top5 as $item ) {
 $forcol = $imgarr;
 array_shift( $forcol );
 
+unlink( 'collage.png' );
+
 $collage     = new MakeCollage();
 $first_image = $collage->make( 400, 400 )->from( $forcol );
 $first_image->save( 'first-img.png' );
@@ -39,40 +41,9 @@ foreach( $top5 as $item ) {
 }
 
 // Twitter - Posting stuff.
-die();
-$connection = new TwitterOAuth(
-	getenv( 'TWITTER_CONSUMER_KEY' ),
-	getenv( 'TWITTER_CONSUMER_SECRET' ),
-	getenv( 'TWITTER_ACCESS_TOKEN' ),
-	getenv( 'TWITTER_ACCESS_SECRET' )
-);
-
-$tweet_on = ( getenv('GENERAL_TWEET_ENABLED') === '1' ) ? true : false;
-if (!$tweet_on) {
-	echo 'Tweeting is off.' . PHP_EOL . $message . PHP_EOL;
-	exit(0);
-}
-
-$c_img   = 'collage.png';
-$collage = $connection->upload( 'media/upload', [ 'media' => $c_img ] );
-
-$connection->post(
-	'statuses/update',
-	[
-		'status'    => $message,
-		'media_ids' => implode( ',', [ $collage->media_id_string ] )
-	]
-);
-
-unlink( 'collage.png' );
-
-if ($connection->getLastHttpCode() == 200) {
-    echo 'Tweet posted successfully.' . PHP_EOL;
-	exit(0);
-} else {
-	echo "An error occurred during tweeting: ({$connection->getLastBody()->errors[0]->code}) {$connection->getLastBody()->errors[0]->message}" . PHP_EOL;
-	exit(1);
-}
+$response = post_to_twitter( $message, 'collage.png' );
+echo $response->message . PHP_EOL;
+exit( ( $response->success ) ? 0 : 1 );
 
 /**
  * Grabs the top tracks from the last.fm API.
@@ -96,6 +67,52 @@ function get_top_from_lastfm() {
 	}
 
 	return $top;
+}
+
+/**
+ * Posts contents to Twitter.
+ *
+ * @param string $message        Contents of the tweet.
+ * @param string $image_location Attach an optional image.
+ * @param array Boolean 'success' to indicate state, and counterpart 'message'.
+ */
+function post_to_twitter( $message, $image_location = null ) {
+	$connection = new TwitterOAuth(
+		getenv( 'TWITTER_CONSUMER_KEY' ),
+		getenv( 'TWITTER_CONSUMER_SECRET' ),
+		getenv( 'TWITTER_ACCESS_TOKEN' ),
+		getenv( 'TWITTER_ACCESS_SECRET' )
+	);
+	
+	$tweet_on = ( getenv('GENERAL_TWEET_ENABLED') === '1' ) ? true : false;
+	if (!$tweet_on) {
+		return (object) [
+			'success' => false,
+			'message' => 'Tweeting is off.' . PHP_EOL . $message,
+		];
+	}
+	
+	$collage = $connection->upload( 'media/upload', [ 'media' => $image_location ] );
+	
+	$connection->post(
+		'statuses/update',
+		[
+			'status'    => $message,
+			'media_ids' => implode( ',', [ $collage->media_id_string ] )
+		]
+	);
+	
+	if ($connection->getLastHttpCode() == 200) {
+		return (object) [
+			'success' => true,
+			'message' => 'Tweet posted successfully.',
+		];
+	} else {
+		return (object) [
+			'success' => false,
+			'message' => "An error occurred during tweeting: ({$connection->getLastBody()->errors[0]->code}) {$connection->getLastBody()->errors[0]->message}",
+		];
+	}
 }
 
 /**
