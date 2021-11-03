@@ -18,15 +18,19 @@ libxml_use_internal_errors( true );
 function main() {
 	$cwd = dirname( __FILE__ );
 	// last.fm - Scrape stuff.
+	echo '- Scraping from last.fm...' . PHP_EOL;
 	$top5 = get_top_from_lastfm();
+	echo '- Generating collage...' . PHP_EOL;
 	$img  = generate_collage( $top5 );
 
+	echo '- Composing tweet...' . PHP_EOL;
 	$message = "\u{1F4BF} #lastfm:\n";
 	foreach( $top5 as $item ) {
 		$message .= "{$item['artist']} - {$item['track']} ({$item['count']})\n";
-	}
+	}die();
 
 	// Twitter - Posting stuff.
+	echo '- Posting to Twitter...' . PHP_EOL;
 	$response = post_to_twitter( $message, $img );
 	echo $response->message . PHP_EOL;
 	exit( ( $response->success ) ? 0 : 1 );
@@ -133,9 +137,11 @@ function get_artist_picture( $url ) {
  */
 function generate_collage( $top5, $export_location = '' ) {
 	$imgarr = [];
-	foreach ( $top5 as $item ) {
-		$imgarr[] = $item['picture'];
+	foreach ( $top5 as &$item ) {
+		$imgarr[]       = $item['picture'];
+		$item['artist'] = ( strlen( $item['artist'] ) > 15 ) ? substr( $item['artist'], 0, 15 )."..." : $item['artist'];	
 	}
+
 
 	$forcol = $imgarr;
 	array_shift( $forcol );
