@@ -26,7 +26,7 @@ function main() {
 	echo '- Composing tweet...' . PHP_EOL;
 	$message = "\u{1F4BF} #lastfm:\n";
 	foreach( $top5 as $item ) {
-		$message .= "{$item['artist']} - {$item['track']} ({$item['count']})\n";
+		$message .= "{$item['artist']} ({$item['count']})\n";
 	}
 
 	// Twitter - Posting stuff.
@@ -37,23 +37,22 @@ function main() {
 }
 
 /**
- * Grabs the top tracks from the last.fm API.
+ * Grabs the top artists from the last.fm API.
  */
 function get_top_from_lastfm() {
 	$lfm      = new LastFm( getenv( 'LASTFM_KEY' ), getenv( 'LASTFM_SECRET' ) );
-	$lfm_tops = $lfm->user_getTopTracks([
+	$lfm_tops = $lfm->user_getTopArtists([
 		'user'   => getenv( 'LASTFM_SCAN_USER_NAME' ),
 		'period' => '7day',
 		'limit'  => 5,
 	]);
 
 	$top = [];
-	foreach ( $lfm_tops->toptracks->track as $track ) {
+	foreach ( $lfm_tops->topartists->artist as $artist ) {
 		$top[] = [
-			'artist'  => $track->artist->name,
-			'picture' => get_artist_picture( $track->artist->url ),
-			'track'   => $track->name,
-			'count'   => $track->playcount
+			'artist'  => $artist->name,
+			'picture' => get_artist_picture( $artist->url ),
+			'count'   => $artist->playcount
 		];
 	}
 
