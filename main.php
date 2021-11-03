@@ -12,38 +12,30 @@ if ( file_exists( __DIR__ . '/vendor/symfony/dotenv/composer.json' ) ) {
 
 libxml_use_internal_errors( true );
 
-// last.fm - Scrape stuff.
+/**
+ * Main interaction function.
+ */
+function main() {
+	// last.fm - Scrape stuff.
+	$top5 = get_top_from_lastfm();
 
-$top5 = get_top_from_lastfm();
+	$imgarr = [];
+	foreach ( $top5 as $item ) {
+		$imgarr[] = $item['picture'];
+	}
 
-$imgarr = [];
-foreach ( $top5 as $item ) {
-	$imgarr[] = $item['picture'];
+	$img = generate_collage( $imgarr );
+
+	$message = "\u{1F4BF} #lastfm:\n";
+	foreach( $top5 as $item ) {
+		$message .= "{$item['artist']} - {$item['track']} ({$item['count']})\n";
+	}
+
+	// Twitter - Posting stuff.
+	$response = post_to_twitter( $message, $img );
+	echo $response->message . PHP_EOL;
+	exit( ( $response->success ) ? 0 : 1 );
 }
-
-$forcol = $imgarr;
-array_shift( $forcol );
-
-unlink( 'collage.png' );
-
-$collage     = new MakeCollage();
-$first_image = $collage->make( 400, 400 )->from( $forcol );
-$first_image->save( 'first-img.png' );
-
-$main_image = $collage->make( 800, 400 )->from( [ $imgarr[0], 'first-img.png' ], function( $a ) { $a->vertical(); } );
-$main_image->save('collage.png');
-
-unlink( 'first-img.png' );
-
-$message = "\u{1F4BF} #lastfm:\n";
-foreach( $top5 as $item ) {
-	$message .= "{$item['artist']} - {$item['track']} ({$item['count']})\n";
-}
-
-// Twitter - Posting stuff.
-$response = post_to_twitter( $message, 'collage.png' );
-echo $response->message . PHP_EOL;
-exit( ( $response->success ) ? 0 : 1 );
 
 /**
  * Grabs the top tracks from the last.fm API.
@@ -136,3 +128,30 @@ function get_artist_picture( $url ) {
 
 	return $img_src;
 }
+
+/**
+ * Generates a 1 left, 4 right collage image based on given image sources.
+ *
+ * @param string[] $imgarr          Either local filesystem or remote image sources (5 needed).
+ * @param string   $export_location Location to store photo, default is current directory.
+ * @return string Location of generated image on filesystem.
+ */
+function generate_collage( $imgarr, $export_location = '' ) {
+	$forcol = $imgarr;
+	array_shift( $forcol );
+
+	unlink( 'collage.png' );
+
+	$collage     = new MakeCollage();
+	$first_image = $collage->make( 400, 400 )->from( $forcol );
+	$first_image->save( 'first-img.png' );
+
+	$main_image = $collage->make( 800, 400 )->from( [ $imgarr[0], 'first-img.png' ], function( $a ) { $a->vertical(); } );
+	$main_image->save('collage.png');
+
+	unlink( 'first-img.png' );
+
+	return realpath( 'collage.png' );
+}
+
+main();
