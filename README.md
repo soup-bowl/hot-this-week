@@ -5,12 +5,12 @@ An experimental bot that posts a rundown of your musical week on Twitter.
 
 ## 🤔 What does this do?
 This clever bot does the following:
-* Phones the last.fm API, exchanges pleasantries, asks how their cat is doing...
-* Oh yeah, "can you tell me what <user> has listened to this week?"
+* Phones the last.fm API 📲, exchanges pleasantries, asks how their cat is doing 🐈...
+* Oh yeah, "can you tell me what <user> has listened to this week?" 🎶
 * API kindly hands over the info (or gives us a whack of the handbag if we have no API key).
-* We sneakily scrape the last.fm website for the artist pictures (better solutions welcome).
-* We do some arts and crafts wizardary to formulate a collage picture.
-* Lastly, the app phones up Twitter, asks how their leamur is hanging, and posts the info and picture.
+* We sneakily scrape the last.fm website for the artist pictures 🤫 (better solutions welcome).
+* We do some arts and crafts wizardary 🪄 to formulate a collage picture.
+* Lastly, the app phones up Twitter 📞, asks how their turtle is hanging 🐢, and posts the info and picture.
 
 ⭐ Collage is made using the power of [Collage][tzsk/collage] and [Intervention][intervention], and connections made using [Dandelionmood's Lastfm][dandelionmood/lastfm], and the [Twitter oAuth][abraham/twitteroauth] libaries.
 
