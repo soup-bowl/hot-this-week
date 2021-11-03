@@ -19,7 +19,7 @@ function main() {
 	$cwd = dirname( __FILE__ );
 	// last.fm - Scrape stuff.
 	$top5 = get_top_from_lastfm();
-	$img  = generate_collage( $top5 );die();
+	$img  = generate_collage( $top5 );
 
 	$message = "\u{1F4BF} #lastfm:\n";
 	foreach( $top5 as $item ) {
@@ -109,7 +109,7 @@ function post_to_twitter( $message, $image_location = null ) {
  * @return string Image URL, or blank if none was found.
  */
 function get_artist_picture( $url ) {
-	$artist_html = file_get_contents( $url );
+	$artist_html = remote_get_content( $url );
 
 	$dom = new DOMDocument();
     $dom->loadHTML( $artist_html );
@@ -160,6 +160,16 @@ function generate_collage( $top5, $export_location = '' ) {
 		->save('collage.png');
 
 	return realpath( 'collage.png' );
+}
+
+function remote_get_content( $url ){
+	$ch = curl_init();
+	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt( $ch, CURLOPT_URL, $url );
+	$data = curl_exec( $ch );
+	curl_close( $ch );
+
+	return $data;
 }
 
 main();
