@@ -1,4 +1,4 @@
-# Hot this Week on Last.fm Twitter Bot
+# 🔥🎶 Hot this Week on Last.fm Twitter Bot
 ![image](https://user-images.githubusercontent.com/11209477/140100977-282622a4-13cd-48c1-bdd6-8dc0fe5d2731.png)
 
 An experimental bot that posts a rundown of your musical week on Twitter.
