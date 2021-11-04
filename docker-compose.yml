@@ -4,5 +4,5 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    env_file:
-    - ".env"
+    volumes:
+    - "./config.json:/opt/tbot/config.json"
