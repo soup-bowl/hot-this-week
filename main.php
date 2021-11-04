@@ -69,13 +69,13 @@ function main($argv)
 		echo '- Scraping from last.fm...' . PHP_EOL;
 	}
 
-	$top5 = get_top_from_lastfm();
+	$top5 = getTopFromLastfm();
 
 	if (! $silentMode) {
 		echo '- Generating collage...' . PHP_EOL;
 	}
 
-	$img  = generate_collage($top5);
+	$img  = generateCollage($top5);
 
 	if (! $silentMode) {
 		echo '- Composing tweet...' . PHP_EOL;
@@ -95,7 +95,7 @@ function main($argv)
 		echo $message;
 		exit();
 	} else {
-		$response = post_to_twitter($message, $img);
+		$response = PostToTwitter($message, $img);
 		if (! $silentMode) {
 			echo $response->message . PHP_EOL;
 		}
@@ -106,7 +106,7 @@ function main($argv)
 /**
  * Grabs the top artists from the last.fm API.
  */
-function get_top_from_lastfm()
+function getTopFromLastfm()
 {
 	$lfm      = new LastFm(getenv('LASTFM_KEY'), getenv('LASTFM_SECRET'));
 	$lfm_tops = $lfm->user_getTopArtists([
@@ -119,7 +119,7 @@ function get_top_from_lastfm()
 	foreach ($lfm_tops->topartists->artist as $artist) {
 		$top[] = [
 			'artist'  => $artist->name,
-			'picture' => get_artist_picture($artist->url),
+			'picture' => GetArtistPicture($artist->url),
 			'count'   => $artist->playcount
 		];
 	}
@@ -134,7 +134,7 @@ function get_top_from_lastfm()
  * @param string $image_location Attach an optional image.
  * @param array Boolean 'success' to indicate state, and counterpart 'message'.
  */
-function post_to_twitter($message, $image_location = null)
+function PostToTwitter($message, $image_location = null)
 {
 	$connection = new TwitterOAuth(
 		getenv('TWITTER_CONSUMER_KEY'),
@@ -173,21 +173,21 @@ function post_to_twitter($message, $image_location = null)
  * @param string $url The artist page URL.
  * @return string Image URL, or blank if none was found.
  */
-function get_artist_picture($url)
+function GetArtistPicture($url)
 {
-	$artist_html = remote_get_content($url);
+	$artistHTML = remoteGetContent($url);
 
 	$dom = new DOMDocument();
-	$dom->loadHTML($artist_html);
+	$dom->loadHTML($artistHTML);
 	$xpath = new DOMXPath($dom);
 
-	$img_src = "";
+	$imgSrc = "";
 	foreach ($xpath->query('//div[contains(@class,"header-new-background-image")]') as $item) {
-		$img_src = $item->getAttribute('content');
+		$imgSrc = $item->getAttribute('content');
 		continue;
 	}
 
-	return $img_src;
+	return $imgSrc;
 }
 
 /**
@@ -197,7 +197,7 @@ function get_artist_picture($url)
  * @param string   $export_location Location to store photo, default is current directory.
  * @return string Location of generated image on filesystem.
  */
-function generate_collage($top5, $export_location = '')
+function generateCollage($top5, $export_location = '')
 {
 	$imgarr = [];
 	foreach ($top5 as &$item) {
@@ -214,10 +214,10 @@ function generate_collage($top5, $export_location = '')
 	}
 
 	$collage     = new MakeCollage();
-	$first_image = $collage->make(400, 400)->from($forcol)->encode('png');
+	$firstImage = $collage->make(400, 400)->from($forcol)->encode('png');
 
 	$collage->make(1200, 675)
-		->from([ $imgarr[0], $first_image ], function ($a) {
+		->from([ $imgarr[0], $firstImage ], function ($a) {
 			$a->vertical();
 		})
 		->text($top5[0]['artist'], 22, 662, function ($font) {
@@ -255,7 +255,13 @@ function generate_collage($top5, $export_location = '')
 	return realpath('collage.png');
 }
 
-function remote_get_content($url)
+/**
+ * Makes a CURL request to grab data from the specified URL.
+ *
+ * @param string $url URL to make a request to.
+ * @return string HTML data.
+ */
+function remoteGetContent($url)
 {
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
