@@ -67,7 +67,7 @@ class Lfmhot
 				echo '- Generating collage...' . PHP_EOL;
 			}
 
-			$img  = $this->generateCollage($top5);
+			$img = $this->generateCollage($top5);
 
 			if (! $this->silent_mode) {
 				echo '- Composing tweet...' . PHP_EOL;
@@ -85,6 +85,7 @@ class Lfmhot
 
 			if ($this->display_only) {
 				echo $message;
+				echo "Collage: {$img}";
 				$successCount++;
 			} else {
 				$response = $this->postToTwitter(
@@ -206,7 +207,7 @@ class Lfmhot
 	 */
 	public function generateCollage($top5)
 	{
-		$imgFile = sys_get_temp_dir() . '/collage.png';
+		$imgFile = sys_get_temp_dir() . '/' . uniqid() . '.png';
 		$imgarr  = [];
 		foreach ($top5 as &$item) {
 			$imgarr[]       = $item['picture'];
