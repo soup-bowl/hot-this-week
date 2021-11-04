@@ -109,6 +109,9 @@ class Lfmhot
 
 	/**
 	 * Grabs the top artists from the last.fm API.
+	 *
+	 * @param string $username last.fm account to look-up.
+	 * @return array|null
 	 */
 	public function getTopFromLastfm($username)
 	{
@@ -138,6 +141,8 @@ class Lfmhot
 	/**
 	 * Posts contents to Twitter.
 	 *
+	 * @param string $key           Twitter user key.
+	 * @param string $secret        Twitter user secret.
 	 * @param string $message       Contents of the tweet.
 	 * @param string $imageLocation Attach an optional image.
 	 * @param array Boolean 'success' to indicate state, and counterpart 'message'.
@@ -217,7 +222,7 @@ class Lfmhot
 			unlink('collage.png');
 		}
 
-		$collage     = new MakeCollage();
+		$collage    = new MakeCollage();
 		$firstImage = $collage->make(400, 400)->from($forcol)->encode('png');
 
 		$collage->make(1200, 675)
@@ -276,6 +281,12 @@ class Lfmhot
 		return $data;
 	}
 
+	/**
+	 * Sets the application configuration by a supplied configuration JSON file.
+	 *
+	 * @param string $path Path to the desired configuration JSON.
+	 * @return void Sets configuration to the class instantiation.
+	 */
 	private function setConfigurationFromJSON($path)
 	{
 		if (file_exists($path)) {
