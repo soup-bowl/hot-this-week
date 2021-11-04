@@ -47,11 +47,12 @@ function main($argv)
 				echo "Run without arguments to process last.fm & Twitter using environmental variables." . PHP_EOL;
 				echo "Script will also check and use environment variables stored in '.env'." . PHP_EOL;
 				echo PHP_EOL;
-				echo "--silent  -s        Script does not output anything, just success/fail code." . PHP_EOL;
-				echo "--display -d        Displays tweet, but does not post to Twitter." . PHP_EOL;
+				echo "Options:" . PHP_EOL;
+				echo "-s, --silent       Script does not output anything, just success/fail code." . PHP_EOL;
+				echo "-d, --display      Displays tweet, but does not post to Twitter." . PHP_EOL;
 				echo PHP_EOL;
-				echo "--version -v        Display script version." . PHP_EOL;
-				echo "--help    -h        Display help information." . PHP_EOL;
+				echo "-v, --version      Display script version." . PHP_EOL;
+				echo "-h, --help         Display help information." . PHP_EOL;
 				exit;
 			case '-v':
 			case '--version':
