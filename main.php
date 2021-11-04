@@ -22,27 +22,83 @@ libxml_use_internal_errors(true);
 
 /**
  * Main interaction function.
+ *
+ * @param string[] $argv System argument array.
+ * @return void Exit will be called from this function.
  */
-function main()
+function main($argv)
 {
+	$displayOnly = false;
+	$silentMode  = false;
+	foreach ($argv as $arg) {
+		switch ($arg) {
+			case '-s':
+			case '--suppress':
+			case '--silent':
+				$silentMode = true;
+				break;
+			case '-d':
+			case '--display':
+				$displayOnly = true;
+				break;
+			case '-h':
+			case '--help':
+				echo "Run without arguments to process last.fm & Twitter using environmental variables." . PHP_EOL;
+				echo "Script will also check and use environment variables stored in '.env'." . PHP_EOL;
+				echo PHP_EOL;
+				echo "--silent  -s        Script does not output anything, just success/fail code." . PHP_EOL;
+				echo "--display -d        Displays tweet, but does not post to Twitter." . PHP_EOL;
+				echo PHP_EOL;
+				echo "--version -v        Display script version." . PHP_EOL;
+				echo "--help    -h        Display help information." . PHP_EOL;
+				exit;
+			case '-v':
+			case '--version':
+				echo "Last.fm Twitter bot by soup-bowl - pre-alpha." . PHP_EOL;
+				echo "https://github.com/soup-bowl/lastfm-twitter/" . PHP_EOL;
+				exit;
+			default:
+				break;
+		}
+	}
 	$cwd = dirname(__FILE__);
-	// last.fm - Scrape stuff.
-	echo '- Scraping from last.fm...' . PHP_EOL;
+
+	if (! $silentMode) {
+		echo '- Scraping from last.fm...' . PHP_EOL;
+	}
+
 	$top5 = get_top_from_lastfm();
-	echo '- Generating collage...' . PHP_EOL;
+
+	if (! $silentMode) {
+		echo '- Generating collage...' . PHP_EOL;
+	}
+
 	$img  = generate_collage($top5);
 
-	echo '- Composing tweet...' . PHP_EOL;
-	$message = "\u{1F4BF} #lastfm:\n";
+	if (! $silentMode) {
+		echo '- Composing tweet...' . PHP_EOL;
+	}
+
+	$message = "\u{1F4BF} My week with #lastfm:\n";
 	foreach ($top5 as $item) {
 		$message .= "{$item['artist']} ({$item['count']})\n";
 	}
 
-	// Twitter - Posting stuff.
-	echo '- Posting to Twitter...' . PHP_EOL;
-	$response = post_to_twitter($message, $img);
-	echo $response->message . PHP_EOL;
-	exit(( $response->success ) ? 0 : 1);
+
+	if (! $silentMode) {
+		echo '- Posting to Twitter...' . PHP_EOL;
+	}
+
+	if ($displayOnly) {
+		echo $message;
+		exit();
+	} else {
+		$response = post_to_twitter($message, $img);
+		if (! $silentMode) {
+			echo $response->message . PHP_EOL;
+		}
+		exit(( $response->success ) ? 0 : 1);
+	}
 }
 
 /**
@@ -208,4 +264,4 @@ function remote_get_content($url)
 	return $data;
 }
 
-main();
+main($argv);
