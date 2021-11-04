@@ -202,7 +202,7 @@ function generateCollage($top5, $exportLocation = '')
 	$imgarr = [];
 	foreach ($top5 as &$item) {
 		$imgarr[]       = $item['picture'];
-		$item['artist'] = ( strlen($item['artist']) > 10 ) ? substr($item['artist'], 0, 10) . "..." : $item['artist'];
+		$item['artist'] = ( strlen($item['artist']) > 19 ) ? substr($item['artist'], 0, 16) . "..." : $item['artist'];
 	}
 
 
@@ -221,10 +221,10 @@ function generateCollage($top5, $exportLocation = '')
 			$a->vertical();
 		})
 		->text($top5[0]['artist'], 22, 662, function ($font) {
-			$font->file(dirname(__FILE__) . '/ubuntu.ttf')->size(52);
+			$font->file(dirname(__FILE__) . '/ubuntu.ttf')->size(54);
 		})
 		->text($top5[0]['artist'], 20, 660, function ($font) {
-			$font->file(dirname(__FILE__) . '/ubuntu.ttf')->size(52)->color('#FFF');
+			$font->file(dirname(__FILE__) . '/ubuntu.ttf')->size(54)->color('#FFF');
 		})
 		->text($top5[1]['artist'], 621, 321, function ($font) {
 			$font->file(dirname(__FILE__) . '/ubuntu.ttf')->size(28);
