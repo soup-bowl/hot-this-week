@@ -8,6 +8,8 @@
  * @license MIT
  */
 
+declare(strict_types=1);
+
 namespace soupbowl;
 
 require __DIR__ . '/vendor/autoload.php';
@@ -33,7 +35,14 @@ class Lfmhot
 	protected $display_only;
 	protected $silent_mode;
 
-	public function __construct($path, $displayOnly = false, $silentMode = false)
+	/**
+	 * Constructor.
+	 *
+	 * @param string  $path        Location to the configuraton file.
+	 * @param boolean $displayOnly Determines whether the tweet action is concluded.
+	 * @param boolean $silentMode  Don't output updates to stdout.
+	 */
+	public function __construct(string $path, bool $displayOnly = false, bool $silentMode = false)
 	{
 		$this->path         = $path;
 		$this->display_only = $displayOnly;
@@ -46,7 +55,7 @@ class Lfmhot
 	 *
 	 * @return boolean True if everything succeeded, false if there was failures.
 	 */
-	public function main()
+	public function main(): bool
 	{
 		$successCount = 0;
 		$failureCount = 0;
@@ -114,7 +123,7 @@ class Lfmhot
 	 * @param string $username last.fm account to look-up.
 	 * @return array|null
 	 */
-	public function getTopFromLastfm($username)
+	public function getTopFromLastfm(string $username): ?array
 	{
 		$lfm      = new LastFm($this->lastfm_key, $this->lastfm_secret);
 		$lfm_tops = $lfm->user_getTopArtists([
@@ -148,7 +157,7 @@ class Lfmhot
 	 * @param string $imageLocation Attach an optional image.
 	 * @param array Boolean 'success' to indicate state, and counterpart 'message'.
 	 */
-	public function postToTwitter($key, $secret, $message, $imageLocation = null)
+	public function postToTwitter(string $key, string $secret, string $message, ?string $imageLocation = null): object
 	{
 		$connection = new TwitterOAuth($this->twitter_key, $this->twitter_secret, $key, $secret);
 
@@ -182,7 +191,7 @@ class Lfmhot
 	 * @param string $url The artist page URL.
 	 * @return string Image URL, or blank if none was found.
 	 */
-	public function getArtistPicture($url)
+	public function getArtistPicture(string $url): string
 	{
 		$artistHTML = $this->remoteGetContent($url);
 
@@ -205,7 +214,7 @@ class Lfmhot
 	 * @param string[] $top5 last.fm response.
 	 * @return string Location of generated image on filesystem.
 	 */
-	public function generateCollage($top5)
+	public function generateCollage(array $top5): string
 	{
 		$imgFile = sys_get_temp_dir() . '/' . uniqid() . '.png';
 		$imgarr  = [];
@@ -271,7 +280,7 @@ class Lfmhot
 	 * @param string $url URL to make a request to.
 	 * @return string HTML data.
 	 */
-	public function remoteGetContent($url)
+	public function remoteGetContent(string $url): string
 	{
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -288,7 +297,7 @@ class Lfmhot
 	 * @param string $path Path to the desired configuration JSON.
 	 * @return void Sets configuration to the class instantiation.
 	 */
-	private function setConfigurationFromJSON($path)
+	private function setConfigurationFromJSON(string $path): void
 	{
 		if (file_exists($path)) {
 			$json = json_decode(file_get_contents($path), true);
