@@ -70,6 +70,10 @@ function main($argv)
 	}
 
 	$top5 = getTopFromLastfm();
+	if (empty($top5)) {
+		echo 'last.fm has not got enough data on the user to proceed.'.PHP_EOL;
+		exit(1);
+	}
 
 	if (! $silentMode) {
 		echo '- Generating collage...' . PHP_EOL;
@@ -124,7 +128,11 @@ function getTopFromLastfm()
 		];
 	}
 
-	return $top;
+	if (count($top) >= 5) {
+		return $top;
+	}else {
+		return null;
+	}
 }
 
 /**
