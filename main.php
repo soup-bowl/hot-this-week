@@ -347,6 +347,7 @@ for ($i = 0; $i < $argc; $i++) {
 			echo "Script will also check and use environment variables stored in '.env'." . PHP_EOL;
 			echo PHP_EOL;
 			echo "Options:" . PHP_EOL;
+			echo "-f, --file         Load in a config.json file from a different location." . PHP_EOL;
 			echo "-s, --silent       Script does not output anything, just success/fail code." . PHP_EOL;
 			echo "-d, --display      Displays tweet, but does not post to Twitter." . PHP_EOL;
 			echo PHP_EOL;
