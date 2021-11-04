@@ -10,12 +10,13 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
+use Symfony\Component\Dotenv\Dotenv;
 use Dandelionmood\LastFm\LastFm;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Tzsk\Collage\MakeCollage;
 
-if (file_exists(__DIR__ . '/vendor/symfony/dotenv/composer.json')) {
-	( new Symfony\Component\Dotenv\Dotenv(true) )->load(__DIR__ . '/.env');
+if (file_exists(__DIR__ . '/.env')) {
+	( new Dotenv(true) )->load(__DIR__ . '/.env');
 }
 
 libxml_use_internal_errors(true);
