@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Grabs details about a user from last.fm and posts a collage on their Twitter.
  *
@@ -83,9 +84,9 @@ function post_to_twitter($message, $image_location = null)
 		getenv('TWITTER_ACCESS_TOKEN'),
 		getenv('TWITTER_ACCESS_SECRET')
 	);
-	
+
 	$collage = $connection->upload('media/upload', [ 'media' => $image_location ]);
-	
+
 	$connection->post(
 		'statuses/update',
 		[
@@ -93,7 +94,7 @@ function post_to_twitter($message, $image_location = null)
 			'media_ids' => implode(',', [ $collage->media_id_string ])
 		]
 	);
-	
+
 	if ($connection->getLastHttpCode() == 200) {
 		return (object) [
 			'success' => true,
@@ -143,7 +144,7 @@ function generate_collage($top5, $export_location = '')
 	$imgarr = [];
 	foreach ($top5 as &$item) {
 		$imgarr[]       = $item['picture'];
-		$item['artist'] = ( strlen($item['artist']) > 10 ) ? substr($item['artist'], 0, 10)."..." : $item['artist'];
+		$item['artist'] = ( strlen($item['artist']) > 10 ) ? substr($item['artist'], 0, 10) . "..." : $item['artist'];
 	}
 
 
