@@ -25,61 +25,29 @@ libxml_use_internal_errors(true);
 class Lfmhot
 {
 	protected $clients;
+	protected $path;
 	protected $lastfm_key;
 	protected $lastfm_secret;
 	protected $twitter_key;
 	protected $twitter_secret;
-	protected $display_only = false;
-	protected $silent_mode = false;
+	protected $display_only;
+	protected $silent_mode;
 
-	public function __construct($path)
+	public function __construct($path, $displayOnly = false, $silentMode = false)
 	{
+		$this->path         = $path;
+		$this->display_only = $displayOnly;
+		$this->silent_mode  = $silentMode;
 		$this->setConfigurationFromJSON($path);
 	}
 
 	/**
 	 * Main interaction function.
 	 *
-	 * @param string[] $argv System argument array.
-	 * @return void Exit will be called from this function.
+	 * @return boolean True if everything succeeded, false if there was failures.
 	 */
-	public function main($argv)
+	public function main()
 	{
-		foreach ($argv as $arg) {
-			switch ($arg) {
-				case '-s':
-				case '--suppress':
-				case '--silent':
-					$this->silent_mode = true;
-					break;
-				case '-d':
-				case '--display':
-					$this->display_only = true;
-					break;
-				case '-h':
-				case '--help':
-					echo "Run without arguments to process last.fm & Twitter using environmental variables." . PHP_EOL;
-					echo "Script will also check and use environment variables stored in '.env'." . PHP_EOL;
-					echo PHP_EOL;
-					echo "Options:" . PHP_EOL;
-					echo "-s, --silent       Script does not output anything, just success/fail code." . PHP_EOL;
-					echo "-d, --display      Displays tweet, but does not post to Twitter." . PHP_EOL;
-					echo PHP_EOL;
-					echo "-v, --version      Display script version." . PHP_EOL;
-					echo "-h, --help         Display help information." . PHP_EOL;
-					exit;
-				case '-v':
-				case '--version':
-					echo "Last.fm Twitter bot by soup-bowl - pre-alpha." . PHP_EOL;
-					echo "https://github.com/soup-bowl/lastfm-twitter/" . PHP_EOL;
-					exit;
-				default:
-					break;
-			}
-		}
-
-		$cwd = dirname(__FILE__);
-
 		$successCount = 0;
 		$failureCount = 0;
 		foreach ($this->clients as $client) {
@@ -135,11 +103,7 @@ class Lfmhot
 
 		if (! $this->silent_mode) {
 			echo PHP_EOL . "Processing complete - {$successCount} successful, {$failureCount} failures." . PHP_EOL;
-			if ($failureCount > 0) {
-				exit(1);
-			} else {
-				exit();
-			}
+			return ($failureCount > 0) ? false : true;
 		}
 	}
 
@@ -333,9 +297,59 @@ class Lfmhot
 				throw new Exception('Twitter application API keys not set.');
 			}
 		} else {
-			throw new Exception('Configuration file not found or invalid.');
+			throw new Exception("Configuration file not found or invalid ({$this->path}).");
 		}
 	}
 }
 
-(new Lfmhot(__DIR__ . '/config.json'))->main($argv);
+$dirpath    = __DIR__ . '/config.json';
+$silentMode = false;
+$diplayOnly = false;
+for ($i = 0; $i < $argc; $i++) {
+	switch ($argv[$i]) {
+		case '-f':
+		case '--file':
+			$dirpath = $argv[($i + 1)];
+			break;
+		case '-s':
+		case '--suppress':
+		case '--silent':
+			$silentMode = true;
+			break;
+		case '-d':
+		case '--display':
+			$diplayOnly = true;
+			break;
+		case '-h':
+		case '--help':
+			echo "Run without arguments to process last.fm & Twitter using environmental variables." . PHP_EOL;
+			echo "Script will also check and use environment variables stored in '.env'." . PHP_EOL;
+			echo PHP_EOL;
+			echo "Options:" . PHP_EOL;
+			echo "-s, --silent       Script does not output anything, just success/fail code." . PHP_EOL;
+			echo "-d, --display      Displays tweet, but does not post to Twitter." . PHP_EOL;
+			echo PHP_EOL;
+			echo "-v, --version      Display script version." . PHP_EOL;
+			echo "-h, --help         Display help information." . PHP_EOL;
+			exit;
+		case '-v':
+		case '--version':
+			echo "Last.fm Twitter bot by soup-bowl - pre-alpha." . PHP_EOL;
+			echo "https://github.com/soup-bowl/lastfm-twitter/" . PHP_EOL;
+			exit;
+		default:
+			break;
+	}
+}
+
+try {
+	$response = (new Lfmhot($dirpath, $diplayOnly, $silentMode))->main();
+	if ($response) {
+		exit();
+	} else {
+		exit(1);
+	}
+} catch (Exception $e) {
+	echo 'A failure occurred: ' . $e->getMessage() . PHP_EOL;
+	exit(2);
+}
