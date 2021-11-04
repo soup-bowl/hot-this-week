@@ -130,11 +130,11 @@ function getTopFromLastfm()
 /**
  * Posts contents to Twitter.
  *
- * @param string $message        Contents of the tweet.
- * @param string $image_location Attach an optional image.
+ * @param string $message       Contents of the tweet.
+ * @param string $imageLocation Attach an optional image.
  * @param array Boolean 'success' to indicate state, and counterpart 'message'.
  */
-function PostToTwitter($message, $image_location = null)
+function PostToTwitter($message, $imageLocation = null)
 {
 	$connection = new TwitterOAuth(
 		getenv('TWITTER_CONSUMER_KEY'),
@@ -143,7 +143,7 @@ function PostToTwitter($message, $image_location = null)
 		getenv('TWITTER_ACCESS_SECRET')
 	);
 
-	$collage = $connection->upload('media/upload', [ 'media' => $image_location ]);
+	$collage = $connection->upload('media/upload', [ 'media' => $imageLocation ]);
 
 	$connection->post(
 		'statuses/update',
@@ -193,11 +193,11 @@ function GetArtistPicture($url)
 /**
  * Generates a 1 left, 4 right collage image based on given image sources.
  *
- * @param string[] $top5            last.fm response.
- * @param string   $export_location Location to store photo, default is current directory.
+ * @param string[] $top5           last.fm response.
+ * @param string   $exportLocation Location to store photo, default is current directory.
  * @return string Location of generated image on filesystem.
  */
-function generateCollage($top5, $export_location = '')
+function generateCollage($top5, $exportLocation = '')
 {
 	$imgarr = [];
 	foreach ($top5 as &$item) {
