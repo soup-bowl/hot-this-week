@@ -71,7 +71,7 @@ function main($argv)
 
 	$top5 = getTopFromLastfm();
 	if (empty($top5)) {
-		echo 'last.fm has not got enough data on the user to proceed.'.PHP_EOL;
+		echo 'last.fm has not got enough data on the user to proceed.' . PHP_EOL;
 		exit(1);
 	}
 
@@ -130,7 +130,7 @@ function getTopFromLastfm()
 
 	if (count($top) >= 5) {
 		return $top;
-	}else {
+	} else {
 		return null;
 	}
 }
