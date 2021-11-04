@@ -19,16 +19,16 @@ This clever bot does the following:
 **There's no official service or method of usage yet!** Watch this space 👀
 
 The project depends on having the **GD** library and PHP extension installed, and don't forget to run `composer install` to grab the project dependencies.
+ 
+See the [configuration example](/config.json.example) to see how to setup the tool. The following configurations are **required** for this to work in your **own environment**:
 
-The following enviroment configuration is **required** for this to work in your **own environment**:
-
-* last.fm: `LASTFM_KEY`, `LASTFM_SECRET`, and `LASTFM_SCAN_USER_NAME`.
+* last.fm: global `LASTFM_KEY`, `LASTFM_SECRET`, and per-user `LASTFM_SCAN_USER_NAME`.
   * You can [register an API key here](https://www.last.fm/api/account/create).
-* Twitter: `TWITTER_CONSUMER_KEY`, `TWITTER_CONSUMER_SECRET`, `TWITTER_ACCESS_TOKEN`, and `TWITTER_ACCESS_TOKEN`.
+* Twitter: global `TWITTER_CONSUMER_KEY`, `TWITTER_CONSUMER_SECRET`, and per-user `TWITTER_ACCESS_TOKEN`, and `TWITTER_ACCESS_TOKEN`.
   * You can [register for Twitter API keys here](https://developer.twitter.com/en/portal/dashboard).
-  * Ensure your app is given **read and write** capabilities (default is read only).
+  * Ensure your access token has **read and write** capabilities (default is read only).
 
-With everything set, you can just run `php main.php` from CLI, and all the magic should happen.
+With everything set, you can just run `php main.php` from CLI, and all the magic should happen. You can see the optional arguments by running `php main.php --help`.
 
 [dandelionmood/lastfm]: https://github.com/dandelionmood/php-lastfm
 [abraham/twitteroauth]: https://twitteroauth.com/
