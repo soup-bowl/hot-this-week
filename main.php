@@ -201,13 +201,13 @@ class Lfmhot
 	/**
 	 * Generates a 1 left, 4 right collage image based on given image sources.
 	 *
-	 * @param string[] $top5           last.fm response.
-	 * @param string   $exportLocation Location to store photo, default is current directory.
+	 * @param string[] $top5 last.fm response.
 	 * @return string Location of generated image on filesystem.
 	 */
-	public function generateCollage($top5, $exportLocation = '')
+	public function generateCollage($top5)
 	{
-		$imgarr = [];
+		$imgFile = sys_get_temp_dir() . '/collage.png';
+		$imgarr  = [];
 		foreach ($top5 as &$item) {
 			$imgarr[]       = $item['picture'];
 			$item['artist'] = ( strlen($item['artist']) > 19 )
@@ -218,8 +218,8 @@ class Lfmhot
 		$forcol = $imgarr;
 		array_shift($forcol);
 
-		if (file_exists('collage.png')) {
-			unlink('collage.png');
+		if (file_exists($imgFile)) {
+			unlink($imgFile);
 		}
 
 		$collage    = new MakeCollage();
@@ -259,9 +259,9 @@ class Lfmhot
 			->text($top5[4]['artist'], 920, 660, function ($font) {
 				$font->file(dirname(__FILE__) . '/ubuntu.ttf')->size(28)->color('#FFF');
 			})
-			->save('collage.png');
+			->save($imgFile);
 
-		return realpath('collage.png');
+		return realpath($imgFile);
 	}
 
 	/**
