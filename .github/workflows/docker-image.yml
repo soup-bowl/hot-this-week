@@ -3,6 +3,11 @@ name: Compile container
 on:
   push:
     branches: [ main ]
+    paths:
+      - "Dockerfile"
+      - "**.php"
+      - "composer.**"
+      - .github/workflows/docker-image.yml
 
 jobs:
   build:
