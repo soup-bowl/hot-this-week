@@ -1,4 +1,4 @@
-# 🔥🎶 Hot this Week on Last.fm Twitter Bot
+# 🔥🎶 Hot This Week on Last.fm Twitter Bot
 ![image](https://user-images.githubusercontent.com/11209477/140189390-22aef5bd-17cf-4944-95a5-38f8c84ec898.png)
 
 
