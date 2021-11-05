@@ -13,6 +13,9 @@ jobs:
 
     - name: Rooty-tooty, make the booty!
       run: docker build . --file Dockerfile --tag ghcr.io/soup-bowl/hot-this-week:latest
+      
+    - name: Are you the right scallywag?
+      run: echo $CR_PAT | docker login ghcr.io -u soup-bowl --password-stdin
 
     - name: Yeet onto The Flying Packageman ship.
       run: docker push ghcr.io/soup-bowl/hot-this-week:latest
