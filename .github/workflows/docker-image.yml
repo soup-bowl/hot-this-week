@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Rooty-tooty, make the booty!
-      run: docker build . --file Dockerfile --tag hot-this-week:latest
+      run: docker build . --file Dockerfile --tag ghcr.io/soup-bowl/hot-this-week:latest
 
     - name: Yeet onto The Flying Packageman ship.
       run: docker push ghcr.io/soup-bowl/hot-this-week:latest
