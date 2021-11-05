@@ -8,6 +8,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Avast, we got stuff to do!
     - uses: actions/checkout@v2
-    - name: Rooty-tooty make the booty
+
+    - name: Rooty-tooty, make the booty!
       run: docker build . --file Dockerfile --tag hot-this-week:$(date +%s)
+
+    - name: Yeet onto The Flying Packageman ship.
+      uses: redhat-actions/push-to-registry@v2.4
+      with:
+        registry: ghcr.io/soup-bowl
+        image: hot-this-week
