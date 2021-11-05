@@ -15,7 +15,4 @@ jobs:
       run: docker build . --file Dockerfile --tag hot-this-week:latest
 
     - name: Yeet onto The Flying Packageman ship.
-      uses: redhat-actions/push-to-registry@v2.4
-      with:
-        registry: ghcr.io/soup-bowl
-        image: hot-this-week
+      run: docker push ghcr.io/soup-bowl/hot-this-week:latest
