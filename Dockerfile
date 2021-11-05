@@ -1,10 +1,13 @@
-FROM centos:8
+FROM centos:7
 
-RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
-	&& dnf install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+RUN yum update -y && yum install -y wget
+
+RUN wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+    && wget https://rpms.remirepo.net/enterprise/remi-release-7.rpm \
+    && rpm -Uvh remi-release-7.rpm epel-release-latest-7.noarch.rpm
 
 RUN yum install -y php74-php-cli php74-php-gd php74-php-json php74-php-xml php74-php-mbstring \
-	php74-php-pecl-zip
+        php74-php-pecl-zip
 
 RUN curl -sS https://getcomposer.org/installer | php74 -- --install-dir=/usr/local/bin --filename=composer
 

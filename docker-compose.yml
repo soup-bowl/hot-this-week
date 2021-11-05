@@ -5,4 +5,4 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-    - "./config.json:/opt/tbot/config.json"
+    - "./config.json:/opt/app/config.json"
