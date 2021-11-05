@@ -17,6 +17,14 @@ This clever bot does the following:
 
 ## 🚀 Set-up
 **There's no official service or method of usage yet!** Watch this space 👀
+ 
+### 🐋 Docker/Podman
+```
+docker run -v /path/to/localsystem/config.json:/opt/app/config.json ghcr.io/soup-bowl/hot-this-week:latest
+```
+Append `-h` right at the end to see usage instructions.
+
+### Natively
 
 The project depends on having the **GD** library and PHP extension installed, and don't forget to run `composer install` to grab the project dependencies.
  
