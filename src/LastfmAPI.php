@@ -104,14 +104,13 @@ class LastfmAPI
 	 */
 	public function generateCollage(array $top5, string $exportPath = ''): string
 	{
-		$imgFile = (empty($exportPath)) ? sys_get_temp_dir() . '/sbimg_' . uniqid() . '.png' : $exportPath . '/sbimg_' . uniqid() . '.png';
+		$imgFile = ( (empty($exportPath)) ? sys_get_temp_dir() : $exportPath ) . '/sbimg_' . uniqid() . '.png';
 		$imgarr  = [];
 		foreach ($top5 as &$item) {
 			$imgarr[]       = $item['picture'];
 			$item['artist'] = ( strlen($item['artist']) > 19 )
 				? substr($item['artist'], 0, 16) . "..." : $item['artist'];
 		}
-
 
 		$forcol = $imgarr;
 		array_shift($forcol);

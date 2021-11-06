@@ -42,9 +42,10 @@ class LastfmAPITest extends TestCase
 	 *
 	 * If you wish to physically inspect the file, this test will export the image to the root directory.
 	 */
-	public function testGenerateCollage():void {
+	public function testGenerateCollage(): void
+	{
 		$dummy5 = [];
-		for ($i = 0; $i < 5; $i++) { 
+		for ($i = 0; $i < 5; $i++) {
 			$dummy5[] = [
 				'artist'  => 'Dummy Artist #' . ($i + 1),
 				'picture' => 'https://source.unsplash.com/random',
