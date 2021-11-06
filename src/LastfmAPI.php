@@ -98,12 +98,13 @@ class LastfmAPI
 	/**
 	 * Generates a 1 left, 4 right collage image based on given image sources.
 	 *
-	 * @param string[] $top5 last.fm response.
+	 * @param string[] $top5       last.fm response.
+	 * @param string   $exportPath Optional ath to override the export to.
 	 * @return string Location of generated image on filesystem.
 	 */
-	public function generateCollage(array $top5): string
+	public function generateCollage(array $top5, string $exportPath = ''): string
 	{
-		$imgFile = sys_get_temp_dir() . '/' . uniqid() . '.png';
+		$imgFile = (empty($exportPath)) ? sys_get_temp_dir() . '/sbimg_' . uniqid() . '.png' : $exportPath . '/sbimg_' . uniqid() . '.png';
 		$imgarr  = [];
 		foreach ($top5 as &$item) {
 			$imgarr[]       = $item['picture'];
