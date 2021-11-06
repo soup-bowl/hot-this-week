@@ -15,10 +15,9 @@ WORKDIR /opt/app
 
 COPY composer.json composer.json
 COPY composer.lock composer.lock
-COPY ubuntu.ttf    ubuntu.ttf
+COPY src           src
+COPY main.php      main.php
 
 RUN php74 /usr/local/bin/composer install --no-dev
-
-COPY main.php main.php
 
 ENTRYPOINT [ "php74", "main.php" ]

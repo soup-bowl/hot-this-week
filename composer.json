@@ -6,5 +6,10 @@
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "3.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "HotThisWeek\\": "src/"
+        }
     }
 }
