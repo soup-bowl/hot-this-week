@@ -126,16 +126,18 @@ class Lfmhot
 	/**
 	 * Grabs the top artists from the last.fm API.
 	 *
-	 * @param string $username last.fm account to look-up.
+	 * @param string  $username last.fm account to look-up.
+	 * @param string  $period   last.fm-recognised period. Use the LfmPeriod enum.
+	 * @param integer $limit    Amount to return. Default is 5.
 	 * @return array|null
 	 */
-	public function getTopFromLastfm(string $username): ?array
+	public function getTopFromLastfm(string $username, string $period = LfmPeriod::WEEK, int $limit = 5): ?array
 	{
 		$lfm      = new LastFm($this->lastfm_key, $this->lastfm_secret);
 		$lfm_tops = $lfm->user_getTopArtists([
 			'user'   => $username,
-			'period' => LfmPeriod::WEEK,
-			'limit'  => 5,
+			'period' => $period,
+			'limit'  => $limit,
 		]);
 
 		$top = [];
