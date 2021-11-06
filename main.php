@@ -88,6 +88,7 @@ class Lfmhot
 			foreach ($top5 as $item) {
 				$message .= "{$item['artist']} ({$item['count']})\n";
 			}
+			$message .= "https://www.last.fm/user/{$client['lastfmUsername']}";
 
 
 			if (! $this->silent_mode) {
@@ -95,7 +96,7 @@ class Lfmhot
 			}
 
 			if ($this->display_only) {
-				echo $message;
+				echo $message . PHP_EOL;
 				$tweetcount = strlen($message);
 				echo "---" . PHP_EOL;
 				echo "Counter: {$tweetcount} of {$this->tweet_limit}."  . PHP_EOL;
