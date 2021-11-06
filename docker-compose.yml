@@ -4,5 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: -d
     volumes:
     - "./config.json:/opt/app/config.json"

@@ -34,6 +34,7 @@ class Lfmhot
 	protected $twitter_secret;
 	protected $display_only;
 	protected $silent_mode;
+	protected $tweet_limit;
 
 	/**
 	 * Constructor.
@@ -47,6 +48,7 @@ class Lfmhot
 		$this->path         = $path;
 		$this->display_only = $displayOnly;
 		$this->silent_mode  = $silentMode;
+		$this->tweet_limit  = 280;
 		$this->setConfigurationFromJSON($path);
 	}
 
@@ -94,7 +96,10 @@ class Lfmhot
 
 			if ($this->display_only) {
 				echo $message;
-				echo "Collage: {$img}";
+				$tweetcount = strlen($message);
+				echo "---" . PHP_EOL;
+				echo "Counter: {$tweetcount} of {$this->tweet_limit}."  . PHP_EOL;
+				echo "Collage: {$img}" . PHP_EOL;
 				$successCount++;
 			} else {
 				$response = $this->postToTwitter(
@@ -128,7 +133,7 @@ class Lfmhot
 		$lfm      = new LastFm($this->lastfm_key, $this->lastfm_secret);
 		$lfm_tops = $lfm->user_getTopArtists([
 			'user'   => $username,
-			'period' => '7day',
+			'period' => LfmPeriod::WEEK,
 			'limit'  => 5,
 		]);
 
@@ -321,6 +326,16 @@ class Lfmhot
 			throw new Exception("Configuration file not found or invalid ({$this->path}).");
 		}
 	}
+}
+
+abstract class LfmPeriod
+{
+    public const WEEK     = "7day";
+    public const MONTH    = "1month";
+	public const QUARTER  = "3month";
+	public const HALFYEAR = "6month";
+	public const YEAR     = "12month";
+	public const ALL      = "overall";
 }
 
 $dirpath    = __DIR__ . '/config.json';
