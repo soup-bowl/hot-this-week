@@ -22,7 +22,7 @@ This clever bot does the following:
 ```
 docker run -v /path/to/localsystem/config.json:/opt/app/config.json ghcr.io/soup-bowl/hot-this-week:latest
 ```
-Append `-h` right at the end to see usage instructions.
+Append `-h` right at the end to see usage instructions. Change 'latest' for 'edge' to get the latest development version (possibly unstable).
 
 ### Natively
 
