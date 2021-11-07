@@ -17,5 +17,7 @@ namespace HotThisWeek\Enum;
  */
 abstract class SearchFrame
 {
-    public const TOPARTISTS = "TopArtists";
+	public const TOPARTISTS = 'TopArtists';
+	public const TOPALBUMS  = 'TopAlbums';
+	public const TOPTRACKS  = 'TopTracks';
 }
