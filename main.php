@@ -12,12 +12,41 @@ declare(strict_types=1);
 
 require __DIR__ . '/vendor/autoload.php';
 
+use HotThisWeek\CLI;
+use HotThisWeek\LastfmPeriod;
+
 if ('cli' === php_sapi_name()) {
 	$dirpath    = __DIR__ . '/config.json';
+	$period     = LastfmPeriod::WEEK;
 	$silentMode = false;
 	$diplayOnly = false;
 	for ($i = 0; $i < $argc; $i++) {
 		switch ($argv[$i]) {
+			case '-p':
+			case '--period':
+				$periodSetting = $argv[($i + 1)];
+				switch($periodSetting) {
+					case 'week':
+					default:
+						$period = LastfmPeriod::WEEK;
+						break;
+					case 'month':
+						$period = LastfmPeriod::MONTH;
+						break;
+					case 'quarter':
+						$period = LastfmPeriod::QUARTER;
+						break;
+					case 'halfyear':
+						$period = LastfmPeriod::HALFYEAR;
+						break;
+					case 'year':
+						$period = LastfmPeriod::YEAR;
+						break;
+					case 'all':
+						$period = LastfmPeriod::ALL;
+						break;
+				}
+				break;
 			case '-f':
 			case '--file':
 				$dirpath = $argv[($i + 1)];
@@ -38,6 +67,8 @@ if ('cli' === php_sapi_name()) {
 				echo PHP_EOL;
 				echo "Options:" . PHP_EOL;
 				echo "-f, --file         Load in a config.json file from a different location." . PHP_EOL;
+				echo "-p, --period       Time period to post. If unspecified, the default is 1 week." . PHP_EOL;
+				echo "                   Options are 'week' (default), 'month', 'quarter', 'halfyear', 'year' and 'all'." . PHP_EOL;
 				echo "-s, --silent       Script does not output anything, just success/fail code." . PHP_EOL;
 				echo "-d, --display      Displays tweet, but does not post to Twitter." . PHP_EOL;
 				echo PHP_EOL;
@@ -55,7 +86,7 @@ if ('cli' === php_sapi_name()) {
 	}
 
 	try {
-		$response = (new HotThisWeek\CLI($dirpath, $diplayOnly, $silentMode))->main();
+		$response = (new CLI($dirpath, $period, $diplayOnly, $silentMode))->main();
 		if ($response) {
 			exit();
 		} else {

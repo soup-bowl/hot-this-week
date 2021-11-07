@@ -13,12 +13,14 @@ declare(strict_types=1);
 namespace HotThisWeek;
 
 use HotThisWeek\LastfmAPI;
+use HotThisWeek\LastfmPeriod;
 use HotThisWeek\TwitterAPI;
 
 class CLI
 {
 	protected $clients;
 	protected $path;
+	protected $period;
 	protected $lastfm_key;
 	protected $lastfm_secret;
 	protected $twitter_key;
@@ -33,12 +35,14 @@ class CLI
 	 * Constructor.
 	 *
 	 * @param string  $path        Location to the configuraton file.
+	 * @param string  $period      Time period chosen by the user to display.
 	 * @param boolean $displayOnly Determines whether the tweet action is concluded.
 	 * @param boolean $silentMode  Don't output updates to stdout.
 	 */
-	public function __construct(string $path, bool $displayOnly = false, bool $silentMode = false)
+	public function __construct(string $path, string $period = LastfmPeriod::WEEK, bool $displayOnly = false, bool $silentMode = false)
 	{
 		$this->path         = $path;
+		$this->period       = $period;
 		$this->display_only = $displayOnly;
 		$this->silent_mode  = $silentMode;
 		$this->setConfigurationFromJSON($path);
@@ -62,7 +66,7 @@ class CLI
 				echo '- Scraping from last.fm...' . PHP_EOL;
 			}
 
-			$top5 = $this->lastfm->getTopFromLastfm($client['lastfmUsername']);
+			$top5 = $this->lastfm->getTopFromLastfm($client['lastfmUsername'], $this->period);
 			if (empty($top5)) {
 				echo 'last.fm has not got enough data on the user to proceed.' . PHP_EOL;
 				$failureCount++;
