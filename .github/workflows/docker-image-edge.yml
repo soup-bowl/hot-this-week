@@ -1,8 +1,8 @@
-name: Compile container
+name: Compile edge container
 
 on:
   push:
-    branches: [ main ]
+    branches: [ edge ]
     paths:
       - "Dockerfile"
       - "main.php"
@@ -18,10 +18,10 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Rooty-tooty, make the booty!
-      run: docker build . --file Dockerfile --tag ghcr.io/soup-bowl/hot-this-week:latest
+      run: docker build . --file Dockerfile --tag ghcr.io/soup-bowl/hot-this-week:edge
       
     - name: Are you the right scallywag?
       run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u soup-bowl --password-stdin
 
     - name: Yeet onto The Flying Packageman ship.
-      run: docker push ghcr.io/soup-bowl/hot-this-week:latest
+      run: docker push ghcr.io/soup-bowl/hot-this-week:edge
