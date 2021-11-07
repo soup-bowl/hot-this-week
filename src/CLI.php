@@ -83,7 +83,7 @@ class CLI
 				echo '- Composing tweet...' . PHP_EOL;
 			}
 
-			$message = $this->twitter->composeTweet($top5, "https://www.last.fm/user/{$client['lastfmUsername']}");
+			$message = $this->twitter->composeTweet($top5, $this->period, "https://www.last.fm/user/{$client['lastfmUsername']}");
 
 			if (! $this->silent_mode) {
 				echo '- Posting to Twitter...' . PHP_EOL;

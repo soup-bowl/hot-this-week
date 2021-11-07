@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace HotThisWeek;
 
+use HotThisWeek\LastfmPeriod;
+
 class TwitterAPI
 {
 	protected $key;
@@ -35,13 +37,14 @@ class TwitterAPI
 	/**
 	 * Composes a tweet message.
 	 *
-	 * @param array  $top last.fm listing array.
-	 * @param string $url Credit URL.
+	 * @param array  $top       last.fm listing array.
+	 * @param string $timeframe Timeframe we're posting about.
+	 * @param string $url       Credit URL.
 	 * @return object 'message', 'count' and 'limit'.
 	 */
-	public function composeTweet(array $top, string $url): object
+	public function composeTweet(array $top, string $timeframe, string $url): object
 	{
-		$message = "\u{1F4BF} My week with #lastfm:\n";
+		$message = "\u{1F4BF} {$this->timeframeLabel($timeframe)} #lastfm:\n";
 		foreach ($top as $item) {
 			$message .= "{$item['artist']} ({$item['count']})\n";
 		}
@@ -89,5 +92,40 @@ class TwitterAPI
 				'message' => "An error occurred during tweeting: ({$error})",
 			];
 		}
+	}
+
+	/**
+	 * Creates a timeframe string based on the LastfmPeriod setting.
+	 *
+	 * @param string $label Timeframe from the LastfmPeriod enum.
+	 * @return string English phrase.
+	 */
+	private function timeframeLabel(string $label):string {
+		$tf = '';
+		switch($label) {
+			case LastfmPeriod::WEEK:
+				$tf = 'week';
+				break;
+			case LastfmPeriod::MONTH:
+				$tf = 'month';
+				break;
+			case LastfmPeriod::QUARTER:
+				$tf = '3 months';
+				break;
+			case LastfmPeriod::HALFYEAR:
+				$tf = '6 months';
+				break;
+			case LastfmPeriod::YEAR:
+				$tf = 'year';
+				break;
+			case LastfmPeriod::ALL:
+				$tf = 'whole time';
+				break;
+			default:
+				$tf = 'invalid timeframe';
+				break;
+		}
+
+		return "my {$tf} with";
 	}
 }
