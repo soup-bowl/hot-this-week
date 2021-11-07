@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace HotThisWeek;
 
+use Exception;
 use HotThisWeek\LastfmAPI;
 use HotThisWeek\TwitterAPI;
 use HotThisWeek\Collage;
@@ -69,9 +70,16 @@ class CLI
 				echo '- Scraping from last.fm...' . PHP_EOL;
 			}
 
-			$top5 = $this->lastfm->getTopFromLastfm($client['lastfmUsername'], $this->period);
-			if (empty($top5)) {
-				echo 'last.fm has not got enough data on the user to proceed.' . PHP_EOL;
+			try {
+				$top5 = $this->lastfm->getTopFromLastfm($client['lastfmUsername'], $this->period);
+			} catch (Exception $e) {
+				echo '- Failed communicating with the last.fm API server: ';
+				if (stristr($e->getMessage(), 'User not found')) {
+					echo 'User not found.';
+				} else {
+					echo 'Unknown error.';
+				}
+				echo PHP_EOL;
 				$failureCount++;
 				continue;
 			}

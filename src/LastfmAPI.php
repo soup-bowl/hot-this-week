@@ -15,6 +15,7 @@ namespace HotThisWeek;
 use HotThisWeek\Enum\Period;
 use HotThisWeek\Enum\SearchFrame;
 use Dandelionmood\LastFm\LastFm;
+use Exception;
 
 libxml_use_internal_errors(true);
 
@@ -44,20 +45,25 @@ class LastfmAPI
 	 * @param string  $username last.fm account to look-up.
 	 * @param string  $period   last.fm-recognised period. Use the Lastfm Period enum.
 	 * @param integer $limit    Amount to return. Default is 5.
-	 * @return array|null
+	 * @throws Exception if an error occurred during API communication.
+	 * @return array
 	 */
 	public function getTopFromLastfm(string $username, string $period = Period::WEEK, int $limit = 5): ?array
 	{
-		$sf       = 'user_get' . SearchFrame::TOPARTISTS;
-		$lfm      = new LastFm($this->key, $this->secret);
-		$lfm_tops = $lfm->$sf([
-			'user'   => $username,
-			'period' => $period,
-			'limit'  => $limit,
-		]);
+		$sf      = 'user_get' . SearchFrame::TOPARTISTS;
+		$lfm     = new LastFm($this->key, $this->secret);
+		try {
+			$lfmTops = $lfm->$sf([
+				'user'   => $username,
+				'period' => $period,
+				'limit'  => $limit,
+			]);
+		} catch (Exception $e) {
+			throw $e;
+		}
 
 		$top = [];
-		foreach ($lfm_tops->topartists->artist as $artist) {
+		foreach ($lfmTops->topartists->artist as $artist) {
 			$top[] = [
 				'artist'  => $artist->name,
 				'picture' => $this->getArtistPicture($artist->url),
@@ -65,11 +71,7 @@ class LastfmAPI
 			];
 		}
 
-		if (count($top) >= 5) {
-			return $top;
-		} else {
-			return null;
-		}
+		return $top;
 	}
 
 	/**

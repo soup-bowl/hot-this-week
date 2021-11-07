@@ -28,6 +28,14 @@ class Collage
 	 */
 	public function generateCollage(array $top5, string $exportPath = ''): string
 	{
+		$missing = (5 - count($top5));
+		for ($i = 0; $i < $missing; $i++) {
+			$top5[] = [
+				'artist'  => '',
+				'picture' => dirname(__FILE__) . '/../assets/blank.png',
+			];
+		}
+
 		$imgFile = ( (empty($exportPath)) ? sys_get_temp_dir() : $exportPath ) . '/sbimg_' . uniqid() . '.png';
 		$imgarr  = [];
 		foreach ($top5 as &$item) {
