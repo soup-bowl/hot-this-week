@@ -12,7 +12,8 @@ declare(strict_types=1);
 
 namespace HotThisWeek;
 
-use HotThisWeek\LastfmPeriod;
+use HotThisWeek\Enum\Period;
+use HotThisWeek\Enum\SearchFrame;
 use Dandelionmood\LastFm\LastFm;
 use Tzsk\Collage\MakeCollage;
 
@@ -43,14 +44,15 @@ class LastfmAPI
 	 * Grabs the top artists from the last.fm API.
 	 *
 	 * @param string  $username last.fm account to look-up.
-	 * @param string  $period   last.fm-recognised period. Use the LastfmPeriod enum.
+	 * @param string  $period   last.fm-recognised period. Use the Lastfm Period enum.
 	 * @param integer $limit    Amount to return. Default is 5.
 	 * @return array|null
 	 */
-	public function getTopFromLastfm(string $username, string $period = LastfmPeriod::WEEK, int $limit = 5): ?array
+	public function getTopFromLastfm(string $username, string $period = Period::WEEK, int $limit = 5): ?array
 	{
+		$sf       = 'user_get' . SearchFrame::TOPARTISTS;
 		$lfm      = new LastFm($this->key, $this->secret);
-		$lfm_tops = $lfm->user_getTopArtists([
+		$lfm_tops = $lfm->$sf([
 			'user'   => $username,
 			'period' => $period,
 			'limit'  => $limit,

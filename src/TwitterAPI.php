@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace HotThisWeek;
 
-use HotThisWeek\LastfmPeriod;
+use HotThisWeek\Enum\Period;
 
 class TwitterAPI
 {
@@ -95,31 +95,31 @@ class TwitterAPI
 	}
 
 	/**
-	 * Creates a timeframe string based on the LastfmPeriod setting.
+	 * Creates a timeframe string based on the Lastfm Period setting.
 	 *
-	 * @param string $label Timeframe from the LastfmPeriod enum.
+	 * @param string $label Timeframe from the Lastfm Period enum.
 	 * @return string English phrase.
 	 */
 	private function timeframeLabel(string $label): string
 	{
 		$tf = '';
 		switch ($label) {
-			case LastfmPeriod::WEEK:
+			case Period::WEEK:
 				$tf = 'week';
 				break;
-			case LastfmPeriod::MONTH:
+			case Period::MONTH:
 				$tf = 'month';
 				break;
-			case LastfmPeriod::QUARTER:
+			case Period::QUARTER:
 				$tf = '3 months';
 				break;
-			case LastfmPeriod::HALFYEAR:
+			case Period::HALFYEAR:
 				$tf = '6 months';
 				break;
-			case LastfmPeriod::YEAR:
+			case Period::YEAR:
 				$tf = 'year';
 				break;
-			case LastfmPeriod::ALL:
+			case Period::ALL:
 				$tf = 'whole time';
 				break;
 			default:

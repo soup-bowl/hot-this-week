@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace HotThisWeek;
 
 use HotThisWeek\LastfmAPI;
-use HotThisWeek\LastfmPeriod;
+use HotThisWeek\Enum\Period;
 use HotThisWeek\TwitterAPI;
 
 class CLI
@@ -39,7 +39,7 @@ class CLI
 	 * @param boolean $displayOnly Determines whether the tweet action is concluded.
 	 * @param boolean $silentMode  Don't output updates to stdout.
 	 */
-	public function __construct(string $path, string $period = LastfmPeriod::WEEK, bool $displayOnly = false, bool $silentMode = false)
+	public function __construct(string $path, string $period = Period::WEEK, bool $displayOnly = false, bool $silentMode = false)
 	{
 		$this->path         = $path;
 		$this->period       = $period;

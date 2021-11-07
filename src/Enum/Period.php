@@ -10,12 +10,12 @@
 
 declare(strict_types=1);
 
-namespace HotThisWeek;
+namespace HotThisWeek\Enum;
 
 /**
  * Represents the last.fm API textual time periods.
  */
-abstract class LastfmPeriod
+abstract class Period
 {
     public const WEEK     = "7day";
     public const MONTH    = "1month";
