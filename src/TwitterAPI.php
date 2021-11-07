@@ -100,9 +100,10 @@ class TwitterAPI
 	 * @param string $label Timeframe from the LastfmPeriod enum.
 	 * @return string English phrase.
 	 */
-	private function timeframeLabel(string $label):string {
+	private function timeframeLabel(string $label): string
+	{
 		$tf = '';
-		switch($label) {
+		switch ($label) {
 			case LastfmPeriod::WEEK:
 				$tf = 'week';
 				break;

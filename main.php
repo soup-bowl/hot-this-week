@@ -25,7 +25,7 @@ if ('cli' === php_sapi_name()) {
 			case '-p':
 			case '--period':
 				$periodSetting = $argv[($i + 1)];
-				switch($periodSetting) {
+				switch ($periodSetting) {
 					case 'week':
 					default:
 						$period = LastfmPeriod::WEEK;
