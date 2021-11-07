@@ -23,9 +23,8 @@ class TwitterAPI
 	/**
 	 * Constructor.
 	 *
-	 * @param string  $path        Location to the configuraton file.
-	 * @param boolean $displayOnly Determines whether the tweet action is concluded.
-	 * @param boolean $silentMode  Don't output updates to stdout.
+	 * @param string $key    Twitter consumer API key.
+	 * @param string $secret Twitter consumer API secret.
 	 */
 	public function __construct(string $key, string $secret)
 	{

@@ -129,9 +129,9 @@ class CLI
 			$this->clients        = (isset($json['clients'])) ? $json['clients'] : [];
 
 			// Required
-			if (isset($json, $json['config'], $json['config']['lastfmKey'], $json['config']['lastfmSecret'])) {
+			if (isset($json, $json['config'], $json['config']['lastfmKey'])) {
 				$this->lastfm_key     = $json['config']['lastfmKey'];
-				$this->lastfm_secret  = $json['config']['lastfmSecret'];
+				$this->lastfm_secret  = (isset($json['config']['lastfmSecret'])) ? $json['config']['lastfmSecret'] : '';
 			} else {
 				throw new Exception('lastfm API keys not set.');
 			}

@@ -30,11 +30,10 @@ class LastfmAPI
 	/**
 	 * Constructor.
 	 *
-	 * @param string  $path        Location to the configuraton file.
-	 * @param boolean $displayOnly Determines whether the tweet action is concluded.
-	 * @param boolean $silentMode  Don't output updates to stdout.
+	 * @param string $key    last.fm API key.
+	 * @param string $secret last.fm API secret if authentication routes are needed.
 	 */
-	public function __construct(string $key, string $secret)
+	public function __construct(string $key, string $secret = '')
 	{
 		$this->key    = $key;
 		$this->secret = $secret;

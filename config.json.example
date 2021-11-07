@@ -8,7 +8,6 @@
 	],
 	"config": {
 		"lastfmKey": "key",
-		"lastfmSecret": "key",
 		"twitterConsumerKey": "key",
 		"twitterConsumerSecret": "key"
 	}
