@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace TestThisWeek;
 
 use HotThisWeek\Collage;
+use HotThisWeek\Object\Artist;
 use PHPUnit\Framework\TestCase;
 
 class CollageTest extends TestCase
@@ -32,13 +33,12 @@ class CollageTest extends TestCase
 	{
 		$dummy5 = [];
 		for ($i = 0; $i < 5; $i++) {
-			$dummy5[] = [
-				'artist'  => 'Dummy Artist #' . ($i + 1),
-				'picture' => 'https://source.unsplash.com/featured/?face,person',
-				'count'   => rand(1, 200),
-			];
+			$dummy = new Artist();
+			$dummy->setName(($i === 1) ? 'Really long artist name to test concatenation' : 'Dummy Artist #' . ($i + 1));
+			$dummy->setPicture('https://source.unsplash.com/featured/?face,person');
+			$dummy->setListenCount(rand(1, 200));
+			$dummy5[] = $dummy;
 		}
-		$dummy5[2]['artist'] = 'Really long artist name to test concatenation';
 
 		$collage1 = $this->collage->generateCollage($dummy5, realpath(dirname(__FILE__) . '/..'));
 		$this->assertStringNotEqualsFile($collage1, '', 'The binary image created by the collage routine was empty.');

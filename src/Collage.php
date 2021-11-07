@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace HotThisWeek;
 
+use HotThisWeek\Object\Artist;
 use Tzsk\Collage\MakeCollage;
 
 /**
@@ -22,7 +23,7 @@ class Collage
 	/**
 	 * Generates a 1 left, 4 right collage image based on given image sources.
 	 *
-	 * @param string[] $top5       last.fm response.
+	 * @param Artist[] $top5       last.fm response.
 	 * @param string   $exportPath Optional ath to override the export to.
 	 * @return string Location of generated image on filesystem.
 	 */
@@ -30,18 +31,13 @@ class Collage
 	{
 		$missing = (5 - count($top5));
 		for ($i = 0; $i < $missing; $i++) {
-			$top5[] = [
-				'artist'  => '',
-				'picture' => dirname(__FILE__) . '/../assets/blank.png',
-			];
+			$top5[] = new Artist();
 		}
 
 		$imgFile = ( (empty($exportPath)) ? sys_get_temp_dir() : $exportPath ) . '/sbimg_' . uniqid() . '.png';
 		$imgarr  = [];
 		foreach ($top5 as &$item) {
-			$imgarr[]       = $item['picture'];
-			$item['artist'] = ( strlen($item['artist']) > 19 )
-				? substr($item['artist'], 0, 16) . "..." : $item['artist'];
+			$imgarr[] = $item->getPicture();
 		}
 
 		$forcol = $imgarr;
@@ -59,34 +55,34 @@ class Collage
 			->from([ $imgarr[0], $firstImage ], function ($settings) {
 				$settings->vertical();
 			})
-			->text($top5[0]['artist'], 22, 662, function ($font) use ($fontpath) {
+			->text($top5[0]->getNameConcat(), 22, 662, function ($font) use ($fontpath) {
 				$font->file($fontpath)->size(54);
 			})
-			->text($top5[0]['artist'], 20, 660, function ($font) use ($fontpath) {
+			->text($top5[0]->getNameConcat(), 20, 660, function ($font) use ($fontpath) {
 				$font->file($fontpath)->size(54)->color('#FFF');
 			})
-			->text($top5[1]['artist'], 621, 321, function ($font) use ($fontpath) {
+			->text($top5[1]->getNameConcat(), 621, 321, function ($font) use ($fontpath) {
 				$font->file($fontpath)->size(28);
 			})
-			->text($top5[1]['artist'], 620, 320, function ($font) use ($fontpath) {
+			->text($top5[1]->getNameConcat(), 620, 320, function ($font) use ($fontpath) {
 				$font->file($fontpath)->size(28)->color('#FFF');
 			})
-			->text($top5[2]['artist'], 921, 321, function ($font) use ($fontpath) {
+			->text($top5[2]->getNameConcat(), 921, 321, function ($font) use ($fontpath) {
 				$font->file($fontpath)->size(28);
 			})
-			->text($top5[2]['artist'], 920, 320, function ($font) use ($fontpath) {
+			->text($top5[2]->getNameConcat(), 920, 320, function ($font) use ($fontpath) {
 				$font->file($fontpath)->size(28)->color('#FFF');
 			})
-			->text($top5[3]['artist'], 621, 661, function ($font) use ($fontpath) {
+			->text($top5[3]->getNameConcat(), 621, 661, function ($font) use ($fontpath) {
 				$font->file($fontpath)->size(28);
 			})
-			->text($top5[3]['artist'], 620, 660, function ($font) use ($fontpath) {
+			->text($top5[3]->getNameConcat(), 620, 660, function ($font) use ($fontpath) {
 				$font->file($fontpath)->size(28)->color('#FFF');
 			})
-			->text($top5[4]['artist'], 921, 661, function ($font) use ($fontpath) {
+			->text($top5[4]->getNameConcat(), 921, 661, function ($font) use ($fontpath) {
 				$font->file($fontpath)->size(28);
 			})
-			->text($top5[4]['artist'], 920, 660, function ($font) use ($fontpath) {
+			->text($top5[4]->getNameConcat(), 920, 660, function ($font) use ($fontpath) {
 				$font->file($fontpath)->size(28)->color('#FFF');
 			})
 			->save($imgFile);

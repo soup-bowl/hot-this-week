@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace HotThisWeek;
 
 use HotThisWeek\Enum\Period;
+use HotThisWeek\Object\Artist;
+use Abraham\TwitterOAuth\TwitterOAuth;
 
 class TwitterAPI
 {
@@ -36,16 +38,16 @@ class TwitterAPI
 	/**
 	 * Composes a tweet message.
 	 *
-	 * @param array  $top       last.fm listing array.
-	 * @param string $timeframe Timeframe we're posting about.
-	 * @param string $url       Credit URL.
+	 * @param Artist[] $top       last.fm listing array.
+	 * @param string   $timeframe Timeframe we're posting about.
+	 * @param string   $url       Credit URL.
 	 * @return object 'message', 'count' and 'limit'.
 	 */
 	public function composeTweet(array $top, string $timeframe, string $url): object
 	{
 		$message = "\u{1F4BF} {$this->timeframeLabel($timeframe)} #lastfm:\n";
 		foreach ($top as $item) {
-			$message .= "{$item['artist']} ({$item['count']})\n";
+			$message .= "{$item->getName()} ({$item->getListenCount()})\n";
 		}
 		$message .= $url;
 
