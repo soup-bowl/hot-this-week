@@ -13,8 +13,9 @@ declare(strict_types=1);
 namespace HotThisWeek;
 
 use HotThisWeek\LastfmAPI;
-use HotThisWeek\Enum\Period;
 use HotThisWeek\TwitterAPI;
+use HotThisWeek\Collage;
+use HotThisWeek\Enum\Period;
 
 class CLI
 {
@@ -30,6 +31,7 @@ class CLI
 
 	protected $lastfm;
 	protected $twitter;
+	protected $collage;
 
 	/**
 	 * Constructor.
@@ -49,6 +51,7 @@ class CLI
 
 		$this->lastfm  = new LastfmAPI($this->lastfm_key, $this->lastfm_secret);
 		$this->twitter = new TwitterAPI($this->twitter_key, $this->twitter_secret);
+		$this->collage = new Collage();
 	}
 
 	/**
@@ -77,7 +80,7 @@ class CLI
 				echo '- Generating collage...' . PHP_EOL;
 			}
 
-			$img = $this->lastfm->generateCollage($top5);
+			$img = $this->collage->generateCollage($top5);
 
 			if (! $this->silent_mode) {
 				echo '- Composing tweet...' . PHP_EOL;
