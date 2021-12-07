@@ -1,7 +1,7 @@
 
 tasks:
   - init: |
-      echo 'TODO: build project'
+      docker-compose build bot
     command: |
       echo ${HTW_SETTINGS_JSON} > config.json
 vscode:
