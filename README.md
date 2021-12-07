@@ -3,6 +3,9 @@
  <a href="https://www.codefactor.io/repository/github/soup-bowl/hot-this-week">
   <img src="https://www.codefactor.io/repository/github/soup-bowl/hot-this-week/badge" alt="CodeFactor"/>
  </a>
+ <a href="https://github.com/soup-bowl/hot-this-week/actions/workflows/docker-image-main.yml">
+  <img src="https://github.com/soup-bowl/hot-this-week/actions/workflows/docker-image-main.yml/badge.svg" alt="Compile mainline container"/>
+ </a>
 </p>
 
 <p align="center">
