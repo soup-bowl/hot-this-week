@@ -1,4 +1,6 @@
 # 🔥🎶🐦 soup-bowl's Hot This Week
+[![CodeFactor](https://www.codefactor.io/repository/github/soup-bowl/hot-this-week/badge)](https://www.codefactor.io/repository/github/soup-bowl/hot-this-week)
+
 ![image](https://user-images.githubusercontent.com/11209477/140189390-22aef5bd-17cf-4944-95a5-38f8c84ec898.png)
 
 
@@ -22,7 +24,7 @@ This clever bot does the following:
 ```
 docker run -v /path/to/localsystem/config.json:/opt/app/config.json ghcr.io/soup-bowl/hot-this-week:latest
 ```
-Append `-h` right at the end to see usage instructions.
+Append `-h` right at the end to see usage instructions. Change 'latest' for 'edge' to get the latest development version (possibly unstable).
 
 ### Natively
 
