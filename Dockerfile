@@ -16,6 +16,7 @@ WORKDIR /opt/app
 COPY composer.json composer.json
 COPY composer.lock composer.lock
 COPY src           src
+COPY assets        assets
 COPY main.php      main.php
 
 RUN php74 /usr/local/bin/composer install --no-dev

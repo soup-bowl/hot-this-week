@@ -12,6 +12,10 @@ declare(strict_types=1);
 
 namespace HotThisWeek;
 
+use HotThisWeek\Enum\Period;
+use HotThisWeek\Object\Artist;
+use Abraham\TwitterOAuth\TwitterOAuth;
+
 class TwitterAPI
 {
 	protected $key;
@@ -21,9 +25,8 @@ class TwitterAPI
 	/**
 	 * Constructor.
 	 *
-	 * @param string  $path        Location to the configuraton file.
-	 * @param boolean $displayOnly Determines whether the tweet action is concluded.
-	 * @param boolean $silentMode  Don't output updates to stdout.
+	 * @param string $key    Twitter consumer API key.
+	 * @param string $secret Twitter consumer API secret.
 	 */
 	public function __construct(string $key, string $secret)
 	{
@@ -35,15 +38,16 @@ class TwitterAPI
 	/**
 	 * Composes a tweet message.
 	 *
-	 * @param array  $top last.fm listing array.
-	 * @param string $url Credit URL.
+	 * @param Artist[] $top       last.fm listing array.
+	 * @param string   $timeframe Timeframe we're posting about.
+	 * @param string   $url       Credit URL.
 	 * @return object 'message', 'count' and 'limit'.
 	 */
-	public function composeTweet(array $top, string $url): object
+	public function composeTweet(array $top, string $timeframe, string $url): object
 	{
-		$message = "\u{1F4BF} My week with #lastfm:\n";
+		$message = "\u{1F4BF} {$this->timeframeLabel($timeframe)} #lastfm:\n";
 		foreach ($top as $item) {
-			$message .= "{$item['artist']} ({$item['count']})\n";
+			$message .= "{$item->getName()} ({$item->getListenCount()})\n";
 		}
 		$message .= $url;
 
@@ -89,5 +93,41 @@ class TwitterAPI
 				'message' => "An error occurred during tweeting: ({$error})",
 			];
 		}
+	}
+
+	/**
+	 * Creates a timeframe string based on the Lastfm Period setting.
+	 *
+	 * @param string $label Timeframe from the Lastfm Period enum.
+	 * @return string English phrase.
+	 */
+	private function timeframeLabel(string $label): string
+	{
+		$tf = '';
+		switch ($label) {
+			case Period::WEEK:
+				$tf = 'week';
+				break;
+			case Period::MONTH:
+				$tf = 'month';
+				break;
+			case Period::QUARTER:
+				$tf = '3 months';
+				break;
+			case Period::HALFYEAR:
+				$tf = '6 months';
+				break;
+			case Period::YEAR:
+				$tf = 'year';
+				break;
+			case Period::ALL:
+				$tf = 'whole time';
+				break;
+			default:
+				$tf = 'invalid timeframe';
+				break;
+		}
+
+		return "my {$tf} with";
 	}
 }

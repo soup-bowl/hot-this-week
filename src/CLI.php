@@ -12,9 +12,11 @@ declare(strict_types=1);
 
 namespace HotThisWeek;
 
+use Exception;
 use HotThisWeek\LastfmAPI;
-use HotThisWeek\LastfmPeriod;
 use HotThisWeek\TwitterAPI;
+use HotThisWeek\Collage;
+use HotThisWeek\Enum\Period;
 
 class CLI
 {
@@ -30,6 +32,7 @@ class CLI
 
 	protected $lastfm;
 	protected $twitter;
+	protected $collage;
 
 	/**
 	 * Constructor.
@@ -39,7 +42,7 @@ class CLI
 	 * @param boolean $displayOnly Determines whether the tweet action is concluded.
 	 * @param boolean $silentMode  Don't output updates to stdout.
 	 */
-	public function __construct(string $path, string $period = LastfmPeriod::WEEK, bool $displayOnly = false, bool $silentMode = false)
+	public function __construct(string $path, string $period = Period::WEEK, bool $displayOnly = false, bool $silentMode = false)
 	{
 		$this->path         = $path;
 		$this->period       = $period;
@@ -49,6 +52,7 @@ class CLI
 
 		$this->lastfm  = new LastfmAPI($this->lastfm_key, $this->lastfm_secret);
 		$this->twitter = new TwitterAPI($this->twitter_key, $this->twitter_secret);
+		$this->collage = new Collage();
 	}
 
 	/**
@@ -66,9 +70,16 @@ class CLI
 				echo '- Scraping from last.fm...' . PHP_EOL;
 			}
 
-			$top5 = $this->lastfm->getTopFromLastfm($client['lastfmUsername'], $this->period);
-			if (empty($top5)) {
-				echo 'last.fm has not got enough data on the user to proceed.' . PHP_EOL;
+			try {
+				$top5 = $this->lastfm->getTopFromLastfm($client['lastfmUsername'], $this->period);
+			} catch (Exception $e) {
+				echo '- Failed communicating with the last.fm API server: ';
+				if (stristr($e->getMessage(), 'User not found')) {
+					echo 'User not found.';
+				} else {
+					echo 'Unknown error.';
+				}
+				echo PHP_EOL;
 				$failureCount++;
 				continue;
 			}
@@ -77,13 +88,13 @@ class CLI
 				echo '- Generating collage...' . PHP_EOL;
 			}
 
-			$img = $this->lastfm->generateCollage($top5);
+			$img = $this->collage->generateCollage($top5);
 
 			if (! $this->silent_mode) {
 				echo '- Composing tweet...' . PHP_EOL;
 			}
 
-			$message = $this->twitter->composeTweet($top5, "https://www.last.fm/user/{$client['lastfmUsername']}");
+			$message = $this->twitter->composeTweet($top5, $this->period, "https://www.last.fm/user/{$client['lastfmUsername']}");
 
 			if (! $this->silent_mode) {
 				echo '- Posting to Twitter...' . PHP_EOL;
@@ -129,9 +140,9 @@ class CLI
 			$this->clients        = (isset($json['clients'])) ? $json['clients'] : [];
 
 			// Required
-			if (isset($json, $json['config'], $json['config']['lastfmKey'], $json['config']['lastfmSecret'])) {
+			if (isset($json, $json['config'], $json['config']['lastfmKey'])) {
 				$this->lastfm_key     = $json['config']['lastfmKey'];
-				$this->lastfm_secret  = $json['config']['lastfmSecret'];
+				$this->lastfm_secret  = (isset($json['config']['lastfmSecret'])) ? $json['config']['lastfmSecret'] : '';
 			} else {
 				throw new Exception('lastfm API keys not set.');
 			}

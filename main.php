@@ -13,11 +13,11 @@ declare(strict_types=1);
 require __DIR__ . '/vendor/autoload.php';
 
 use HotThisWeek\CLI;
-use HotThisWeek\LastfmPeriod;
+use HotThisWeek\Enum\Period;
 
 if ('cli' === php_sapi_name()) {
 	$dirpath    = __DIR__ . '/config.json';
-	$period     = LastfmPeriod::WEEK;
+	$period     = Period::WEEK;
 	$silentMode = false;
 	$diplayOnly = false;
 	for ($i = 0; $i < $argc; $i++) {
@@ -25,25 +25,25 @@ if ('cli' === php_sapi_name()) {
 			case '-p':
 			case '--period':
 				$periodSetting = $argv[($i + 1)];
-				switch($periodSetting) {
+				switch ($periodSetting) {
 					case 'week':
 					default:
-						$period = LastfmPeriod::WEEK;
+						$period = Period::WEEK;
 						break;
 					case 'month':
-						$period = LastfmPeriod::MONTH;
+						$period = Period::MONTH;
 						break;
 					case 'quarter':
-						$period = LastfmPeriod::QUARTER;
+						$period = Period::QUARTER;
 						break;
 					case 'halfyear':
-						$period = LastfmPeriod::HALFYEAR;
+						$period = Period::HALFYEAR;
 						break;
 					case 'year':
-						$period = LastfmPeriod::YEAR;
+						$period = Period::YEAR;
 						break;
 					case 'all':
-						$period = LastfmPeriod::ALL;
+						$period = Period::ALL;
 						break;
 				}
 				break;
