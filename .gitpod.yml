@@ -1,0 +1,9 @@
+
+tasks:
+  - init: |
+      echo 'TODO: build project'
+    command: |
+      echo ${HTW_SETTINGS_JSON} > config.json
+vscode:
+  extensions:
+    - ms-azuretools.vscode-docker
