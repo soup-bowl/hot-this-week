@@ -1,8 +1,7 @@
 # 🔥🎶🐦 soup-bowl's Hot This Week
 [![CodeFactor](https://www.codefactor.io/repository/github/soup-bowl/hot-this-week/badge)](https://www.codefactor.io/repository/github/soup-bowl/hot-this-week)
 
-![image](https://user-images.githubusercontent.com/11209477/140189390-22aef5bd-17cf-4944-95a5-38f8c84ec898.png)
-
+![A view of a tweet showing a 5-picture collage, 1 larger image on the left and 4 small images in a grid orientation](https://user-images.githubusercontent.com/11209477/145074448-0894535e-5438-4fed-98d3-975584994590.png)
 
 An experimental bot that posts a rundown of your musical week on Twitter.
 
