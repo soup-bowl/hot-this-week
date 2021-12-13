@@ -1,0 +1,15 @@
+name: Deploy the Hot-this-week!
+
+on:
+  schedule:
+  - cron: "0 14 * * 5"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Craft config
+      run: echo "abc" > /config.json
+
+    - name: Execute Hot-this-week
+      run: docker run -v /config.json:/opt/app/config.json ghcr.io/soup-bowl/hot-this-week:edge -d
