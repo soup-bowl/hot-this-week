@@ -3,6 +3,7 @@ name: Deploy the Hot-this-week!
 on:
   schedule:
   - cron: "0 14 * * 5"
+  workflow_dispatch:
 
 jobs:
   build:
