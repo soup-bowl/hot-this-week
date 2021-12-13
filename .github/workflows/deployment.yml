@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Craft config
-      run: echo "abc" > /config.json
+      run: echo "${TESTKEY}" > ~/config.json && realpath ~/config.json
 
     - name: Execute Hot-this-week
       run: docker run -v /config.json:/opt/app/config.json ghcr.io/soup-bowl/hot-this-week:edge -d
