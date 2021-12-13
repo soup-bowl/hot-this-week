@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Craft config
-      run: echo "${HTK_CONFIG}" > ${PWD}/config.json && realpath ${PWD}/config.json
+      run: echo "${{ secrets.HTK_CONFIG }}" > ${PWD}/config.json
 
     - name: Execute Hot-this-week
       run: docker run -v ${PWD}/config.json:/opt/app/config.json ghcr.io/soup-bowl/hot-this-week:edge -d
