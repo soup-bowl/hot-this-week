@@ -1,12 +1,9 @@
 
 tasks:
   - init: |
-      docker pull composer
-      docker-compose pull
-      docker-compose build bot
+      echo init
     command: |
-      docker run --rm --tty --volume $PWD:/app --user $(id -u):$(id -g) composer install --ignore-platform-reqs
-      echo ${HTW_SETTINGS_JSON} > config.json
+      echo init
 vscode:
   extensions:
     - ms-azuretools.vscode-docker
