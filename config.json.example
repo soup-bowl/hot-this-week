@@ -1,0 +1,14 @@
+{
+	"clients": [
+		{
+			"lastfmUsername": "example",
+			"twitterAccessToken": "key",
+			"twitterAccessSecret": "key"
+		}
+	],
+	"config": {
+		"lastfmKey": "key",
+		"twitterConsumerKey": "key",
+		"twitterConsumerSecret": "key"
+	}
+}
