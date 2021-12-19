@@ -1,5 +1,4 @@
-vendor/
-.phpunit.result.cache
+__pycache__
 config.json
 dockertmp/
 sbimg_*.png

@@ -3,7 +3,8 @@ tasks:
   - init: |
       echo init
     command: |
-      echo init
+      echo ${HTW_SETTINGS_JSON} > config.json
 vscode:
   extensions:
     - ms-azuretools.vscode-docker
+    - ms-python.python
