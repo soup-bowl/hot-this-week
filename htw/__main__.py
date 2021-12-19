@@ -1,4 +1,4 @@
-from htw.cli import main
+from htw.cli import cli
 from sys import argv
 
-main(argv)
+cli().main(argv)

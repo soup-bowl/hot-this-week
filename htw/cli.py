@@ -84,5 +84,3 @@ class cli(object):
 		print("Last.fm Twitter bot by soup-bowl - pre-alpha.")
 		print("https://github.com/soup-bowl/lastfm-twitter/")
 
-def main(argv):
-	cli().main(argv)
