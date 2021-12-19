@@ -7,19 +7,13 @@ import getopt, json
 class cli(object):
 	def __init__(self):
 		self.suppress      = False
-		self.display       = False
+		self.display_only  = False
 		self.lastfm_key    = getenv('LASTFM_KEY')
 		self.twitter_key   = getenv('TWITTER_CONSUMER_KEY')
 		self.twitter_srt   = getenv('TWITTER_CONSUMER_SECRET')
 		self.twitter_users = None
 
 	def main(self, argv):
-		suppress    = False
-		display     = False
-		lastfm_key  = getenv('LASTFM_KEY')
-		twitter_key = getenv('TWITTER_CONSUMER_KEY')
-		twitter_srt = getenv('TWITTER_CONSUMER_SECRET')
-
 		try:
 			opts, args = getopt.getopt(
 				argv[1::],
@@ -38,6 +32,10 @@ class cli(object):
 			elif opt in ('-v', '--version'):
 				self.print_version()
 				exit()
+			elif opt in ('-s', '--silent'):
+				self.suppress = True
+			elif opt in ('-d', '--display'):
+				self.display_only = True
 			elif opt in ("-f", "--file"):
 				confile = realpath( arg )
 				if exists( confile ):
@@ -49,7 +47,10 @@ class cli(object):
 		success_count = 0
 		failure_count = 0
 
-		print(self.twitter_users)
+		for item in self.twitter_users:
+			if not self.suppress:
+				print("Processing %s" % item['lastfmUsername'])
+				print("- Scraping from last.fm...")
 
 	def read_config(self, location):
 		conf = json.loads( Path( location ).read_text() )
