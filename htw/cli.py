@@ -6,11 +6,12 @@ import getopt, json
 
 class cli(object):
 	def __init__(self):
-		self.suppress = False
-		self.display = False
-		self.lastfm_key  = getenv('LASTFM_KEY')
-		self.twitter_key = getenv('TWITTER_CONSUMER_KEY')
-		self.twitter_srt = getenv('TWITTER_CONSUMER_SECRET')
+		self.suppress      = False
+		self.display       = False
+		self.lastfm_key    = getenv('LASTFM_KEY')
+		self.twitter_key   = getenv('TWITTER_CONSUMER_KEY')
+		self.twitter_srt   = getenv('TWITTER_CONSUMER_SECRET')
+		self.twitter_users = None
 
 	def main(self, argv):
 		suppress    = False
@@ -48,13 +49,22 @@ class cli(object):
 		success_count = 0
 		failure_count = 0
 
-		print(self.lastfm_key)
+		print(self.twitter_users)
 
 	def read_config(self, location):
 		conf = json.loads( Path( location ).read_text() )
-		self.lastfm_key  = conf['config']['lastfmKey'] if self.lastfm_key is None else self.lastfm_key
-		self.twitter_key = conf['config']['twitterConsumerKey'] if self.twitter_key is None else self.twitter_key
-		self.twitter_srt = conf['config']['twitterConsumerSecret'] if self.twitter_srt is None else self.twitter_srt
+		if 'config' not in conf:
+			return None
+		
+		if 'clients' in conf:
+			self.twitter_users = conf['clients']
+
+		if 'lastfmKey' in conf['config']:
+			self.lastfm_key  = conf['config']['lastfmKey'] if self.lastfm_key is None else self.lastfm_key
+		if 'twitterConsumerKey' in conf['config']:
+			self.twitter_key = conf['config']['twitterConsumerKey'] if self.twitter_key is None else self.twitter_key
+		if 'twitterConsumerSecret' in conf['config']:
+			self.twitter_srt = conf['config']['twitterConsumerSecret'] if self.twitter_srt is None else self.twitter_srt
 
 	def print_help(self):
 		print("Run without arguments to process last.fm & Twitter using environmental variables.")
