@@ -3,6 +3,7 @@ from os import getenv
 from os.path import realpath, exists
 from pathlib import Path
 from htw.lfm import lfm
+from htw.collage import collage
 import getopt, json
 
 class cli(object):
@@ -58,6 +59,7 @@ class cli(object):
 				print("Processing %s" % item['lastfmUsername'])
 				print("- Scraping from last.fm...")
 				artists = lfm(self.lastfm_key).get_top_artists('soup-bowl')
+				pic     = collage().new(artists)
 				print("END")
 
 	def read_config(self, location):
