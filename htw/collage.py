@@ -1,4 +1,4 @@
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageEnhance, ImageDraw, ImageFont
 from urllib3 import PoolManager
 from os.path import realpath
 import io, string, random
@@ -24,6 +24,20 @@ class collage(object):
 
 		main.paste(img0, (0,0))
 		main.paste(coll1, (400,0))
+
+		draw  = ImageDraw.Draw(main)
+		mfont = ImageFont.truetype("ubuntu.ttf", 42)
+		sfont = ImageFont.truetype("ubuntu.ttf", 28)
+		draw.text((396,396), lfm_collection[0]['name'], font=mfont, align='right', fill='black', anchor='rb' )
+		draw.text((395,395), lfm_collection[0]['name'], font=mfont, align='right', fill='white', anchor='rb' )
+		draw.text((596,196), lfm_collection[1]['name'], font=sfont, align='right', fill='black', anchor='rb' )
+		draw.text((595,195), lfm_collection[1]['name'], font=sfont, align='right', fill='white', anchor='rb' )
+		draw.text((796,196), lfm_collection[2]['name'], font=sfont, align='right', fill='black', anchor='rb' )
+		draw.text((795,195), lfm_collection[2]['name'], font=sfont, align='right', fill='white', anchor='rb' )
+		draw.text((596,396), lfm_collection[3]['name'], font=sfont, align='right', fill='black', anchor='rb' )
+		draw.text((595,395), lfm_collection[3]['name'], font=sfont, align='right', fill='white', anchor='rb' )
+		draw.text((796,396), lfm_collection[4]['name'], font=sfont, align='right', fill='black', anchor='rb' )
+		draw.text((795,395), lfm_collection[4]['name'], font=sfont, align='right', fill='white', anchor='rb' )
 
 		rangen   = ''.join(random.choices(string.ascii_letters + string.digits, k=5))
 		filename = 'sbimg_%s.png' % rangen
