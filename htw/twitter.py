@@ -1,17 +1,19 @@
 from twython import Twython
 
-def compose_tweet(lfm_collection):
+def compose_tweet(lfm_collection, name):
     """Compose tweet message contents.
 
     Args:
         lfm_collection ([type]): Last.fm user data collection.
+        name (str): Last.fm username.
 
     Returns:
         [str]: Message contents.
     """
-    message = "\u1F4BF my week with #lastfm:\n"
+    message = "\U0001F4BF my week with #lastfm:\n"
     for artist in lfm_collection:
         message = message + "%s (%s)\n" % (artist['name'], artist['plays'])
+    message = message + "https://www.last.fm/user/%s" % name
     return message
 
 def post_to_twitter(tweet, picture, consumer_key, consumer_secret, access_key, access_secret):

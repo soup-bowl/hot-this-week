@@ -58,7 +58,7 @@ class cli(object):
 			if not self.suppress:
 				print("Processing %s" % item['lastfmUsername'])
 				print("- Scraping from last.fm...")
-			artists = lfm(self.lastfm_key).get_top_artists('soup-bowl')
+			artists = lfm(self.lastfm_key).get_top_artists(item['lastfmUsername'])
 
 			if not self.suppress:
 				print("- Generating collage...")
@@ -66,7 +66,7 @@ class cli(object):
 
 			if not self.suppress:
 				print("- Composing tweet...")
-			tweet = compose_tweet(artists)
+			tweet = compose_tweet(artists, item['lastfmUsername'])
 			
 			if self.display_only:
 				print(tweet)
