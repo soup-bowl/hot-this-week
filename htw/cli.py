@@ -2,6 +2,7 @@ from sys import exit
 from os import getenv
 from os.path import realpath, exists
 from pathlib import Path
+from htw.lfm import lfm
 import getopt, json
 
 class cli(object):
@@ -21,7 +22,7 @@ class cli(object):
 				["help", "version", "period", "silent", "display", "file="]
 			)
 		except getopt.GetoptError:
-			print("Invalid command(s).")
+			print("Invalid command(s).\n")
 			self.print_help()
 			exit(2)
 
@@ -39,10 +40,15 @@ class cli(object):
 			elif opt in ("-f", "--file"):
 				confile = realpath( arg )
 				if exists( confile ):
-					furrr = self.read_config( confile )
+					self.read_config( confile )
 				else:
 					print("The configuration file specified could not be found.")
 					exit(3)
+
+		if self.twitter_users is None:
+			print("Participant collection is empty. Please specify a configuration file per-user (array object we look for is 'clients').")
+			print("Run with -h/--help to see the help documentation.")
+			exit(4)
 
 		success_count = 0
 		failure_count = 0
@@ -51,6 +57,7 @@ class cli(object):
 			if not self.suppress:
 				print("Processing %s" % item['lastfmUsername'])
 				print("- Scraping from last.fm...")
+				lfm(self.lastfm_key).get_top_artists('soup-bowl')
 
 	def read_config(self, location):
 		conf = json.loads( Path( location ).read_text() )
@@ -73,7 +80,7 @@ class cli(object):
 		print("")
 		print("Options:")
 		print("-f, --file         Load in a config.json file from a different location.")
-		print("-p, --period       Time period to post. If unspecified, the default is 1 week.")
+		#print("-p, --period       Time period to post. If unspecified, the default is 1 week.")
 		print("                   Options are 'week' (default), 'month', 'quarter', 'halfyear', 'year' and 'all'.")
 		print("-s, --silent       Script does not output anything, just success/fail code.")
 		print("-d, --display      Displays tweet, but does not post to Twitter.")
