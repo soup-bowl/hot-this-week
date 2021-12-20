@@ -9,6 +9,14 @@ class collage(object):
 		self.namelength = 15
 
 	def new(self, lfm_collection):
+		"""Creates a new collage image.
+
+		Args:
+			lfm_collection ([type]): Last.fm user data collection.
+
+		Returns:
+			[str]: Collage image path.
+		"""
 		main  = Image.new("RGB", (800, 400))
 		coll1 = Image.new("RGB", (400, 400))
 
@@ -26,19 +34,14 @@ class collage(object):
 		main.paste(img0, (0,0))
 		main.paste(coll1, (400,0))
 
-		draw  = ImageDraw.Draw(main)
+		draw  = ImageDraw.Draw(main).text
 		mfont = ImageFont.truetype("ubuntu.ttf", 42)
 		sfont = ImageFont.truetype("ubuntu.ttf", 24)
-		draw.text((396,396), self.cut_long_artist_name( lfm_collection[0]['name'] ), font=mfont, align='right', fill='black', anchor='rb' )
-		draw.text((395,395), self.cut_long_artist_name( lfm_collection[0]['name'] ), font=mfont, align='right', fill='white', anchor='rb' )
-		draw.text((596,196), self.cut_long_artist_name( lfm_collection[1]['name'] ), font=sfont, align='right', fill='black', anchor='rb' )
-		draw.text((595,195), self.cut_long_artist_name( lfm_collection[1]['name'] ), font=sfont, align='right', fill='white', anchor='rb' )
-		draw.text((796,196), self.cut_long_artist_name( lfm_collection[2]['name'] ), font=sfont, align='right', fill='black', anchor='rb' )
-		draw.text((795,195), self.cut_long_artist_name( lfm_collection[2]['name'] ), font=sfont, align='right', fill='white', anchor='rb' )
-		draw.text((596,396), self.cut_long_artist_name( lfm_collection[3]['name'] ), font=sfont, align='right', fill='black', anchor='rb' )
-		draw.text((595,395), self.cut_long_artist_name( lfm_collection[3]['name'] ), font=sfont, align='right', fill='white', anchor='rb' )
-		draw.text((796,396), self.cut_long_artist_name( lfm_collection[4]['name'] ), font=sfont, align='right', fill='black', anchor='rb' )
-		draw.text((795,395), self.cut_long_artist_name( lfm_collection[4]['name'] ), font=sfont, align='right', fill='white', anchor='rb' )
+		self.render_text(draw, (395,395), lfm_collection[0]['name'], mfont)
+		self.render_text(draw, (595,195), lfm_collection[1]['name'], sfont)
+		self.render_text(draw, (795,195), lfm_collection[2]['name'], sfont)
+		self.render_text(draw, (595,395), lfm_collection[3]['name'], sfont)
+		self.render_text(draw, (795,395), lfm_collection[4]['name'], sfont)
 
 		rangen   = ''.join(random.choices(string.ascii_letters + string.digits, k=5))
 		filename = 'sbimg_%s.png' % rangen
@@ -46,7 +49,27 @@ class collage(object):
 
 		return realpath(filename)
 	
+	def render_text(self, draw, pos, content, font):
+		"""Renders text over the image.
+
+		Args:
+			draw (ImageDraw): ImageDraw instance to add to.
+			pos (tuple): Position to draw text.
+			content (str): Text to be written to the image.
+			font (ImageFont): Font to utilise.
+		"""
+		draw.text(pos, self.cut_long_artist_name( content ), font=font, align='right', fill='black', anchor='rb' )
+		draw.text(((pos[0] - 1),(pos[1] - 1)), self.cut_long_artist_name( content ), font=font, align='right', fill='white', anchor='rb' )
+	
 	def cut_long_artist_name(self, name):
+		"""Concatenates a long artist name to avoid image overlapping (dictated by self.namelength).
+
+		Args:
+			name (str): Artist name.
+
+		Returns:
+			[str]: Artist name, concatenated with an elipsis if over a predetermined length.
+		"""
 		if len(name) > self.namelength:
 			return name[0:(self.namelength - 3)] + '...'
 		else:
