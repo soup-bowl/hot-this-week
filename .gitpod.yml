@@ -1,6 +1,6 @@
 tasks:
   - init: |
-      echo init
+      docker-compose build
     command: |
       echo ${HTW_SETTINGS_JSON} > config.json
 vscode:
