@@ -3,6 +3,9 @@ tasks:
       docker-compose build
     command: |
       echo ${HTW_SETTINGS_JSON} > config.json
+      python3 -m venv pythonenv
+      source pythonenv/bin/activate
+      pip install -r requirements.txt
 vscode:
   extensions:
     - ms-azuretools.vscode-docker
