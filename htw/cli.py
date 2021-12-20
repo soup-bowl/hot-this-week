@@ -4,7 +4,7 @@ from os.path import realpath, exists
 from pathlib import Path
 from htw.lfm import lfm
 from htw.collage import collage
-from htw.twitter import compose_tweet
+from htw.twitter import compose_tweet, post_to_twitter
 import getopt, json
 
 class cli(object):
@@ -74,7 +74,18 @@ class cli(object):
 				print("Collage: %s" % pic)
 				success_count += 1
 			else:
-				print("TODO")
+				if not self.suppress:
+					print("- Posting to Twitter...")
+				
+				post_to_twitter(
+					tweet,
+					pic,
+					self.twitter_key,
+					self.twitter_srt,
+					item['twitterAccessToken'],
+					item['twitterAccessSecret']
+				)
+				success_count += 1
 		if not self.suppress:
 			print("Processing complete - %s successful, %s failures." % (success_count, failure_count))
 
