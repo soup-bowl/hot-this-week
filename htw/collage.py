@@ -5,7 +5,8 @@ import io, string, random
 
 class collage(object):
 	def __init__(self):
-		self.pm = PoolManager()
+		self.pm         = PoolManager()
+		self.namelength = 15
 
 	def new(self, lfm_collection):
 		main  = Image.new("RGB", (800, 400))
@@ -27,20 +28,26 @@ class collage(object):
 
 		draw  = ImageDraw.Draw(main)
 		mfont = ImageFont.truetype("ubuntu.ttf", 42)
-		sfont = ImageFont.truetype("ubuntu.ttf", 28)
-		draw.text((396,396), lfm_collection[0]['name'], font=mfont, align='right', fill='black', anchor='rb' )
-		draw.text((395,395), lfm_collection[0]['name'], font=mfont, align='right', fill='white', anchor='rb' )
-		draw.text((596,196), lfm_collection[1]['name'], font=sfont, align='right', fill='black', anchor='rb' )
-		draw.text((595,195), lfm_collection[1]['name'], font=sfont, align='right', fill='white', anchor='rb' )
-		draw.text((796,196), lfm_collection[2]['name'], font=sfont, align='right', fill='black', anchor='rb' )
-		draw.text((795,195), lfm_collection[2]['name'], font=sfont, align='right', fill='white', anchor='rb' )
-		draw.text((596,396), lfm_collection[3]['name'], font=sfont, align='right', fill='black', anchor='rb' )
-		draw.text((595,395), lfm_collection[3]['name'], font=sfont, align='right', fill='white', anchor='rb' )
-		draw.text((796,396), lfm_collection[4]['name'], font=sfont, align='right', fill='black', anchor='rb' )
-		draw.text((795,395), lfm_collection[4]['name'], font=sfont, align='right', fill='white', anchor='rb' )
+		sfont = ImageFont.truetype("ubuntu.ttf", 24)
+		draw.text((396,396), self.cut_long_artist_name( lfm_collection[0]['name'] ), font=mfont, align='right', fill='black', anchor='rb' )
+		draw.text((395,395), self.cut_long_artist_name( lfm_collection[0]['name'] ), font=mfont, align='right', fill='white', anchor='rb' )
+		draw.text((596,196), self.cut_long_artist_name( lfm_collection[1]['name'] ), font=sfont, align='right', fill='black', anchor='rb' )
+		draw.text((595,195), self.cut_long_artist_name( lfm_collection[1]['name'] ), font=sfont, align='right', fill='white', anchor='rb' )
+		draw.text((796,196), self.cut_long_artist_name( lfm_collection[2]['name'] ), font=sfont, align='right', fill='black', anchor='rb' )
+		draw.text((795,195), self.cut_long_artist_name( lfm_collection[2]['name'] ), font=sfont, align='right', fill='white', anchor='rb' )
+		draw.text((596,396), self.cut_long_artist_name( lfm_collection[3]['name'] ), font=sfont, align='right', fill='black', anchor='rb' )
+		draw.text((595,395), self.cut_long_artist_name( lfm_collection[3]['name'] ), font=sfont, align='right', fill='white', anchor='rb' )
+		draw.text((796,396), self.cut_long_artist_name( lfm_collection[4]['name'] ), font=sfont, align='right', fill='black', anchor='rb' )
+		draw.text((795,395), self.cut_long_artist_name( lfm_collection[4]['name'] ), font=sfont, align='right', fill='white', anchor='rb' )
 
 		rangen   = ''.join(random.choices(string.ascii_letters + string.digits, k=5))
 		filename = 'sbimg_%s.png' % rangen
 		main.save(filename)
 
 		return realpath(filename)
+	
+	def cut_long_artist_name(self, name):
+		if len(name) > self.namelength:
+			return name[0:(self.namelength - 3)] + '...'
+		else:
+			return name
