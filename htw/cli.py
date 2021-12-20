@@ -60,7 +60,7 @@ class cli(object):
 				print("- Scraping from last.fm...")
 				artists = lfm(self.lastfm_key).get_top_artists('soup-bowl')
 				pic     = collage().new(artists)
-				print("END")
+				print(pic)
 
 	def read_config(self, location):
 		conf = json.loads( Path( location ).read_text() )

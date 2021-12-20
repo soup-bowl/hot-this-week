@@ -1,6 +1,7 @@
 from PIL import Image, ImageEnhance
 from urllib3 import PoolManager
-import io
+from os.path import realpath
+import io, string, random
 
 class collage(object):
 	def __init__(self):
@@ -24,4 +25,8 @@ class collage(object):
 		main.paste(img0, (0,0))
 		main.paste(coll1, (400,0))
 
-		main.save('sbimg_aaaa.png')
+		rangen   = ''.join(random.choices(string.ascii_letters + string.digits, k=5))
+		filename = 'sbimg_%s.png' % rangen
+		main.save(filename)
+
+		return realpath(filename)
