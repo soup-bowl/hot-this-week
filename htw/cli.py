@@ -57,7 +57,8 @@ class cli(object):
 			if not self.suppress:
 				print("Processing %s" % item['lastfmUsername'])
 				print("- Scraping from last.fm...")
-				lfm(self.lastfm_key).get_top_artists('soup-bowl')
+				artists = lfm(self.lastfm_key).get_top_artists('soup-bowl')
+				print("END")
 
 	def read_config(self, location):
 		conf = json.loads( Path( location ).read_text() )
