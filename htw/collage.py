@@ -34,7 +34,7 @@ class collage(object):
 		main.paste(img0, (0,0))
 		main.paste(coll1, (400,0))
 
-		draw  = ImageDraw.Draw(main).text
+		draw  = ImageDraw.Draw(main)
 		mfont = ImageFont.truetype("ubuntu.ttf", 42)
 		sfont = ImageFont.truetype("ubuntu.ttf", 24)
 		self.render_text(draw, (395,395), lfm_collection[0]['name'], mfont)
