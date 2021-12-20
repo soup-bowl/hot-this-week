@@ -4,6 +4,7 @@ from os.path import realpath, exists
 from pathlib import Path
 from htw.lfm import lfm
 from htw.collage import collage
+from htw.twitter import compose_tweet
 import getopt, json
 
 class cli(object):
@@ -53,14 +54,29 @@ class cli(object):
 
 		success_count = 0
 		failure_count = 0
-
 		for item in self.twitter_users:
 			if not self.suppress:
 				print("Processing %s" % item['lastfmUsername'])
 				print("- Scraping from last.fm...")
-				artists = lfm(self.lastfm_key).get_top_artists('soup-bowl')
-				pic     = collage().new(artists)
-				print(pic)
+			artists = lfm(self.lastfm_key).get_top_artists('soup-bowl')
+
+			if not self.suppress:
+				print("- Generating collage...")
+			pic = collage().new(artists)
+
+			if not self.suppress:
+				print("- Composing tweet...")
+			tweet = compose_tweet(artists)
+			
+			if self.display_only:
+				print(tweet)
+				print("---")
+				print("Collage: %s" % pic)
+				success_count += 1
+			else:
+				print("TODO")
+		if not self.suppress:
+			print("Processing complete - %s successful, %s failures." % (success_count, failure_count))
 
 	def read_config(self, location):
 		conf = json.loads( Path( location ).read_text() )

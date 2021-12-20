@@ -65,4 +65,4 @@ class lfm(object):
 		Returns:
 			[str]: The API URL.
 		"""
-		return self.url % ( self.key, 'json', endpoint, user, 'weekly', '5' ) 
+		return self.url % ( self.key, 'json', endpoint, user, '7day', '5' ) 
