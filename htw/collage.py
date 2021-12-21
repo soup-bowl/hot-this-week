@@ -9,7 +9,7 @@ class collage(object):
 		self.namelength = 15
 		self.tempdir    = tempfile.mkdtemp()
 
-	def new(self, lfm_collection):
+	def new(self, lfm_collection, keep_collage = False):
 		"""Creates a new collage image.
 
 		Args:
@@ -46,9 +46,14 @@ class collage(object):
 
 		rangen   = ''.join(random.choices(string.ascii_letters + string.digits, k=5))
 		filename = 'sbimg_%s.png' % rangen
-		main.save(filename)
+		storage  = ''
+		if keep_collage:
+			storage = filename
+		else:
+			storage = self.tempdir + '/' + filename
 
-		return realpath(filename)
+		main.save(storage)
+		return realpath(storage)
 	
 	def render_text(self, draw, pos, content, font):
 		"""Renders text over the image.

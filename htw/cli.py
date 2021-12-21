@@ -11,6 +11,7 @@ class cli(object):
 	def __init__(self):
 		self.suppress      = False
 		self.display_only  = False
+		self.keep_pic      = False
 		self.lastfm_key    = getenv('LASTFM_KEY')
 		self.twitter_key   = getenv('TWITTER_CONSUMER_KEY')
 		self.twitter_srt   = getenv('TWITTER_CONSUMER_SECRET')
@@ -20,8 +21,8 @@ class cli(object):
 		try:
 			opts, args = getopt.getopt(
 				argv[1::],
-				"hvpsdhf:",
-				["help", "version", "period", "silent", "display", "file="]
+				"hvpsdhkf:",
+				["help", "version", "period", "silent", "display", "keep", "file="]
 			)
 		except getopt.GetoptError:
 			print("Invalid command(s).\n")
@@ -37,6 +38,8 @@ class cli(object):
 				exit()
 			elif opt in ('-s', '--silent'):
 				self.suppress = True
+			elif opt in ('-k', '--keep'):
+				self.keep_pic = True
 			elif opt in ('-d', '--display'):
 				self.display_only = True
 			elif opt in ("-f", "--file"):
@@ -63,7 +66,7 @@ class cli(object):
 			if not self.suppress:
 				print("- Generating collage...")
 			colgen = collage()
-			pic    = colgen.new(artists)
+			pic    = colgen.new(artists, self.keep_pic)
 
 			if not self.suppress:
 				print("- Composing tweet...")
@@ -114,7 +117,8 @@ class cli(object):
 		print("Options:")
 		print("-f, --file         Load in a config.json file from a different location.")
 		#print("-p, --period       Time period to post. If unspecified, the default is 1 week.")
-		print("                   Options are 'week' (default), 'month', 'quarter', 'halfyear', 'year' and 'all'.")
+		#print("                   Options are 'week' (default), 'month', 'quarter', 'halfyear', 'year' and 'all'.")
+		print("-k, --keep         The collage is dumped into the working directory instead of a temporary disposable directory.")
 		print("-s, --silent       Script does not output anything, just success/fail code.")
 		print("-d, --display      Displays tweet, but does not post to Twitter.")
 		print("")
