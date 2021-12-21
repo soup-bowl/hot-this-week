@@ -54,7 +54,7 @@ class collage(object):
 
 		main.save(storage)
 		return realpath(storage)
-	
+
 	def render_text(self, draw, pos, content, font):
 		"""Renders text over the image.
 
@@ -66,7 +66,7 @@ class collage(object):
 		"""
 		draw.text(pos, self.cut_long_artist_name( content ), font=font, align='right', fill='black', anchor='rb' )
 		draw.text(((pos[0] - 1),(pos[1] - 1)), self.cut_long_artist_name( content ), font=font, align='right', fill='white', anchor='rb' )
-	
+
 	def cut_long_artist_name(self, name):
 		"""Concatenates a long artist name to avoid image overlapping (dictated by self.namelength).
 
@@ -80,7 +80,7 @@ class collage(object):
 			return name[0:(self.namelength - 3)] + '...'
 		else:
 			return name
-	
+
 	def cleanup(self):
 		"""Cleans up the temporary directory used for generating the image.
 		"""

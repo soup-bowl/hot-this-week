@@ -31,11 +31,11 @@ class lfm(object):
 					"image": self.get_artist_picture( artist['url'] ),
 					"plays": artist['playcount']
 				})
-		
+
 			return coll
 		else:
 			return None
-	
+
 	def get_artist_picture(self, url):
 		"""Scrapes the last.fm website for the artist image.
 
@@ -50,11 +50,11 @@ class lfm(object):
 		if resp.status == 200:
 			content = html.fromstring( resp.data.decode('utf-8') )
 			image   = content.xpath('//div[contains(@class,"header-new-background-image")]')
-		
+
 			return image[0].attrib['content']
 		else:
 			return None
-	
+
 	def craft_request_url(self, endpoint, user):
 		"""Crafts the API URL.
 
@@ -65,4 +65,4 @@ class lfm(object):
 		Returns:
 			[str]: The API URL.
 		"""
-		return self.url % ( self.key, 'json', endpoint, user, '7day', '5' ) 
+		return self.url % ( self.key, 'json', endpoint, user, '7day', '5' )

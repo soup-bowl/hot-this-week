@@ -71,7 +71,7 @@ class cli(object):
 			if not self.suppress:
 				print("- Composing tweet...")
 			tweet = compose_tweet(artists, item['lastfmUsername'])
-			
+
 			if self.display_only:
 				print(tweet)
 				print("---")
@@ -80,7 +80,7 @@ class cli(object):
 			else:
 				if not self.suppress:
 					print("- Posting to Twitter...")
-				
+
 				post_to_twitter(
 					tweet,
 					pic,
@@ -90,7 +90,7 @@ class cli(object):
 					item['twitterAccessSecret']
 				)
 				success_count += 1
-			
+
 			colgen.cleanup()
 		if not self.suppress:
 			print("Processing complete - %s successful, %s failures." % (success_count, failure_count))
@@ -99,7 +99,7 @@ class cli(object):
 		conf = json.loads( Path( location ).read_text() )
 		if 'config' not in conf:
 			return None
-		
+
 		if 'clients' in conf:
 			self.twitter_users = conf['clients']
 
