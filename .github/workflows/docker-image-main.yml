@@ -5,10 +5,9 @@ on:
     branches: [ main ]
     paths:
       - "Dockerfile"
-      - "main.php"
-      - "src/**"
-      - "composer.**"
-      - .github/workflows/docker-image.yml
+      - "requirements.txt"
+      - "htw/**"
+      - ".github/workflows/docker-image-main.yml"
 
 jobs:
   build:
