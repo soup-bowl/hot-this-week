@@ -3,6 +3,9 @@
  <a href="https://www.codefactor.io/repository/github/soup-bowl/hot-this-week">
   <img src="https://www.codefactor.io/repository/github/soup-bowl/hot-this-week/badge" alt="CodeFactor"/>
  </a>
+ <a href="https://github.com/soup-bowl/hot-this-week/actions/workflows/docker-image-main.yml">
+  <img src="https://github.com/soup-bowl/hot-this-week/actions/workflows/docker-image-main.yml/badge.svg" alt="Compile mainline container"/>
+ </a>
 </p>
 
 <p align="center">
@@ -20,20 +23,20 @@ This clever bot does the following:
 * We do some arts and crafts wizardary 🪄 to formulate a collage picture.
 * Lastly, the app phones up Twitter 📞, asks how their turtle is hanging 🐢, and posts the info and picture.
 
-⭐ Collage is made using the power of [Collage][tzsk/collage] and [Intervention][intervention], and connections made using [Dandelionmood's Lastfm][dandelionmood/lastfm], and the [Twitter oAuth][abraham/twitteroauth] libaries.
+⭐ Collage is made using the power of Python using [Pillow][p-pillow] for image manipulation, [Twython][p-twython] and [urllib3][p-urllib3] for API communication, and [lxml][p-lxml] for scraping the internet.
 
 ## 🚀 Set-up
 **There's no official service or method of usage yet!** Watch this space 👀
  
 ### 🐋 Docker/Podman
 ```
-docker run -v /path/to/localsystem/config.json:/opt/app/config.json ghcr.io/soup-bowl/hot-this-week:latest
+docker run -v ${PWD}/config.json:/opt/app/config.json ghcr.io/soup-bowl/hot-this-week:latest
 ```
 Append `-h` right at the end to see usage instructions. Change 'latest' for 'edge' to get the latest development version (possibly unstable).
 
 ### Natively
 
-The project depends on having the **GD** library and PHP extension installed, and don't forget to run `composer install` to grab the project dependencies.
+The project depends on having Python 3 installed, and don't forget to run `pip3 install -r requirements.txt` to grab the project dependencies.
  
 See the [configuration example](/config.json.example) to see how to setup the tool. The following configurations are **required** for this to work in your **own environment**:
 
@@ -43,9 +46,9 @@ See the [configuration example](/config.json.example) to see how to setup the to
   * You can [register for Twitter API keys here](https://developer.twitter.com/en/portal/dashboard).
   * Ensure your access token has **read and write** capabilities (default is read only).
 
-With everything set, you can just run `php main.php` from CLI, and all the magic should happen. You can see the optional arguments by running `php main.php --help`.
+With everything set, you can just run `python3 -m htw` from CLI, and all the magic should happen. You can see the optional arguments by running `php main.php --help`.
 
-[dandelionmood/lastfm]: https://github.com/dandelionmood/php-lastfm
-[abraham/twitteroauth]: https://twitteroauth.com/
-[tzsk/collage]: https://github.com/tzsk/collage
-[intervention]: http://image.intervention.io/
+[p-pillow]: https://pypi.org/project/Pillow/
+[p-twython]: https://pypi.org/project/twython/
+[p-urllib3]: https://pypi.org/project/urllib3/
+[p-lxml]: https://pypi.org/project/lxml/
