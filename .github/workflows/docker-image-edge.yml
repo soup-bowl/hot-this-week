@@ -5,10 +5,9 @@ on:
     branches: [ edge ]
     paths:
       - "Dockerfile"
-      - "main.php"
-      - "src/**"
-      - "composer.**"
-      - .github/workflows/docker-image.yml
+      - "requirements.txt"
+      - "htw/**"
+      - ".github/workflows/docker-image-edge.yml"
 
 jobs:
   build:
