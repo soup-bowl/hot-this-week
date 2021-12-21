@@ -46,7 +46,7 @@ See the [configuration example](/config.json.example) to see how to setup the to
   * You can [register for Twitter API keys here](https://developer.twitter.com/en/portal/dashboard).
   * Ensure your access token has **read and write** capabilities (default is read only).
 
-With everything set, you can just run `python3 -m htw` from CLI, and all the magic should happen. You can see the optional arguments by running `php main.php --help`.
+With everything set, you can just run `python3 -m htw` from CLI, and all the magic should happen. You can see the optional arguments by running `python3 -m htw --help`.
 
 [p-pillow]: https://pypi.org/project/Pillow/
 [p-twython]: https://pypi.org/project/twython/
