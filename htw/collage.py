@@ -1,12 +1,13 @@
 from PIL import Image, ImageEnhance, ImageDraw, ImageFont
 from urllib3 import PoolManager
 from os.path import realpath
-import io, string, random
+import io, string, random, tempfile, shutil
 
 class collage(object):
 	def __init__(self):
 		self.pm         = PoolManager()
 		self.namelength = 15
+		self.tempdir    = tempfile.mkdtemp()
 
 	def new(self, lfm_collection):
 		"""Creates a new collage image.
@@ -74,3 +75,8 @@ class collage(object):
 			return name[0:(self.namelength - 3)] + '...'
 		else:
 			return name
+	
+	def cleanup(self):
+		"""Cleans up the temporary directory used for generating the image.
+		"""
+		shutil.rmtree(self.tempdir)

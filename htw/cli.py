@@ -62,7 +62,8 @@ class cli(object):
 
 			if not self.suppress:
 				print("- Generating collage...")
-			pic = collage().new(artists)
+			colgen = collage()
+			pic    = colgen.new(artists)
 
 			if not self.suppress:
 				print("- Composing tweet...")
@@ -86,6 +87,8 @@ class cli(object):
 					item['twitterAccessSecret']
 				)
 				success_count += 1
+			
+			colgen.cleanup()
 		if not self.suppress:
 			print("Processing complete - %s successful, %s failures." % (success_count, failure_count))
 
