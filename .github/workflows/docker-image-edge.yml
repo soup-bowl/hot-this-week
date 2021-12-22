@@ -7,10 +7,30 @@ on:
       - "Dockerfile"
       - "requirements.txt"
       - "htw/**"
+      - "tests/**"
       - ".github/workflows/docker-image-edge.yml"
+  workflow_dispatch:
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Codebase
+      uses: actions/checkout@v2
+
+    - name: Python get
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.x"
+      
+    - name: Grab Dependencies
+      run: pip install -r requirements.txt && pip install pytest
+
+    - name: Run unit tests
+      run: pytest -v
+
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
     - name: Avast, we got stuff to do!
