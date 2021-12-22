@@ -5,7 +5,7 @@ on:
     branches: [ edge ]
     paths:
       - "htw/**"
-    workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   build:
