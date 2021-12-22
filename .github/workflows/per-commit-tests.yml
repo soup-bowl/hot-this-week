@@ -1,0 +1,26 @@
+name: Per-commit Unit Tests
+
+on:
+  push:
+    branches: [ edge ]
+    paths:
+      - "htw/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Codebase
+      uses: actions/checkout@v2
+
+    - name: Python get
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.x"
+      
+    - name: Grab Dependencies
+      run: pip install -r requirements.txt && pip install pytest
+
+    - name: Run unit tests
+      run: pytest -v
