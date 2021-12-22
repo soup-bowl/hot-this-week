@@ -1,5 +1,6 @@
 from urllib3 import PoolManager
 from lxml import html
+from enum import Enum
 import json
 
 class lfm(object):
@@ -10,7 +11,7 @@ class lfm(object):
 		self.url    = "http://ws.audioscrobbler.com/2.0/?api_key=%s&format=%s&method=%s&user=%s&period=%s&limit=%s"
 		self.pm     = PoolManager()
 
-	def get_top_artists(self, username):
+	def get_top_artists(self, username, period):
 		"""Gets the specified users' favourites list.
 
 		Args:
@@ -19,7 +20,7 @@ class lfm(object):
 		Returns:
 			[dict]: Collection of artists, their logo and user playcount.
 		"""
-		resp = self.pm.request( 'GET', self.craft_request_url( 'user.gettopartists', username ) )
+		resp = self.pm.request( 'GET', self.craft_request_url( 'user.gettopartists', username, period ) )
 
 		if resp.status == 200:
 			coll = []
@@ -55,7 +56,7 @@ class lfm(object):
 		else:
 			return None
 
-	def craft_request_url(self, endpoint, user):
+	def craft_request_url(self, endpoint, user, period = None):
 		"""Crafts the API URL.
 
 		Args:
@@ -65,4 +66,15 @@ class lfm(object):
 		Returns:
 			[str]: The API URL.
 		"""
-		return self.url % ( self.key, 'json', endpoint, user, '7day', '5' )
+		if period is None:
+			period = lfmperiod.week
+
+		return self.url % ( self.key, 'json', endpoint, user, period.value, '5' )
+
+class lfmperiod(Enum):
+	week     = "7day"
+	month    = "1month"
+	quarter  = "3month"
+	halfyear = "6month"
+	year     = "12month"
+	all      = "overall"

@@ -2,7 +2,7 @@ from sys import exit
 from os import getenv
 from os.path import realpath, exists
 from pathlib import Path
-from htw.lfm import lfm
+from htw.lfm import lfm, lfmperiod
 from htw.collage import collage
 from htw.twitter import compose_tweet, post_to_twitter
 import getopt, json
@@ -12,6 +12,7 @@ class cli(object):
 		self.suppress      = False
 		self.display_only  = False
 		self.keep_pic      = False
+		self.lfm_period    = lfmperiod.week
 		self.lastfm_key    = getenv('LASTFM_KEY')
 		self.twitter_key   = getenv('TWITTER_CONSUMER_KEY')
 		self.twitter_srt   = getenv('TWITTER_CONSUMER_SECRET')
@@ -21,8 +22,8 @@ class cli(object):
 		try:
 			opts, args = getopt.getopt(
 				argv[1::],
-				"hvpsdhkf:",
-				["help", "version", "period", "silent", "display", "keep", "file="]
+				"hvsdhkf:p:",
+				["help", "version", "silent", "display", "keep", "file=", "period="]
 			)
 		except getopt.GetoptError:
 			print("Invalid command(s).\n")
@@ -42,6 +43,22 @@ class cli(object):
 				self.keep_pic = True
 			elif opt in ('-d', '--display'):
 				self.display_only = True
+			elif opt in ('-p', '--period'):
+				if arg in ('week', 'weekly'):
+					self.lfm_period = lfmperiod.week
+				if arg in ('month', 'monthly'):
+					self.lfm_period = lfmperiod.month
+				elif arg == 'quarter':
+					self.lfm_period = lfmperiod.quarter
+				elif arg == 'halfyear':
+					self.lfm_period = lfmperiod.halfyear
+				elif arg == 'year':
+					self.lfm_period = lfmperiod.year
+				elif arg == 'all':
+					self.lfm_period = lfmperiod.all
+				else:
+					print("Invalid period specifier \"%s\" - defaulting to weekly." % arg)
+					self.lfm_period = lfmperiod.week
 			elif opt in ("-f", "--file"):
 				confile = realpath( arg )
 				if exists( confile ):
@@ -61,7 +78,7 @@ class cli(object):
 			if not self.suppress:
 				print("Processing %s" % item['lastfmUsername'])
 				print("- Scraping from last.fm...")
-			artists = lfm(self.lastfm_key).get_top_artists(item['lastfmUsername'])
+			artists = lfm(self.lastfm_key).get_top_artists(item['lastfmUsername'], self.lfm_period)
 
 			if not self.suppress:
 				print("- Generating collage...")
@@ -116,8 +133,8 @@ class cli(object):
 		print("")
 		print("Options:")
 		print("-f, --file         Load in a config.json file from a different location.")
-		#print("-p, --period       Time period to post. If unspecified, the default is 1 week.")
-		#print("                   Options are 'week' (default), 'month', 'quarter', 'halfyear', 'year' and 'all'.")
+		print("-p, --period       Time period to post. If unspecified, the default is 1 week.")
+		print("                   Options are 'week' (default), 'month', 'quarter', 'halfyear', 'year' and 'all'.")
 		print("-k, --keep         The collage is dumped into the working directory instead of a temporary disposable directory.")
 		print("-s, --silent       Script does not output anything, just success/fail code.")
 		print("-d, --display      Displays tweet, but does not post to Twitter.")
