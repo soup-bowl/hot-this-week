@@ -48,6 +48,8 @@ See the [configuration example](/config.json.example) to see how to setup the to
 
 With everything set, you can just run `python3 -m htw` from CLI, and all the magic should happen. You can see the optional arguments by running `python3 -m htw --help`.
 
+This uses **[pytest](https://docs.pytest.org/en/6.2.x/)** for Unit Testing. Install pytest globally/venv and run `pytest` to run the tests.
+
 [p-pillow]: https://pypi.org/project/Pillow/
 [p-twython]: https://pypi.org/project/twython/
 [p-urllib3]: https://pypi.org/project/urllib3/
