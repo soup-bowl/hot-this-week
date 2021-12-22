@@ -22,7 +22,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: "3.x"
-      
+
     - name: Grab Dependencies
       run: pip install -r requirements.txt && pip install pytest
 
@@ -38,7 +38,7 @@ jobs:
 
     - name: Rooty-tooty, make the booty!
       run: docker build . --file Dockerfile --tag ghcr.io/soup-bowl/hot-this-week:edge
-      
+
     - name: Are you the right scallywag?
       run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u soup-bowl --password-stdin
 

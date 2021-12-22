@@ -6,7 +6,7 @@ class StatChecks(unittest.TestCase):
 	@classmethod
 	def setUpClass(self):
 		self.lfm = lfm("abc")
-	
+
 	def test_artist_picture_scan(self):
 		"""Tests out the artist picture scraper.
 		"""
