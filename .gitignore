@@ -1,5 +1,7 @@
 __pycache__
+.pytest_cache
 pythonenv/
 config.json
 dockertmp/
 sbimg_*.png
+pytestdebug.log
