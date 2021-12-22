@@ -5,6 +5,8 @@ on:
     branches: [ edge ]
     paths:
       - "htw/**"
+      - "tests/**"
+      - "requirements.txt"
   workflow_dispatch:
 
 jobs:
