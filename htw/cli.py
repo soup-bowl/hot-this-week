@@ -12,6 +12,7 @@ class cli(object):
 		self.suppress      = False
 		self.display_only  = False
 		self.keep_pic      = False
+		self.conf_path     = "config.json"
 		self.lfm_period    = lfmperiod.week
 		self.lastfm_key    = getenv('LASTFM_KEY')
 		self.twitter_key   = getenv('TWITTER_CONSUMER_KEY')
@@ -57,19 +58,24 @@ class cli(object):
 				elif arg == 'all':
 					self.lfm_period = lfmperiod.all
 				else:
-					print("Invalid period specifier \"%s\" - defaulting to weekly." % arg)
+					if not self.suppress:
+						print("Invalid period specifier \"%s\" - defaulting to weekly." % arg)
 					self.lfm_period = lfmperiod.week
 			elif opt in ("-f", "--file"):
-				confile = realpath( arg )
-				if exists( confile ):
-					self.read_config( confile )
-				else:
-					print("The configuration file specified could not be found.")
-					exit(3)
+				self.conf_path = realpath( arg )
+
+		if exists( self.conf_path ):
+			self.read_config( self.conf_path )
+		else:
+			if not self.suppress:
+				print("The configuration file could not be found.")
+				print("Run with -h/--help to see the help documentation.")
+			exit(3)
 
 		if self.twitter_users is None:
-			print("Participant collection is empty. Please specify a configuration file per-user (array object we look for is 'clients').")
-			print("Run with -h/--help to see the help documentation.")
+			if not self.suppress:
+				print("Participant collection is empty. Please specify a configuration file per-user (array object we look for is 'clients').")
+				print("Run with -h/--help to see the help documentation.")
 			exit(4)
 
 		success_count = 0
@@ -110,7 +116,7 @@ class cli(object):
 
 			colgen.cleanup()
 		if not self.suppress:
-			print("Processing complete - %s successful, %s failures." % (success_count, failure_count))
+			print("Processing %s complete - %s successful, %s failures." % (success_count + failure_count, success_count, failure_count))
 
 	def read_config(self, location):
 		conf = json.loads( Path( location ).read_text() )
@@ -128,6 +134,9 @@ class cli(object):
 			self.twitter_srt = conf['config']['twitterConsumerSecret'] if self.twitter_srt is None else self.twitter_srt
 
 	def print_help(self):
+		if self.suppress:
+			return None
+
 		print("Run without arguments to process last.fm & Twitter using environmental variables.")
 		print("Script will also check and use environment variables stored in '.env'.")
 		print("")
@@ -143,6 +152,9 @@ class cli(object):
 		print("-h, --help         Display help information.")
 
 	def print_version(self):
+		if self.suppress:
+			return None
+
 		print("Last.fm Twitter bot by soup-bowl - pre-alpha.")
 		print("https://github.com/soup-bowl/lastfm-twitter/")
 
