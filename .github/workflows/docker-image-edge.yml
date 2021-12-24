@@ -47,4 +47,4 @@ jobs:
       uses: docker/setup-buildx-action@v1
 
     - name: Build and Push image
-      run: docker buildx build --push --tag ghcr.io/soup-bowl/hot-this-week:edge --platform linux/amd64,linux/arm64,linux/arm/v7 .
+      run: docker buildx build --push --tag ghcr.io/soup-bowl/hot-this-week:edge --platform linux/amd64,linux/arm64 .
