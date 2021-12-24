@@ -21,11 +21,11 @@ class collage(object):
 		main  = Image.new("RGB", (800, 400))
 		coll1 = Image.new("RGB", (400, 400))
 
-		img0 = Image.open( io.BytesIO( self.pm.request( 'GET', lfm_collection[0]['image'] ).data ) ).resize((400,400), Image.ANTIALIAS)
-		img1 = Image.open( io.BytesIO( self.pm.request( 'GET', lfm_collection[1]['image'] ).data ) ).resize((200,200), Image.ANTIALIAS)
-		img2 = Image.open( io.BytesIO( self.pm.request( 'GET', lfm_collection[2]['image'] ).data ) ).resize((200,200), Image.ANTIALIAS)
-		img3 = Image.open( io.BytesIO( self.pm.request( 'GET', lfm_collection[3]['image'] ).data ) ).resize((200,200), Image.ANTIALIAS)
-		img4 = Image.open( io.BytesIO( self.pm.request( 'GET', lfm_collection[4]['image'] ).data ) ).resize((200,200), Image.ANTIALIAS)
+		img0 = Image.open( self.obtain_picture( lfm_collection[0]['image'] ) ).resize((400,400), Image.ANTIALIAS)
+		img1 = Image.open( self.obtain_picture( lfm_collection[1]['image'] ) ).resize((200,200), Image.ANTIALIAS)
+		img2 = Image.open( self.obtain_picture( lfm_collection[2]['image'] ) ).resize((200,200), Image.ANTIALIAS)
+		img3 = Image.open( self.obtain_picture( lfm_collection[3]['image'] ) ).resize((200,200), Image.ANTIALIAS)
+		img4 = Image.open( self.obtain_picture( lfm_collection[4]['image'] ) ).resize((200,200), Image.ANTIALIAS)
 
 		coll1.paste(img1, (0,0))
 		coll1.paste(img2, (200,0))
@@ -54,6 +54,13 @@ class collage(object):
 
 		main.save(storage)
 		return realpath(storage)
+
+	def obtain_picture(self, url):
+		pic = self.pm.request( 'GET', url )
+		if pic.status == 200:
+			return io.BytesIO( pic.data )
+		else:
+			return "blank.png"
 
 	def render_text(self, draw, pos, content, font):
 		"""Renders text over the image.
