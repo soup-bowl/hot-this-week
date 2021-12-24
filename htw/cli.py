@@ -90,6 +90,12 @@ class cli(object):
 				print("\033[91mError\033[00m: %s" % e)
 				failure_count += 1
 				continue
+			
+			if len(artists) < 5:
+				if not self.suppress:
+					print("\033[91mError\033[00m: Not enough data to process. Skipping.")
+				failure_count += 1
+				continue
 
 			if not self.suppress:
 				print("- Generating collage...")
