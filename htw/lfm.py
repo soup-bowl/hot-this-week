@@ -34,8 +34,10 @@ class lfm(object):
 				})
 
 			return coll
+		elif resp.status == 403:
+			raise Exception("The global Last.fm API key is invalid, blocked or not set.")
 		else:
-			return None
+			raise Exception("An unknown error has occurred with the Last.fm API.")
 
 	def get_artist_picture(self, url):
 		"""Scrapes the last.fm website for the artist image.

@@ -84,7 +84,12 @@ class cli(object):
 			if not self.suppress:
 				print("Processing \033[92m%s\033[00m" % item['lastfmUsername'])
 				print("- Scraping from \033[91mlast.fm\033[00m...")
-			artists = lfm(self.lastfm_key).get_top_artists(item['lastfmUsername'], self.lfm_period)
+			try:
+				artists = lfm(self.lastfm_key).get_top_artists(item['lastfmUsername'], self.lfm_period)
+			except Exception as e:
+				print("\033[91mError\033[00m: %s" % e)
+				failure_count += 1
+				continue
 
 			if not self.suppress:
 				print("- Generating collage...")
