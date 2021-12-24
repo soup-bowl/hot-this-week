@@ -82,8 +82,8 @@ class cli(object):
 		failure_count = 0
 		for item in self.twitter_users:
 			if not self.suppress:
-				print("Processing %s" % item['lastfmUsername'])
-				print("- Scraping from last.fm...")
+				print("Processing \033[92m%s\033[00m" % item['lastfmUsername'])
+				print("- Scraping from \033[91mlast.fm\033[00m...")
 			artists = lfm(self.lastfm_key).get_top_artists(item['lastfmUsername'], self.lfm_period)
 
 			if not self.suppress:
@@ -98,11 +98,11 @@ class cli(object):
 			if self.display_only:
 				print(tweet)
 				print("---")
-				print("Collage: %s" % pic)
+				print("\033[92mCollage\033[00m: %s" % pic)
 				success_count += 1
 			else:
 				if not self.suppress:
-					print("- Posting to Twitter...")
+					print("- Posting to \033[96mTwitter\033[00m...")
 
 				post_to_twitter(
 					tweet,
@@ -116,7 +116,7 @@ class cli(object):
 
 			colgen.cleanup()
 		if not self.suppress:
-			print("Processing %s complete - %s successful, %s failures." % (success_count + failure_count, success_count, failure_count))
+			print("Processing %s complete - \033[92m%s\033[00m successful, \033[91m%s\033[00m failures." % (success_count + failure_count, success_count, failure_count))
 
 	def read_config(self, location):
 		conf = json.loads( Path( location ).read_text() )
@@ -140,21 +140,22 @@ class cli(object):
 		print("Run without arguments to process last.fm & Twitter using environmental variables.")
 		print("Script will also check and use environment variables stored in '.env'.")
 		print("")
-		print("Options:")
-		print("-f, --file         Load in a config.json file from a different location.")
-		print("-p, --period       Time period to post. If unspecified, the default is 1 week.")
-		print("                   Options are 'week' (default), 'month', 'quarter', 'halfyear', 'year' and 'all'.")
-		print("-k, --keep         The collage is dumped into the working directory instead of a temporary disposable directory.")
-		print("-s, --silent       Script does not output anything, just success/fail code.")
-		print("-d, --display      Displays tweet, but does not post to Twitter.")
+		print("\033[93mOptions:\033[00m")
+		print("\033[92m-f, --file         \033[00mLoad in a config.json file from a different location.")
+		print("                   Default is \033[93mconfig.json\033[00m in the current directory.")
+		print("\033[92m-p, --period       \033[00mTime period to post. If unspecified, the default is 1 week.")
+		print("                   Options are \033[93m'week' (default)\033[00m, 'month', 'quarter', 'halfyear', 'year' and 'all'.")
+		print("\033[92m-k, --keep         \033[00mThe collage is dumped into the working directory instead of a temporary disposable directory.")
+		print("\033[92m-s, --silent       \033[00mScript does not output anything, just success/fail code.")
+		print("\033[92m-d, --display      \033[00mDisplays tweet, but does not post to Twitter.")
 		print("")
-		print("-v, --version      Display script version.")
-		print("-h, --help         Display help information.")
+		print("\033[92m-v, --version      \033[00mDisplay script version.")
+		print("\033[92m-h, --help         \033[00mDisplay help information.")
 
 	def print_version(self):
 		if self.suppress:
 			return None
 
-		print("Last.fm Twitter bot by soup-bowl - pre-alpha.")
+		print("Hot this Week by soup-bowl - \033[93m%s\033[00m." % "pre-alpha")
 		print("https://github.com/soup-bowl/lastfm-twitter/")
 
