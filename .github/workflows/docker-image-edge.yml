@@ -33,14 +33,18 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-    - name: Avast, we got stuff to do!
+    - name: Checkout Codebase
       uses: actions/checkout@v2
 
-    - name: Rooty-tooty, make the booty!
-      run: docker build . --file Dockerfile --tag ghcr.io/soup-bowl/hot-this-week:edge
-
-    - name: Are you the right scallywag?
+    - name: Authenticate ghcr.io
       run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u soup-bowl --password-stdin
 
-    - name: Yeet onto The Flying Packageman ship.
-      run: docker push ghcr.io/soup-bowl/hot-this-week:edge
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build and Push image
+      run: docker buildx build --push --tag ghcr.io/soup-bowl/hot-this-week:edge --platform linux/amd64,linux/arm/v7,linux/arm64 .
