@@ -6,6 +6,7 @@ import io, string, random, tempfile, shutil
 class collage(object):
 	def __init__(self):
 		self.pm         = PoolManager()
+		self.fontface   = "assets/ubuntu.ttf"
 		self.namelength = 15
 		self.tempdir    = tempfile.mkdtemp()
 
@@ -36,8 +37,8 @@ class collage(object):
 		main.paste(coll1, (400,0))
 
 		draw  = ImageDraw.Draw(main)
-		mfont = ImageFont.truetype("ubuntu.ttf", 42)
-		sfont = ImageFont.truetype("ubuntu.ttf", 24)
+		mfont = ImageFont.truetype(self.fontface, 42)
+		sfont = ImageFont.truetype(self.fontface, 24)
 		self.render_text(draw, (395,395), lfm_collection[0]['name'], mfont)
 		self.render_text(draw, (595,195), lfm_collection[1]['name'], sfont)
 		self.render_text(draw, (795,195), lfm_collection[2]['name'], sfont)
@@ -60,7 +61,7 @@ class collage(object):
 		if pic.status == 200:
 			return io.BytesIO( pic.data )
 		else:
-			return "blank.png"
+			return "assets/blank.png"
 
 	def render_text(self, draw, pos, content, font):
 		"""Renders text over the image.
