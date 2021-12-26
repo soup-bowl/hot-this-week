@@ -78,56 +78,60 @@ class cli(object):
 				print("Run with -h/--help to see the help documentation.")
 			exit(4)
 
-		success_count = 0
-		failure_count = 0
+		step_count = [0,0]
 		for item in self.twitter_users:
-			if not self.suppress:
-				print("Processing \033[92m%s\033[00m" % item['lastfmUsername'])
-				print("- Scraping from \033[91mlast.fm\033[00m...")
-			try:
-				artists = lfm(self.lastfm_key).get_top_artists(item['lastfmUsername'], self.lfm_period)
-			except Exception as e:
-				print("\033[91mError\033[00m: %s" % e)
-				failure_count += 1
-				continue
-			
-			if len(artists) < 5:
-				if not self.suppress:
-					print("\033[91mError\033[00m: Not enough data to process. Skipping.")
-				failure_count += 1
-				continue
-
-			if not self.suppress:
-				print("- Generating collage...")
-			colgen = collage()
-			pic    = colgen.new(artists, self.keep_pic)
-
-			if not self.suppress:
-				print("- Composing tweet...")
-			tweet = compose_tweet(artists, item['lastfmUsername'])
-
-			if self.display_only:
-				print(tweet)
-				print("---")
-				print("\033[92mCollage\033[00m: %s" % pic)
-				success_count += 1
+			state = self.process_user(item)
+			if state:
+				step_count[0] += 1
 			else:
-				if not self.suppress:
-					print("- Posting to \033[96mTwitter\033[00m...")
-
-				post_to_twitter(
-					tweet,
-					pic,
-					self.twitter_key,
-					self.twitter_srt,
-					item['twitterAccessToken'],
-					item['twitterAccessSecret']
-				)
-				success_count += 1
-
-			colgen.cleanup()
+				step_count[1] += 1
 		if not self.suppress:
-			print("Processing %s complete - \033[92m%s\033[00m successful, \033[91m%s\033[00m failures." % (success_count + failure_count, success_count, failure_count))
+			print("Processing %s complete - \033[92m%s\033[00m successful, \033[91m%s\033[00m failures." % (step_count[0] + step_count[1], step_count[0], step_count[1]))
+
+	def process_user(self, user_conf):
+		if not self.suppress:
+			print("Processing \033[92m%s\033[00m" % user_conf['lastfmUsername'])
+			print("- Scraping from \033[91mlast.fm\033[00m...")
+		try:
+			artists = lfm(self.lastfm_key).get_top_artists(user_conf['lastfmUsername'], self.lfm_period)
+		except Exception as e:
+			print("\033[91mError\033[00m: %s" % e)
+			return False
+		
+		if len(artists) < 5:
+			if not self.suppress:
+				print("\033[91mError\033[00m: Not enough data to process. Skipping.")
+			return False
+
+		if not self.suppress:
+			print("- Generating collage...")
+		colgen = collage()
+		pic    = colgen.new(artists, self.keep_pic)
+
+		if not self.suppress:
+			print("- Composing tweet...")
+		tweet = compose_tweet(artists, user_conf['lastfmUsername'])
+
+		if self.display_only:
+			print(tweet)
+			print("---")
+			print("\033[92mCollage\033[00m: %s" % pic)
+			colgen.cleanup()
+			return True
+		else:
+			if not self.suppress:
+				print("- Posting to \033[96mTwitter\033[00m...")
+
+			post_to_twitter(
+				tweet,
+				pic,
+				self.twitter_key,
+				self.twitter_srt,
+				user_conf['twitterAccessToken'],
+				user_conf['twitterAccessSecret']
+			)
+			colgen.cleanup()
+			return True
 
 	def read_config(self, location):
 		conf = json.loads( Path( location ).read_text() )
