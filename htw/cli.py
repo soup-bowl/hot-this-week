@@ -122,16 +122,21 @@ class cli(object):
 			if not self.suppress:
 				print("- Posting to \033[96mTwitter\033[00m...")
 
-			post_to_twitter(
-				tweet,
-				pic,
-				self.twitter_key,
-				self.twitter_srt,
-				user_conf['twitterAccessToken'],
-				user_conf['twitterAccessSecret']
-			)
-			colgen.cleanup()
-			return True
+			try:
+				post_to_twitter(
+					tweet,
+					pic,
+					self.twitter_key,
+					self.twitter_srt,
+					user_conf['twitterAccessToken'],
+					user_conf['twitterAccessSecret']
+				)
+				return True
+			except Exception as e:
+				print("\033[91mError\033[00m: " + str(e) + ".")
+				return False
+			finally:
+				colgen.cleanup()
 
 	def read_config(self, location):
 		conf = json.loads( Path( location ).read_text() )
