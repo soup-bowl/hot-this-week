@@ -12,4 +12,4 @@ jobs:
         run: echo ${{ secrets.HTK_CONFIG }} > htw-config.json
         
       - name: Run Hot-this-week!
-        run: docker run -v htw-config.json:/opt/app/config.json ghcr.io/soup-bowl/hot-this-week:latest -d
+        run: docker run -v "$(realpath .)/htw-config.json:/opt/app/config.json" ghcr.io/soup-bowl/hot-this-week:latest -d
