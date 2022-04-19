@@ -1,6 +1,8 @@
 name: Run Hot this Week (production)
 
 on:
+  schedule:
+    - cron: 0  14 * * 5
   workflow_dispatch:
 
 jobs:
@@ -12,4 +14,4 @@ jobs:
         run: echo ${{ secrets.HTK_CONFIG }} | base64 --decode > htw-config.json
         
       - name: Run Hot-this-week!
-        run: docker run -v "$(realpath .)/htw-config.json:/opt/app/config.json" ghcr.io/soup-bowl/hot-this-week:latest -d
+        run: docker run -v "$(realpath .)/htw-config.json:/opt/app/config.json" ghcr.io/soup-bowl/hot-this-week:latest
