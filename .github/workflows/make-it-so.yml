@@ -1,0 +1,15 @@
+name: Run Hot this Week (production)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Prepare configuration file
+        run: echo ${{ secrets.HTW_CONFIG }} > htw-config.json
+        
+      - name: Run Hot-this-week!
+        run: docker run -v htw-config.json:/opt/app/config.json ghcr.io/soup-bowl/hot-this-week:latest -d
