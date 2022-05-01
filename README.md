@@ -1,5 +1,8 @@
 # 🔥🎶🐦 soup-bowl's Hot This Week
 <p align="center">
+ <a href="https://hub.docker.com/r/soupbowl/hot-this-week">
+  <img src="https://img.shields.io/docker/pulls/soupbowl/hot-this-week?logo=docker&logoColor=white"/>
+ </a>
  <a href="https://www.codefactor.io/repository/github/soup-bowl/hot-this-week">
   <img src="https://www.codefactor.io/repository/github/soup-bowl/hot-this-week/badge" alt="CodeFactor"/>
  </a>
