@@ -28,10 +28,13 @@ This clever bot does the following:
 ## 🚀 Set-up
 **There's no official service or method of usage yet!** Watch this space 👀
  
-### 🐋 Docker/Podman
+### 🐋 Docker
 ```
-docker run -v ${PWD}/config.json:/opt/app/config.json ghcr.io/soup-bowl/hot-this-week:latest
+docker run -v ${PWD}/config.json:/opt/app/config.json soupbowl/hot-this-week:latest
 ```
+
+*The command above [uses the Dockerhub image](https://hub.docker.com/r/soupbowl/hot-this-week). You can swap `soupbowl` out for `ghcr.io/soup-bowl` for GitHub container registry.*
+
 Append `-h` right at the end to see usage instructions. Change 'latest' for 'edge' to get the latest development version (possibly unstable).
 
 ### Natively
