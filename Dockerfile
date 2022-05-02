@@ -6,7 +6,8 @@ COPY htw                htw
 COPY assets             assets
 COPY requirements.txt   requirements.txt
 
-RUN apk add python3-dev libc-dev zlib-dev jpeg-dev freetype-dev gcc
+RUN apk add python3-dev libc-dev zlib-dev jpeg-dev freetype-dev gcc \
+	libxml2-dev libxslt-dev
 
 RUN pip install --no-cache-dir -r requirements.txt
 
