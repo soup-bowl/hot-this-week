@@ -17,14 +17,14 @@ class CLI():
 	"""Command line handler for the Hot-this-Week toolset.
 	"""
 	def __init__(self):
-		self.suppress      = False
-		self.display_only  = False
-		self.keep_pic      = False
-		self.conf_path     = "config.json"
-		self.lfm_period    = LFMPeriod.WEEK
-		self.lastfm_key    = getenv('LASTFM_KEY')
-		self.twitter_key   = getenv('TWITTER_CONSUMER_KEY')
-		self.twitter_srt   = getenv('TWITTER_CONSUMER_SECRET')
+		self.suppress = False
+		self.display_only = False
+		self.keep_pic = False
+		self.conf_path = "config.json"
+		self.lfm_period = LFMPeriod.WEEK
+		self.lastfm_key = getenv('LASTFM_KEY')
+		self.twitter_key = getenv('TWITTER_CONSUMER_KEY')
+		self.twitter_srt = getenv('TWITTER_CONSUMER_SECRET')
 		self.twitter_users = None
 
 	def main(self, argv):
@@ -130,7 +130,7 @@ class CLI():
 		if not self.suppress:
 			print("- Generating collage...")
 		colgen = Collage()
-		pic    = colgen.new(artists, self.keep_pic)
+		pic = colgen.new(artists, self.keep_pic)
 
 		if not self.suppress:
 			print("- Composing tweet...")
@@ -175,7 +175,7 @@ class CLI():
 			self.twitter_users = conf['clients']
 
 		if 'lastfmKey' in conf['config']:
-			self.lastfm_key  = conf['config']['lastfmKey'] if self.lastfm_key is None else self.lastfm_key
+			self.lastfm_key = conf['config']['lastfmKey'] if self.lastfm_key is None else self.lastfm_key
 		if 'twitterConsumerKey' in conf['config']:
 			self.twitter_key = conf['config']['twitterConsumerKey'] if self.twitter_key is None else self.twitter_key
 		if 'twitterConsumerSecret' in conf['config']:

@@ -67,7 +67,7 @@ class LFM():
 
 		if resp.status == 200:
 			content = html.fromstring( resp.data.decode('utf-8') )
-			image   = content.xpath('//div[contains(@class,"header-new-background-image")]')
+			image = content.xpath('//div[contains(@class,"header-new-background-image")]')
 
 			return image[0].attrib['content']
 
