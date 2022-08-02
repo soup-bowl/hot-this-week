@@ -1,4 +1,8 @@
-from htw.cli import cli
-from sys import argv
+"""
+Initiator from command line.
+"""
 
-cli().main(argv)
+from sys import argv
+from htw.cli import CLI
+
+CLI().main(argv)

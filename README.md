@@ -1,4 +1,5 @@
 # 🔥🎶🐦 soup-bowl's Hot This Week
+
 <p align="center">
  <a href="https://www.codefactor.io/repository/github/soup-bowl/hot-this-week">
   <img src="https://www.codefactor.io/repository/github/soup-bowl/hot-this-week/badge" alt="CodeFactor"/>
@@ -15,6 +16,7 @@
 An experimental bot that posts a rundown of your musical week on Twitter.
 
 ## 🤔 What does this do?
+
 This clever bot does the following:
 * Phones the last.fm API 📲, exchanges pleasantries, asks how their cat is doing 🐈...
 * Oh yeah, "can you tell me what <user> has listened to this week?" 🎶
@@ -26,9 +28,11 @@ This clever bot does the following:
 ⭐ Collage is made using the power of Python using [Pillow][p-pillow] for image manipulation, [Twython][p-twython] and [urllib3][p-urllib3] for API communication, and [lxml][p-lxml] for scraping the internet.
 
 ## 🚀 Set-up
+
 **There's no official service or method of usage yet!** Watch this space 👀
  
 ### 🐋 Docker/Podman
+
 ```
 docker run -v ${PWD}/config.json:/opt/app/config.json ghcr.io/soup-bowl/hot-this-week:latest
 ```
@@ -48,7 +52,7 @@ See the [configuration example](/config.json.example) to see how to setup the to
 
 With everything set, you can just run `python3 -m htw` from CLI, and all the magic should happen. You can see the optional arguments by running `python3 -m htw --help`.
 
-This uses **[pytest](https://docs.pytest.org/en/6.2.x/)** for Unit Testing. Install pytest globally/venv and run `pytest` to run the tests.
+This uses **[pytest](https://docs.pytest.org/en/6.2.x/)** for Unit Testing, and **[pylint](https://pypi.org/project/pylint/)** for linting.
 
 [p-pillow]: https://pypi.org/project/Pillow/
 [p-twython]: https://pypi.org/project/twython/

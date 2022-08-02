@@ -1,0 +1,10 @@
+[tool.pylint.format]
+indent-string = "\t"
+max-line-length = 120
+
+[tool.pylint.design]
+max-attributes = 10
+
+[tool.pylint.logging]
+# R1732 - consider-using-with. Disabled as I didn't intend the output to be temporary.
+disable = ["R1732"]
