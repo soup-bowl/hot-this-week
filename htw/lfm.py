@@ -92,9 +92,9 @@ class LFMPeriod(Enum):
 	""" Enum definer to match common words with whatever the Last.fm API expects.
 	"""
 
-	WEEK     = "7day"
-	MONTH    = "1month"
-	QUARTER  = "3month"
+	WEEK = "7day"
+	MONTH = "1month"
+	QUARTER = "3month"
 	HALFYEAR = "6month"
-	YEAR     = "12month"
-	ALL      = "overall"
+	YEAR = "12month"
+	ALL = "overall"
