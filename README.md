@@ -1,11 +1,11 @@
 # 🔥🎶🐦 soup-bowl's Hot This Week
 
 <p align="center">
+ <a href="https://hub.docker.com/r/soupbowl/hot-this-week">
+  <img src="https://img.shields.io/docker/pulls/soupbowl/hot-this-week?logo=docker&logoColor=white"/>
+ </a>
  <a href="https://www.codefactor.io/repository/github/soup-bowl/hot-this-week">
   <img src="https://www.codefactor.io/repository/github/soup-bowl/hot-this-week/badge" alt="CodeFactor"/>
- </a>
- <a href="https://github.com/soup-bowl/hot-this-week/actions/workflows/docker-image-main.yml">
-  <img src="https://github.com/soup-bowl/hot-this-week/actions/workflows/docker-image-main.yml/badge.svg" alt="Compile mainline container"/>
  </a>
 </p>
 
@@ -34,8 +34,11 @@ This clever bot does the following:
 ### 🐋 Docker/Podman
 
 ```
-docker run -v ${PWD}/config.json:/opt/app/config.json ghcr.io/soup-bowl/hot-this-week:latest
+docker run -v ${PWD}/config.json:/opt/app/config.json soupbowl/hot-this-week:latest
 ```
+
+*The command above [uses the Dockerhub image](https://hub.docker.com/r/soupbowl/hot-this-week). You can swap `soupbowl` out for `ghcr.io/soup-bowl` for GitHub container registry.*
+
 Append `-h` right at the end to see usage instructions. Change 'latest' for 'edge' to get the latest development version (possibly unstable).
 
 ### Natively
