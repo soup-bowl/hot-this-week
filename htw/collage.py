@@ -34,11 +34,11 @@ class Collage():
 		coll = Image.new("RGB", (400, 400))
 
 		img = [
-			Image.open( self.obtain_picture( lfm_collection[0]['image'] ) ).resize((400,400), Image.ANTIALIAS),
-			Image.open( self.obtain_picture( lfm_collection[1]['image'] ) ).resize((200,200), Image.ANTIALIAS),
-			Image.open( self.obtain_picture( lfm_collection[2]['image'] ) ).resize((200,200), Image.ANTIALIAS),
-			Image.open( self.obtain_picture( lfm_collection[3]['image'] ) ).resize((200,200), Image.ANTIALIAS),
-			Image.open( self.obtain_picture( lfm_collection[4]['image'] ) ).resize((200,200), Image.ANTIALIAS)
+			Image.open( self.obtain_picture( lfm_collection[0]['image'] ) ).resize((400,400), Image.Resampling.LANCZOS),
+			Image.open( self.obtain_picture( lfm_collection[1]['image'] ) ).resize((200,200), Image.Resampling.LANCZOS),
+			Image.open( self.obtain_picture( lfm_collection[2]['image'] ) ).resize((200,200), Image.Resampling.LANCZOS),
+			Image.open( self.obtain_picture( lfm_collection[3]['image'] ) ).resize((200,200), Image.Resampling.LANCZOS),
+			Image.open( self.obtain_picture( lfm_collection[4]['image'] ) ).resize((200,200), Image.Resampling.LANCZOS)
 		]
 
 		vectors = [(0,0), (200, 0), (0,200), (200,200)]
