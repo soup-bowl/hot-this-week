@@ -12,7 +12,7 @@ COPY assets             assets
 COPY pyproject.toml     pyproject.toml
 COPY poetry.lock        poetry.lock
 
-RUN pip install poetry
+RUN pip install --no-cache-dir poetry
 RUN poetry install --no-dev --no-interaction --no-ansi
 
 ENTRYPOINT [ "poetry", "run", "python", "-m", "htw" ]
