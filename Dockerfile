@@ -13,7 +13,6 @@ COPY pyproject.toml     pyproject.toml
 COPY poetry.lock        poetry.lock
 
 RUN pip install poetry
-RUN poetry config virtualenvs.create false \
-	&& poetry install --no-dev --no-interaction --no-ansi
+RUN poetry install --no-dev --no-interaction --no-ansi
 
-ENTRYPOINT [ "python", "-m", "htw" ]
+ENTRYPOINT [ "poetry", "run", "python", "-m", "htw" ]
