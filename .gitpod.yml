@@ -1,3 +1,4 @@
+image: gitpod/workspace-python:latest
 tasks:
   - init: |
       docker-compose build
