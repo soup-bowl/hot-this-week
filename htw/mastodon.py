@@ -21,8 +21,13 @@ class Mastodon():
 			media_file=image,
 		)
 
-		# Surely there's a better way?!
-		sleep(5)
+		uploaded = False
+		while not uploaded:
+			media = elephant.media(medias['id'])
+			if media.url is not None:
+				uploaded = True
+			else:
+				sleep(0.5)
 
 		elephant.status_post(
 			status=message,
