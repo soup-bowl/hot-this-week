@@ -147,29 +147,42 @@ class CLI():
 			colgen.cleanup()
 			return True
 
-		if not self.suppress:
-			print("- Posting to \033[96mTwitter\033[00m...")
+		if 'twitterAccessToken' in user_conf:
+			if not self.suppress:
+				print("- Posting to \033[96mTwitter\033[00m...")
 
-		try:
-			#Twitter(
-			#	self.twitter_key,
-			#	self.twitter_srt,
-			#	user_conf['twitterAccessToken'],
-			#	user_conf['twitterAccessSecret']
-			#).post_to_twitter(tweet, pic)
-			Mastodon(
-				api_url=self.mastodon_url,
-				access_key=self.mastodon_key,
-				access_secret=self.mastodon_srt,
-				user_name=user_conf['mastodonUsername'],
-				user_token=user_conf['mastodonAccessToken']
-			).post_to_mastodon(tweet)
-			return True
-		except Exception as error:
-			print("\033[91mError\033[00m: " + str(error) + ".")
-			return False
-		finally:
-			colgen.cleanup()
+			try:
+				Twitter(
+					self.twitter_key,
+					self.twitter_srt,
+					user_conf['twitterAccessToken'],
+					user_conf['twitterAccessSecret']
+				).post_to_twitter(tweet, pic)
+				return True
+			except Exception as error:
+				print("\033[91mError\033[00m: " + str(error) + ".")
+				return False
+			finally:
+				colgen.cleanup()
+		
+		if 'mastodonAccessToken' in user_conf:
+			if not self.suppress:
+				print("- Posting to \033[95mMastodon\033[00m...")
+
+			try:
+				Mastodon(
+					api_url=self.mastodon_url,
+					access_key=self.mastodon_key,
+					access_secret=self.mastodon_srt,
+					user_name=user_conf['mastodonUsername'],
+					user_token=user_conf['mastodonAccessToken']
+				).post_to_mastodon(tweet, pic)
+				return True
+			except Exception as error:
+				print("\033[91mError\033[00m: " + str(error) + ".")
+				return False
+			finally:
+				colgen.cleanup()
 
 	def read_config(self, location):
 		"""Loads in the configurations from the Hot this Week configuration file.
