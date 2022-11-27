@@ -11,6 +11,7 @@ lxml = "^4.9.1"
 twython = "^3.9.1"
 urllib3 = "^1.26.11"
 Pillow = "^9.2.0"
+"Mastodon.py" = "^1.7.0"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.14.5"
