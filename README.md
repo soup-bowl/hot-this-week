@@ -13,7 +13,7 @@
  <img src="https://user-images.githubusercontent.com/11209477/145074448-0894535e-5438-4fed-98d3-975584994590.png" alt="A view of a tweet showing a 5-picture collage, 1 larger image on the left and 4 small images in a grid orientation"/>
 </p>
 
-An experimental bot that posts a rundown of your musical week on Twitter.
+An experimental bot that posts a rundown of your musical week on Twitter and/or Mastodon.
 
 ## 🤔 What does this do?
 
@@ -23,9 +23,9 @@ This clever bot does the following:
 * API kindly hands over the info (or gives us a whack of the handbag if we have no API key).
 * We sneakily scrape the last.fm website for the artist pictures 🤫 (better solutions welcome).
 * We do some arts and crafts wizardary 🪄 to formulate a collage picture.
-* Lastly, the app phones up Twitter 📞, asks how their turtle is hanging 🐢, and posts the info and picture.
+* Lastly, the app phones up Twitter/Mastodon 📞, asks how their turtle is hanging 🐢, and posts the info and picture.
 
-⭐ Collage is made using the power of Python using [Pillow][p-pillow] for image manipulation, [Twython][p-twython] and [urllib3][p-urllib3] for API communication, and [lxml][p-lxml] for scraping the internet.
+⭐ Collage is made using the power of Python using [Pillow][p-pillow] for image manipulation, [Twython][p-twython]/[Mastodon][p-mstdn] and [urllib3][p-urllib3] for API communication, and [lxml][p-lxml] for scraping the internet.
 
 ## 🚀 Set-up
 
@@ -52,6 +52,9 @@ See the [configuration example](/config.json.example) to see how to setup the to
 * Twitter: global `TWITTER_CONSUMER_KEY`, `TWITTER_CONSUMER_SECRET`, and per-user `TWITTER_ACCESS_TOKEN`, and `TWITTER_ACCESS_TOKEN`.
   * You can [register for Twitter API keys here](https://developer.twitter.com/en/portal/dashboard).
   * Ensure your access token has **read and write** capabilities (default is read only).
+ * Mastodon: global `MASTODON_URL`, `MASTODON_KEY` and `MASTODON_SECRET`.
+   * Easily register an application in **Preferences**, then **Development**.
+   * Permissions needed are **write:media** and **write:statuses**.
 
 With everything set, you can just run `python3 -m htw` from CLI, and all the magic should happen. You can see the optional arguments by running `python3 -m htw --help`.
 
@@ -59,5 +62,6 @@ This uses **[pytest](https://docs.pytest.org/en/6.2.x/)** for Unit Testing, and 
 
 [p-pillow]: https://pypi.org/project/Pillow/
 [p-twython]: https://pypi.org/project/twython/
+[p-mstdn]: https://github.com/halcy/Mastodon.py
 [p-urllib3]: https://pypi.org/project/urllib3/
 [p-lxml]: https://pypi.org/project/lxml/

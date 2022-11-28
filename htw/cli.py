@@ -12,6 +12,7 @@ from pathlib import Path
 from htw.lfm import LFM, LFMPeriod
 from htw.collage import Collage
 from htw.twitter import Twitter
+from htw.mastodon import Mastodon
 
 class CLI():
 	"""Command line handler for the Hot-this-Week toolset.
@@ -25,7 +26,10 @@ class CLI():
 		self.lastfm_key = getenv('LASTFM_KEY')
 		self.twitter_key = getenv('TWITTER_CONSUMER_KEY')
 		self.twitter_srt = getenv('TWITTER_CONSUMER_SECRET')
-		self.twitter_users = None
+		self.mastodon_key = getenv('MASTODON_KEY')
+		self.mastodon_srt = getenv('MASTODON_SECRET')
+		self.mastodon_url = getenv('MASTODON_URL')
+		self.htw_users = None
 
 	def main(self, argv):
 		"""Main initator of the command-line response sequence.
@@ -86,7 +90,7 @@ class CLI():
 				print("Run with -h/--help to see the help documentation.")
 			sys.exit(3)
 
-		if self.twitter_users is None:
+		if self.htw_users is None:
 			if not self.suppress:
 				print("Participant collection is empty. Please specify a configuration file per-user ", end='')
 				print("(array object we look for is 'clients').")
@@ -94,7 +98,7 @@ class CLI():
 			sys.exit(4)
 
 		step_count = [0,0]
-		for item in self.twitter_users:
+		for item in self.htw_users:
 			state = self.process_user(item)
 			if state:
 				step_count[0] += 1
@@ -143,22 +147,42 @@ class CLI():
 			colgen.cleanup()
 			return True
 
-		if not self.suppress:
-			print("- Posting to \033[96mTwitter\033[00m...")
+		if 'twitterAccessToken' in user_conf:
+			if not self.suppress:
+				print("- Posting to \033[96mTwitter\033[00m...")
 
-		try:
-			Twitter(
-				self.twitter_key,
-				self.twitter_srt,
-				user_conf['twitterAccessToken'],
-				user_conf['twitterAccessSecret']
-			).post_to_twitter(tweet, pic)
-			return True
-		except Exception as error:
-			print("\033[91mError\033[00m: " + str(error) + ".")
-			return False
-		finally:
-			colgen.cleanup()
+			try:
+				Twitter(
+					self.twitter_key,
+					self.twitter_srt,
+					user_conf['twitterAccessToken'],
+					user_conf['twitterAccessSecret']
+				).post_to_twitter(tweet, pic)
+				return True
+			except Exception as error:
+				print("\033[91mError\033[00m: " + str(error) + ".")
+				return False
+			finally:
+				colgen.cleanup()
+		
+		if 'mastodonAccessToken' in user_conf:
+			if not self.suppress:
+				print("- Posting to \033[95mMastodon\033[00m...")
+
+			try:
+				Mastodon(
+					api_url=self.mastodon_url,
+					access_key=self.mastodon_key,
+					access_secret=self.mastodon_srt,
+					user_name=user_conf['mastodonUsername'],
+					user_token=user_conf['mastodonAccessToken']
+				).post_to_mastodon(tweet, pic)
+				return True
+			except Exception as error:
+				print("\033[91mError\033[00m: " + str(error) + ".")
+				return False
+			finally:
+				colgen.cleanup()
 
 	def read_config(self, location):
 		"""Loads in the configurations from the Hot this Week configuration file.
@@ -172,7 +196,7 @@ class CLI():
 			return
 
 		if 'clients' in conf:
-			self.twitter_users = conf['clients']
+			self.htw_users = conf['clients']
 
 		if 'lastfmKey' in conf['config']:
 			self.lastfm_key = conf['config']['lastfmKey'] if self.lastfm_key is None else self.lastfm_key
@@ -180,6 +204,13 @@ class CLI():
 			self.twitter_key = conf['config']['twitterConsumerKey'] if self.twitter_key is None else self.twitter_key
 		if 'twitterConsumerSecret' in conf['config']:
 			self.twitter_srt = conf['config']['twitterConsumerSecret'] if self.twitter_srt is None else self.twitter_srt
+		
+		if 'mastodonURL' in conf['config']:
+			self.mastodon_url = conf['config']['mastodonURL'] if self.mastodon_url is None else self.mastodon_url
+		if 'mastodonKey' in conf['config']:
+			self.mastodon_key = conf['config']['mastodonKey'] if self.mastodon_key is None else self.mastodon_key
+		if 'mastodonSecret' in conf['config']:
+			self.mastodon_srt = conf['config']['mastodonSecret'] if self.mastodon_srt is None else self.mastodon_srt
 
 	def print_help(self):
 		"""Prints help text to the screen.
