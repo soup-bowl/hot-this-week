@@ -1,11 +1,18 @@
-FROM python:3
+FROM python:3.8-slim
+
+LABEL org.opencontainers.image.title="Soup-bowl's Hot this Week"
+LABEL org.opencontainers.image.authors="code@soupbowl.io"
+LABEL org.opencontainers.image.source="https://github.com/soup-bowl/hot-this-week"
+LABEL org.opencontainers.image.licenses="MIT"
 
 WORKDIR /opt/app
 
 COPY htw                htw
-COPY requirements.txt   requirements.txt
-COPY ubuntu.ttf         ubuntu.ttf
+COPY assets             assets
+COPY pyproject.toml     pyproject.toml
+COPY poetry.lock        poetry.lock
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir poetry
+RUN poetry install --no-dev --no-interaction --no-ansi
 
-ENTRYPOINT [ "python", "-m", "htw", "-f", "config.json" ]
+ENTRYPOINT [ "poetry", "run", "python", "-m", "htw" ]

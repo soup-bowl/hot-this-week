@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "module": "htw",
-            "args": ["-d", "-f", "config.json"]
+            "args": ["-d", "-f", "config.json", "-p", "month"]
         }
     ]
 }
