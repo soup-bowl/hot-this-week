@@ -3,9 +3,7 @@ tasks:
   - init: |
       docker-compose build
       poetry install
-    command: |
-      echo ${HTW_SETTINGS_JSON} | jq > config.json
-      echo "Run the command by doing executing 'poetry run python -m htw -d' or 'docker-compose up --build'."
+    command: sh ./.devcontainer/postCreateCommand.sh
 vscode:
   extensions:
     - ms-azuretools.vscode-docker
