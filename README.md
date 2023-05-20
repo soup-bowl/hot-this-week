@@ -15,6 +15,8 @@
 
 An experimental bot that posts a rundown of your musical week on Mastodon and/or Twitter.
 
+**:warning: The Twitter integration will be phased out as Twitter has taken an agressive stance against automatic tweeting. My development account has been suspended, so I'm no longer able to develop the integration. Mastodon will be the sole focus going forward.**
+
 ## 🤔 What does this do?
 
 This clever bot does the following:
