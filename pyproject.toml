@@ -9,7 +9,7 @@ license = "MIT"
 python = "^3.8"
 lxml = "^4.9.1"
 twython = "^3.9.1"
-urllib3 = "^1.26.11"
+urllib3 = "^1.26.17"
 Pillow = "^9.3.0"
 "Mastodon.py" = "^1.7.0"
 
