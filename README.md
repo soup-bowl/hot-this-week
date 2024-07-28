@@ -13,9 +13,7 @@
  <img src="https://user-images.githubusercontent.com/11209477/214368280-532459b4-eb5d-46f7-82cd-2913d4da1633.png" alt="A view of a Mastodon post showing a 5-picture collage, 1 larger image on the left and 4 small images in a grid orientation"/>
 </p>
 
-An experimental bot that posts a rundown of your musical week on Mastodon and/or Twitter.
-
-**:warning: The Twitter integration will be phased out as Twitter has taken an agressive stance against automatic tweeting. My development account has been suspended, so I'm no longer able to develop the integration. Mastodon will be the sole focus going forward.**
+An experimental bot that posts a rundown of your musical week on Mastodon.
 
 ## 🤔 What does this do?
 
@@ -54,9 +52,6 @@ See the [configuration example](/config.json.example) to see how to setup the to
 * Mastodon: global `MASTODON_URL`, `MASTODON_KEY` and `MASTODON_SECRET`.
   * Easily register an application in **Preferences**, then **Development**.
   * Permissions needed are **write:media** and **write:statuses**.
-* Twitter: global `TWITTER_CONSUMER_KEY`, `TWITTER_CONSUMER_SECRET`, and per-user `TWITTER_ACCESS_TOKEN`, and `TWITTER_ACCESS_TOKEN`.
-  * You can [register for Twitter API keys here](https://developer.twitter.com/en/portal/dashboard).
-  * Ensure your access token has **read and write** capabilities (default is read only).
 
 With everything set, you can just run `python3 -m htw` from CLI, and all the magic should happen. You can see the optional arguments by running `python3 -m htw --help`.
 

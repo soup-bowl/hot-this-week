@@ -9,7 +9,6 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.8"
 lxml = "^5.2.2"
-twython = "^3.9.1"
 urllib3 = "^2.2.2"
 Pillow = "^10.0.1"
 "Mastodon.py" = "^1.7.0"
