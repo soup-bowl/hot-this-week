@@ -7,15 +7,15 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-lxml = "^4.9.1"
+lxml = "^5.2.2"
 twython = "^3.9.1"
-urllib3 = "^1.26.18"
+urllib3 = "^2.2.2"
 Pillow = "^10.0.1"
 "Mastodon.py" = "^1.7.0"
 
 [tool.poetry.dev-dependencies]
-pylint = "^2.14.5"
-pytest = "^7.1.2"
+pylint = "^3.2.6"
+pytest = "^8.3.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
