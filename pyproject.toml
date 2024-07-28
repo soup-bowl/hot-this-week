@@ -1,6 +1,7 @@
 [tool.poetry]
 name = "hot-this-week"
 version = "0.1.0"
+package-mode = false
 description = "Tweets out the top artists for your Last.fm account"
 authors = ["soup-bowl <code@soupbowl.io>"]
 license = "MIT"
