@@ -2,16 +2,12 @@
 	"clients": [
 		{
 			"lastfmUsername": "example",
-			"twitterAccessToken": "key",
-			"twitterAccessSecret": "key",
 			"mastodonUsername": "example@mastodon.social",
 			"mastodonAccessToken": "key"
 		}
 	],
 	"config": {
 		"lastfmKey": "key",
-		"twitterConsumerKey": "key",
-		"twitterConsumerSecret": "key",
 		"mastodonURL": "https://mastodon.social",
 		"mastodonKey": "key",
 		"mastodonSecret": "key"

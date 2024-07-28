@@ -11,7 +11,7 @@ from pathlib import Path
 
 from htw.lfm import LFM, LFMPeriod
 from htw.collage import Collage
-from htw.twitter import Twitter
+from htw.compose import Compose
 from htw.mastodon import Mastodon
 
 class CLI():
@@ -24,8 +24,6 @@ class CLI():
 		self.conf_path = "config.json"
 		self.lfm_period = LFMPeriod.WEEK
 		self.lastfm_key = getenv('LASTFM_KEY')
-		self.twitter_key = getenv('TWITTER_CONSUMER_KEY')
-		self.twitter_srt = getenv('TWITTER_CONSUMER_SECRET')
 		self.mastodon_key = getenv('MASTODON_KEY')
 		self.mastodon_srt = getenv('MASTODON_SECRET')
 		self.mastodon_url = getenv('MASTODON_URL')
@@ -138,7 +136,7 @@ class CLI():
 
 		if not self.suppress:
 			print("- Composing tweet...")
-		tweet = Twitter().compose_tweet(artists, user_conf['lastfmUsername'])
+		tweet = Compose().compose_tweet(artists, user_conf['lastfmUsername'])
 
 		if self.display_only:
 			print(tweet)
@@ -146,24 +144,6 @@ class CLI():
 			print(f"\033[92mCollage\033[00m: {pic}")
 			colgen.cleanup()
 			return True
-
-		if 'twitterAccessToken' in user_conf:
-			if not self.suppress:
-				print("- Posting to \033[96mTwitter\033[00m...")
-
-			try:
-				Twitter(
-					self.twitter_key,
-					self.twitter_srt,
-					user_conf['twitterAccessToken'],
-					user_conf['twitterAccessSecret']
-				).post_to_twitter(tweet, pic)
-				return True
-			except Exception as error:
-				print("\033[91mError\033[00m: " + str(error) + ".")
-				return False
-			finally:
-				colgen.cleanup()
 		
 		if 'mastodonAccessToken' in user_conf:
 			if not self.suppress:
@@ -200,10 +180,6 @@ class CLI():
 
 		if 'lastfmKey' in conf['config']:
 			self.lastfm_key = conf['config']['lastfmKey'] if self.lastfm_key is None else self.lastfm_key
-		if 'twitterConsumerKey' in conf['config']:
-			self.twitter_key = conf['config']['twitterConsumerKey'] if self.twitter_key is None else self.twitter_key
-		if 'twitterConsumerSecret' in conf['config']:
-			self.twitter_srt = conf['config']['twitterConsumerSecret'] if self.twitter_srt is None else self.twitter_srt
 		
 		if 'mastodonURL' in conf['config']:
 			self.mastodon_url = conf['config']['mastodonURL'] if self.mastodon_url is None else self.mastodon_url
@@ -219,7 +195,7 @@ class CLI():
 		if self.suppress:
 			return
 
-		print("Run without arguments to process last.fm & Twitter using environmental variables.")
+		print("Run without arguments to process last.fm & Mastodon using environmental variables.")
 		print("Script will also check and use environment variables stored in '.env'.")
 		print("")
 		print("\033[93mOptions:\033[00m")
@@ -231,7 +207,7 @@ class CLI():
 		print("\033[92m-k, --keep         \033[00mThe collage is dumped into the working directory instead ", end='')
 		print("of a temporary disposable directory.")
 		print("\033[92m-s, --silent       \033[00mScript does not output anything, just success/fail code.")
-		print("\033[92m-d, --display      \033[00mDisplays tweet, but does not post to Twitter.")
+		print("\033[92m-d, --display      \033[00mDisplays tweet, but does not post to Mastodon.")
 		print("")
 		print("\033[92m-v, --version      \033[00mDisplay script version.")
 		print("\033[92m-h, --help         \033[00mDisplay help information.")
@@ -244,4 +220,4 @@ class CLI():
 			return
 
 		print("Hot this Week by soup-bowl - \033[93mpre-alpha\033[00m.")
-		print("https://github.com/soup-bowl/lastfm-twitter/")
+		print("https://github.com/soup-bowl/hot-this-week")

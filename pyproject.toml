@@ -1,21 +1,21 @@
 [tool.poetry]
 name = "hot-this-week"
 version = "0.1.0"
+package-mode = false
 description = "Tweets out the top artists for your Last.fm account"
 authors = ["soup-bowl <code@soupbowl.io>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-lxml = "^4.9.1"
-twython = "^3.9.1"
-urllib3 = "^1.26.11"
-Pillow = "^9.2.0"
+lxml = "^5.2.2"
+urllib3 = "^2.2.2"
+Pillow = "^10.0.1"
 "Mastodon.py" = "^1.7.0"
 
 [tool.poetry.dev-dependencies]
-pylint = "^2.14.5"
-pytest = "^7.1.2"
+pylint = "^3.2.6"
+pytest = "^8.3.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
