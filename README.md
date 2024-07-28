@@ -25,7 +25,7 @@ This clever bot does the following:
 * We do some arts and crafts wizardary 🪄 to formulate a collage picture.
 * Lastly, the app phones up Mastodon 📞, asks how their turtle is hanging 🐢, and posts the info and picture.
 
-⭐ Collage is made using the power of Python using [Pillow][p-pillow] for image manipulation, [Twython][p-twython]/[Mastodon][p-mstdn] and [urllib3][p-urllib3] for API communication, and [lxml][p-lxml] for scraping the internet.
+⭐ Collage is made using the power of Python using [Pillow][p-pillow] for image manipulation, [Mastodon][p-mstdn] and [urllib3][p-urllib3] for API communication, and [lxml][p-lxml] for scraping the internet.
 
 ## 🚀 Set-up
 
@@ -58,7 +58,6 @@ With everything set, you can just run `python3 -m htw` from CLI, and all the mag
 This uses **[pytest](https://docs.pytest.org/en/6.2.x/)** for Unit Testing, and **[pylint](https://pypi.org/project/pylint/)** for linting.
 
 [p-pillow]: https://pypi.org/project/Pillow/
-[p-twython]: https://pypi.org/project/twython/
 [p-mstdn]: https://github.com/halcy/Mastodon.py
 [p-urllib3]: https://pypi.org/project/urllib3/
 [p-lxml]: https://pypi.org/project/lxml/
