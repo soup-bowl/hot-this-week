@@ -18,7 +18,7 @@ class StatChecks(unittest.TestCase):
 		for i in range(5):
 			dummy_lfm.append({
 				"name": "Dummy",
-				"image": "https://source.unsplash.com/featured/?face,person",
+				"image": "https://picsum.photos/2048",
 				"plays": i,
 			})
 
