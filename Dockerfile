@@ -8,7 +8,7 @@ RUN apk add --no-cache python3-dev libc-dev zlib-dev jpeg-dev freetype-dev \
 	gcc libxml2-dev libxslt-dev libffi-dev
 
 RUN pip install --no-cache-dir poetry
-RUN poetry install --no-dev --no-interaction --no-ansi
+RUN poetry install --only main --no-interaction --no-ansi
 
 COPY htw     htw
 COPY assets  assets
