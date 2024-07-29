@@ -43,7 +43,7 @@ Append `-h` right at the end to see usage instructions. Change 'latest' for 'edg
 
 ### Natively
 
-The project depends on having Python 3 installed, and don't forget to run `pip3 install -r requirements.txt` to grab the project dependencies.
+The project depends on having Python 3 installed, and don't forget to run `poetry install` to grab the project dependencies.
  
 See the [configuration example](/config.json.example) to see how to setup the tool. The following configurations are **required** for this to work in your **own environment**:
 
