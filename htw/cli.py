@@ -11,7 +11,7 @@ from pathlib import Path
 
 from htw.lfm import LFM, LFMPeriod
 from htw.collage import Collage
-from htw.compose import Compose
+from htw.compose import compose_tweet
 from htw.mastodon import Mastodon
 
 class CLI():
@@ -136,7 +136,7 @@ class CLI():
 
 		if not self.suppress:
 			print("- Composing tweet...")
-		tweet = Compose().compose_tweet(artists, user_conf['lastfmUsername'])
+		tweet = compose_tweet(artists, user_conf['lastfmUsername'])
 
 		if self.display_only:
 			print(tweet)
