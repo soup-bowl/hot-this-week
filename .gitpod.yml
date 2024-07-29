@@ -1,12 +1,9 @@
+image: gitpod/workspace-python:latest
 tasks:
   - init: |
       docker-compose build
-      python3 -m venv pythonenv
-      source pythonenv/bin/activate
-      pip install -r requirements.txt
-      pip install pytest
-    command: |
-      echo ${HTW_SETTINGS_JSON} > config.json
+      poetry install
+    command: sh ./.devcontainer/postCreateCommand.sh
 vscode:
   extensions:
     - ms-azuretools.vscode-docker

@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "hot-this-week"
+version = "0.1.0"
+package-mode = false
+description = "Tweets out the top artists for your Last.fm account"
+authors = ["soup-bowl <code@soupbowl.io>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+lxml = "^5.2.2"
+urllib3 = "^2.2.2"
+Pillow = "^10.0.1"
+"Mastodon.py" = "^1.7.0"
+requests = "^2.32.3"
+
+[tool.poetry.dev-dependencies]
+pylint = "^3.2.6"
+pytest = "^8.3.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pylint.format]
+indent-string = "\t"
+max-line-length = 120
+
+[tool.pylint.design]
+max-attributes = 10
+
+[tool.pylint.logging]
+# E0401 - Doesn't seem to work for me.
+# R1732 - consider-using-with. Disabled as I didn't intend the output to be temporary.
+disable = ["E0401", "R1732"]
