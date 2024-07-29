@@ -4,7 +4,7 @@ Checks the Last.fm interactions.
 
 import unittest
 
-from htw.lfm import LFM
+from htw.providers.lfm import LFM
 
 class StatChecks(unittest.TestCase):
 	"""Checks the Last.fm interactions.
