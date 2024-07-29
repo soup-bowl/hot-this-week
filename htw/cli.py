@@ -9,10 +9,11 @@ from os import getenv
 from os.path import realpath, exists
 from pathlib import Path
 
-from htw.lfm import LFM, LFMPeriod
 from htw.collage import Collage
 from htw.compose import compose_tweet
-from htw.mastodon import Mastodon
+from htw.providers.lfm import LFM, LFMPeriod
+from htw.providers.mastodon import Mastodon
+from htw.providers.bluesky import Bluesky
 
 class CLI():
 	"""Command line handler for the Hot-this-Week toolset.
@@ -135,8 +136,8 @@ class CLI():
 		pic = colgen.new(artists, self.keep_pic)
 
 		if not self.suppress:
-			print("- Composing tweet...")
-		tweet = compose_tweet(artists, user_conf['lastfmUsername'])
+			print("- Composing message...")
+		tweet = compose_tweet(artists, user_conf['lastfmUsername'], self.lfm_period)
 
 		if self.display_only:
 			print(tweet)
@@ -145,6 +146,26 @@ class CLI():
 			colgen.cleanup()
 			return True
 		
+		if 'BlueskyHandle' in user_conf:
+			if not self.suppress:
+				print("- Posting to \033[96mBluesky\033[00m...")
+
+			try:
+				bsky = Bluesky(
+					url=user_conf['BlueskyInstance'],
+					handle=user_conf['BlueskyHandle'],
+					application_password=user_conf['BlueskyPassword']
+				)
+
+				bsky.post(tweet, pic)
+			except Exception as error:
+				print("\033[91mError\033[00m: " + str(error) + ".")
+				return False
+			finally:
+				colgen.cleanup()
+
+			sys.exit(443)
+
 		if 'mastodonAccessToken' in user_conf:
 			if not self.suppress:
 				print("- Posting to \033[95mMastodon\033[00m...")
@@ -180,7 +201,7 @@ class CLI():
 
 		if 'lastfmKey' in conf['config']:
 			self.lastfm_key = conf['config']['lastfmKey'] if self.lastfm_key is None else self.lastfm_key
-		
+
 		if 'mastodonURL' in conf['config']:
 			self.mastodon_url = conf['config']['mastodonURL'] if self.mastodon_url is None else self.mastodon_url
 		if 'mastodonKey' in conf['config']:

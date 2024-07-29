@@ -13,7 +13,7 @@
  <img src="https://user-images.githubusercontent.com/11209477/214368280-532459b4-eb5d-46f7-82cd-2913d4da1633.png" alt="A view of a Mastodon post showing a 5-picture collage, 1 larger image on the left and 4 small images in a grid orientation"/>
 </p>
 
-An experimental bot that posts a rundown of your musical week on Mastodon.
+An experimental bot that posts a rundown of your musical week on Mastodon and/or Bluesky.
 
 ## 🤔 What does this do?
 
@@ -23,7 +23,7 @@ This clever bot does the following:
 * API kindly hands over the info (or gives us a whack of the handbag if we have no API key).
 * We sneakily scrape the last.fm website for the artist pictures 🤫 (better solutions welcome).
 * We do some arts and crafts wizardary 🪄 to formulate a collage picture.
-* Lastly, the app phones up Mastodon 📞, asks how their turtle is hanging 🐢, and posts the info and picture.
+* Lastly, the app phones up Mastodon/Bluesky 📞, asks how their turtle is hanging 🐢, and posts the info and picture.
 
 ⭐ Collage is made using the power of Python using [Pillow][p-pillow] for image manipulation, [Mastodon][p-mstdn] and [urllib3][p-urllib3] for API communication, and [lxml][p-lxml] for scraping the internet.
 

@@ -4,6 +4,12 @@
 			"lastfmUsername": "example",
 			"mastodonUsername": "example@mastodon.social",
 			"mastodonAccessToken": "key"
+		},
+		{
+			"lastfmUsername": "example",
+			"BlueskyInstance": "https://bsky.social",
+			"BlueskyHandle": "example-user",
+			"BlueskyPassword": "bluesky-app-password"
 		}
 	],
 	"config": {
