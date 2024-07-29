@@ -5,7 +5,7 @@ WORKDIR /opt/app
 COPY pyproject.toml poetry.lock ./
 
 RUN apk add python3-dev libc-dev zlib-dev jpeg-dev freetype-dev gcc \
-	libxml2-dev libxslt-dev
+	libxml2-dev libxslt-dev libffi-dev
 
 RUN pip install --no-cache-dir poetry
 RUN poetry install --no-dev --no-interaction --no-ansi
