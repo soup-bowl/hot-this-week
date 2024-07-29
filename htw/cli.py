@@ -164,8 +164,6 @@ class CLI():
 			finally:
 				colgen.cleanup()
 
-			sys.exit(443)
-
 		if 'mastodonAccessToken' in user_conf:
 			if not self.suppress:
 				print("- Posting to \033[95mMastodon\033[00m...")
