@@ -53,7 +53,7 @@ See the [configuration example](/config.json.example) to see how to setup the to
   * Easily register an application in **Preferences**, then **Development**.
   * Permissions needed are **write:media** and **write:statuses**.
 
-With everything set, you can just run `python3 -m htw` from CLI, and all the magic should happen. You can see the optional arguments by running `python3 -m htw --help`.
+With everything set, you can just run `poetry run python -m htw` from CLI, and all the magic should happen. You can see the optional arguments by running `poetry run python -m htw --help`.
 
 This uses **[pytest](https://docs.pytest.org/en/6.2.x/)** for Unit Testing, and **[pylint](https://pypi.org/project/pylint/)** for linting.
 
